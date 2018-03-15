@@ -49,19 +49,19 @@
           // All Navbar left items
           navLeftItems: [{
             item: 'Customer',
-            route: 'customer/'
+            route: '/customer/'
           },{
             item: 'Products',
-            route: 'products/'
+            route: '/products/'
           },{
             item: 'Security',
-            route: 'security/'
+            route: '/security/'
           },{
             item: 'Life Cycle',
-            route: 'lifecycle/'
+            route: '/lifecycle/'
           },{
             item: 'Useful Links',
-            route: 'links/'
+            route: '/links/'
           }],
           // All navbar right items
           navRightItems: [{

@@ -12,11 +12,11 @@ export default {
       })).then(response => {
         this.closeModal()
         if (response.data.message === 'success') {
-          var newItem = {
-            id: response.data.id,
-            item: feedname,
-            route: feedurl
-          }
+            var newItem = {
+              "model": "SECURITY.RSSFEED",
+              "pk": response.data.id,
+              "fields": {"name": feedname, "feedurl": feedurl}
+            }
           this.$store.dispatch('pullNewMenuItems', newItem)
           this.emitSuccessMessage('RSS Feeder Successfully Registered', 'is-success')
         } else {

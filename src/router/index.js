@@ -1,15 +1,14 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/rssReader'
+import routes from './routes';
 
 Vue.use(Router)
 
-export default new Router({
-  routes: [
-    {
-      path: '/',
-      name: 'HelloWorld',
-      component: HelloWorld
-    }
-  ]
-})
+// Create a new route instance and disable
+// the navigation to index page using mode.
+const router = new Router({
+  mode: 'history',
+  routes,
+});
+
+export default router;

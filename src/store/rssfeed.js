@@ -6,9 +6,9 @@ export default {
   state: {
     // The Left side menu Items
     menuItems: [{
-      id: '',
-      item: '',
-      route: ''
+      "model": "SECURITY.RSSFEED",
+      "pk": '',
+      "fields": {"name": '', "url": ''}
     }],
     // The Contents of the RSS Feed
     rssContent: [{

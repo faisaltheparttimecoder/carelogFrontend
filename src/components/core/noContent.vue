@@ -3,21 +3,27 @@
   <section class="container">
     <div class="has-text-centered is-vcentered">
       <i class="far fa-frown fa-6x"></i>
-      <br/><br/><br/>
-      <h1 class="title">Sorry</h1>
+      <h1 class="title">..... Sorry .....</h1>
       <h2 class="subtitle">
-        Cannot find any content of the RSS Feed.
-        Add RSS Source, check the URL of the RSS feed or something is wrong ....
+        {{ message }}
       </h2>
     </div>
   </section>
 </template>
 
 <script>
+  export default {
+    name: 'noContentTemplate',
+    props: [
+      'message'
+    ]
+  }
 </script>
 
 <style scoped>
   .is-vcentered {
-    margin: 30% auto;
+    position: absolute;
+    top: 50%;
+    left: 10%;
   }
 </style>

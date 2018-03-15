@@ -48,12 +48,11 @@
       :pagination-simple="isPaginationSimple"
       :narrowed="isNarrowed"
       detailed
-      detail-key="title"
-      @details-open="(row, index) => $toast.open(`Expanded ${row.title}`)">
+      detail-key="title">
       <!--Table rows-->
       <template slot-scope="props">
         <b-table-column label="Date" width="250">
-          {{ props.row.published | moment("dddd, MMMM Do YYYY")  }}
+          {{ props.row.published | moment("YYYY-MM-DD")  }}
         </b-table-column>
         <b-table-column label="Vulnerability">
           {{ props.row.title }}
@@ -87,10 +86,6 @@
         perPage: 15,
         isNarrowed: true
       }
-    },
-    // Attaching the lifecycle hook, to pull the API.
-    beforeCreate: function() {
-      this.$store.dispatch('pullRssContent', 0)
     },
     computed: {
       // Get the rss Content from the Vuex Store

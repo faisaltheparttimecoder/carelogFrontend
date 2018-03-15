@@ -5,11 +5,32 @@
     <div class="columns">
       <!--menu grid-->
       <div class="column is-2">
-        <app-menu :menuItems="menuItems" :selectedItem="selectedItem" v-on:openModal="newFeederModal">
+        <app-menu :menuItems="menuItems"
+                  :selectedItem="selectedItem"
+                  :menuTitle="menuTitle"
+                  :sourceUrl="sourceUrl"
+                  :sourceTitle="sourceTitle"
+                  v-on:refreshContent="clickedContent($event)" >
+          <!--Extra contents for the menu-->
+          <div slot="menuBottom">
+            <p class="menu-label">
+              Action
+            </p>
+            <div class="field">
+              <p class="control">
+                <a class="button is-success is-outlined" v-on:click="newFeederModal">
+                  <span class="icon is-small">
+                    <i class="fas fa-rss-square"></i>
+                  </span>
+                  <span>Add RSS Source</span>
+                </a>
+              </p>
+            </div>
+          </div>
         </app-menu>
       </div>
       <!--If there is no content then load this template-->
-      <app-nocontent v-if="contextExists"> </app-nocontent>
+      <app-nocontent v-if="contextExists" :message="noContentMessage"> </app-nocontent>
       <!--rss content grid-->
       <div v-else class="column is-10">
         <app-content> </app-content>
@@ -20,12 +41,12 @@
 
 <script>
   // Import components
-  import menu from './rssMenu'
+  import menu from '../core/menu'
   import content from './rssReaderContent'
-  import noContent from './noContentMessage'
+  import noContent from '../core/noContent'
 
   // Import mixins
-  import sumbitForm from '../mixins/sumbitForm'
+  import sumbitForm from '../../mixins/sumbitForm'
 
   // Modal template to add a new feed
   // https://buefy.github.io/#/documentation/modal
@@ -37,8 +58,8 @@
     // All the data for this components.
     data: function() {
       return {
-        'feedname': '',
-        'feedurl': '',
+        feedname: '',
+        feedurl: ''
       }
     },
     template: `
@@ -84,7 +105,10 @@
     },
     data: function() {
       return {
-        'editfeedname': 'aaa'
+        menuTitle: 'Rss Feeder',
+        sourceUrl: 'https://pivotal.io/security',
+        sourceTitle: 'Security Page',
+        noContentMessage: ' Cannot find any content of the RSS Feed. Add RSS Source, check the URL of the RSS feed or something is wrong ....'
       }
     },
     computed: {
@@ -101,6 +125,10 @@
         return this.$store.state.security.rssContentLength === 0
       }
     },
+    // Attaching the lifecycle hook, to pull the API for the RSS feed.
+    beforeCreate: function() {
+      this.$store.dispatch('pullRssContent', 0)
+    },
     methods: {
       // Open the modal when the add new feed is clicked.
       newFeederModal() {
@@ -110,6 +138,10 @@
           hasModalCard: true,
         })
       },
+      // Handle the emit handler to refresh the content
+      clickedContent: function(id) {
+        this.$store.dispatch('pullRssContent', id)
+      }
     }
   }
 </script>
