@@ -1,6 +1,7 @@
-import security from '@/components/security/rssReader'
+import security from '@/components/security/rssreader'
 import product from '@/components/products/products'
 import lifecycle from '@/components/lifecycle/lifecycle'
+import links from  '@/components/links/links'
 
 export default [
   {
@@ -12,5 +13,8 @@ export default [
   },{
     path: '/lifecycle',
     component: lifecycle
+  },{
+    path: '/links',
+    component: links
   },
 ];

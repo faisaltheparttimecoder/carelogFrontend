@@ -17,15 +17,8 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 Vue.use(VueAxios, axios)
 
-// Moment for date format
-Vue.use(require('vue-moment'));
-
-// All Vuex store
-import { store } from "./store/store";
-
-// Initializing new Vue Instance.
+/* eslint-disable no-new */
 new Vue({
-  store: store,
   el: '#app',
   router,
   components: { App },

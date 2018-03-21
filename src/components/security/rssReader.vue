@@ -1,8 +1,11 @@
 <template>
+
   <!--The main rssReader component-->
   <section class="section">
+
     <!--Spilt the container into two grids one half for menu and other for the content-->
     <div class="columns">
+
       <!--menu grid-->
       <div class="column is-2">
         <app-menu :menuItems="menuItems"
@@ -10,15 +13,16 @@
                   :menuTitle="menuTitle"
                   :sourceUrl="sourceUrl"
                   :sourceTitle="sourceTitle"
-                  v-on:refreshContent="clickedContent($event)" >
+                  :sourceInfo=true
+                  v-on:refreshContent="clickedContent($event)">
           <!--Extra contents for the menu-->
-          <div slot="menuBottom">
-            <p class="menu-label">
+          <div slot="menuTop">
+            <p class="menu-label has-text-weight-bold has-text-danger">
               Action
             </p>
-            <div class="field">
+            <div class="field" v-if="!menuFormActive">
               <p class="control">
-                <a class="button is-success is-outlined" v-on:click="newFeederModal">
+                <a class="button is-success is-outlined" v-on:click="clearFormInputs">
                   <span class="icon is-small">
                     <i class="fas fa-rss-square"></i>
                   </span>
@@ -26,125 +30,153 @@
                 </a>
               </p>
             </div>
+            <form v-if="menuFormActive">
+              <b-field>
+                <b-input
+                  type="text"
+                  v-model="feedname"
+                  placeholder="Enter feed name"
+                  required>
+                </b-input>
+              </b-field>
+              <b-field>
+                <b-input
+                  type="url"
+                  v-model="feedurl"
+                  placeholder="Enter feed URL"
+                  required>
+                </b-input>
+              </b-field>
+              <a class="button is-success is-outlined" @click="addNewFeed(feedname, feedurl)" > Add </a>
+              <a class="button is-danger is-outlined" v-on:click="menuFormActive = false"> Cancel </a>
+            </form>
           </div>
         </app-menu>
       </div>
+
       <!--If there is no content then load this template-->
       <app-nocontent v-if="contextExists" :message="noContentMessage"> </app-nocontent>
+
       <!--rss content grid-->
       <div v-else class="column is-10">
-        <app-content> </app-content>
+        <app-content :rssContent="rssContent" :rssTitle="selectedItem"> </app-content>
       </div>
+
     </div>
+
   </section>
+
 </template>
 
 <script>
   // Import components
   import menu from '../core/menu'
-  import content from './rssReaderContent'
-  import noContent from '../core/noContent'
+  import content from './rsscontent'
+  import noContent from '../core/nocontent'
 
   // Import mixins
-  import sumbitForm from '../../mixins/sumbitForm'
+  import helpers from './../../mixins/helper'
+  import defaults from './../../mixins/default'
 
-  // Modal template to add a new feed
-  // https://buefy.github.io/#/documentation/modal
-  const rssReaderModal = {
-    // All mixins functions.
-    mixins: [
-      sumbitForm
-    ],
-    // All the data for this components.
-    data: function() {
-      return {
-        feedname: '',
-        feedurl: ''
-      }
-    },
-    template: `
-            <form @submit.prevent="addNewFeed(feedname, feedurl)">
-                <div class="modal-card" style="width: auto">
-                    <header class="modal-card-head">
-                        <p class="modal-card-title">Enter RSS Feeder Information</p>
-                    </header>
-                    <section class="modal-card-body">
-                        <b-field label="Feed Name">
-                            <b-input
-                                type="text"
-                                v-model="feedname"
-                                placeholder="Enter feed name"
-                                required>
-                            </b-input>
-                        </b-field>
-                        <b-field label="Feed URL">
-                            <b-input
-                                type="url"
-                                v-model="feedurl"
-                                placeholder="Enter feed URL"
-                                required>
-                            </b-input>
-                        </b-field>
-                    </section>
-                    <footer class="modal-card-foot">
-                        <button class="button is-success">Sumbit</button>
-                        <button class="button is-danger" type="button" @click="$parent.close()">Close</button>
-                    </footer>
-                </div>
-            </form>
-        `
-  }
+  // Package to convert data to Django string
+  var qs = require('qs')
 
   export default {
     name: 'rssReader',
+
+    // All Mixins
+    mixins: [
+      helpers, defaults
+    ],
+
     // All the components to populate the content.
     components: {
       'app-menu': menu,
       'app-content': content,
-      'app-nocontent': noContent
+      'app-nocontent': noContent,
     },
+
+    // All data
     data: function() {
       return {
+        // All this components default.
         menuTitle: 'Rss Feeder',
         sourceUrl: 'https://pivotal.io/security',
         sourceTitle: 'Security Page',
-        noContentMessage: ' Cannot find any content of the RSS Feed. Add RSS Source, check the URL of the RSS feed or something is wrong ....'
+        noContentMessage: ' Cannot find any content of the RSS Feed. Add RSS Source, check the URL of the RSS feed or something is wrong ....',
+
+        // The content from the selected feeds
+        rssContent: [{
+          title: '',
+          published: '',
+          summary: ''
+        }],
+
+        // Form input field
+        feedname: '',
+        feedurl: '',
       }
     },
-    computed: {
-      // Pull all the menuItems from the vuex store
-      menuItems: function() {
-          return this.$store.state.security.menuItems
-        },
-      // Record to what menu item was clicked
-      selectedItem: function() {
-          return this.$store.state.security.rssTitle
-        },
-      // Is there any content to show
-      contextExists: function() {
-        return this.$store.state.security.rssContentLength === 0
-      }
+
+    // Extract the api data before create of vue instance
+    created: function() {
+      this.axios.get(this.api.security).then(response => {
+        this.menuItems = response.data
+        if (!this.arrayEmpty(this.menuItems)) {
+          this.clickedContent(this.menuItems[0]['id'])
+        }
+      })
     },
-    // Attaching the lifecycle hook, to pull the API for the RSS feed.
-    beforeCreate: function() {
-      this.$store.dispatch('pullRssContent', 0)
-    },
+
+    // All methods
     methods: {
-      // Open the modal when the add new feed is clicked.
-      newFeederModal() {
-        this.$modal.open({
-          parent: this,
-          component: rssReaderModal,
-          hasModalCard: true,
+
+      // Get all the contents of the rss feed.
+      clickedContent: function(id) {
+        this.axios.get(this.api.security + id + '/'). then(response => {
+          this.selectedItem = response.data.name
+          this.rssContent = response.data.content
+          this.contextExists = this.arrayEmpty(this.rssContent)
         })
       },
-      // Handle the emit handler to refresh the content
-      clickedContent: function(id) {
-        this.$store.dispatch('pullRssContent', id)
-      }
+
+      // Clear the form value
+      clearFormInputs: function () {
+        this.feedurl = ''
+        this.feedname = ''
+        this.menuFormActive = true
+      },
+
+      // This function is used when rss feed is added.
+      addNewFeed: function(feedname, feedurl) {
+        // Check of the fields have some data
+        if (this.emptyData(feedname) || this.emptyData(feedurl) ) {
+          this.emitMessage('ERROR: Fields are Blank, all fields are mandatory', 'is-danger' )
+          return false
+        }
+        // Commit the data on the database.
+        this.axios.post(this.api.security, qs.stringify({
+          'name': feedname,
+          'url': feedurl
+        })).then(response => {
+          if (response.statusText === 'Created' && response.status === 201) {
+            this.menuItems.push(response.data)
+            this.menuFormActive = false
+            this.emitMessage('RSS Feeder Successfully Registered', 'is-success')
+          } else {
+            console.log(response)
+            this.emitMessage('FAILURE: Link Update Unsuccessful, check browser console log', 'is-danger')
+          }
+        }).catch(error => {
+          console.log(error)
+          console.log(error.response.data)
+          this.emitMessage("Failure: Check the browser console log for more information", 'is-danger')
+        })
+      },
     }
   }
 </script>
 
-<style scoped>
+<style>
+
 </style>
