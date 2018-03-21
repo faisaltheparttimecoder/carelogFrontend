@@ -12,9 +12,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "buefy": "^0.6.3",
-    "feedparser": "^2.2.9",
     "qs": "^6.5.1",
-    "request": "^2.85.0",
     "vue": "^2.5.2",
     "vue-axios": "^2.0.2",
     "vue-router": "^3.0.1"

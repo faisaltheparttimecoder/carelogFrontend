@@ -184,7 +184,11 @@
       // Add new link
       addNewLink: function(link) {
 
-        this.tableData.push(link)
+        // only update the table if the category name is the selected one
+        if (this.selectedItem === 'All Categories Links' || this.selectedItem === link.category_name) {
+          this.tableData.push(link)
+        }
+
         this.contextExists = this.arrayEmpty(this.tableData)
 
       },
