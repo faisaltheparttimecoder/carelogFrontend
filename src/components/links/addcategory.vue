@@ -57,13 +57,11 @@
 
       // Add new category method
       addCategory: function() {
-
         // Emit error if the field is blank
         if (this.emptyData(this.categoryName)) {
           this.emitMessage("ERROR: Missing data for the category name", 'is-danger')
           return false
         }
-
         // if all good lets post it
         this.axios.post(this.api.category, qs.stringify({
           'name': this.categoryName.toLowerCase(),

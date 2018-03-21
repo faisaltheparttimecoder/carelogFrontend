@@ -72,23 +72,19 @@
 
       // Adding a new link
       addNewLink: function () {
-
         // Check if all the fields are selected
         if (this.emptyData(this.modalProp.linkName) || this.emptyData(this.modalProp.linkUrl) || this.emptyData(this.modalProp.linkInfo)) {
           this.emitMessage("Failure: All the fields are required", 'is-danger')
           return false
         }
-
         // Get the category ID before sending the post or put
         var category_id = this.getValueOfKey(this.categories, this.modalProp.linkCategory)
         if (category_id === '') {
           this.emitMessage('FAILURE: Cannot find the corresponding category Id for the category: ' + this.modalProp.linkCategory, 'is-danger')
           return false
         }
-
         // Is this a edit link call
         if (this.is_it_edit) {
-
           // Send a put request to update the link
           this.axios.put(this.api.links + this.modalProp.linkId + '/', qs.stringify({
             'name': this.modalProp.linkName,
@@ -96,7 +92,6 @@
             'info': this.modalProp.linkInfo,
             'category_id': category_id
           })).then(response => {
-
             // Respond based on the response from backend server
             if (response.statusText === 'OK' && response.status === 200) {
               this.$parent.close()
@@ -106,18 +101,13 @@
               console.log(response)
               this.emitMessage('FAILURE: Link Update Unsuccessful, check browser console log', 'is-danger')
             }
-
           }).catch(error => {
-
             // Return any error if any.
             console.log(error)
             console.log(error.response.data)
             this.emitMessage('Failure: Check the browser console log for more information', 'is-danger')
-
           })
-
         } else {
-
           // Send a post request to create the link
           this.axios.post(this.api.links, qs.stringify({
             'name': this.modalProp.linkName,
@@ -125,7 +115,6 @@
             'info': this.modalProp.linkInfo,
             'category_id': category_id
           })).then(response => {
-
             // Respond based on the response from backend server
             if (response.statusText === 'Created' && response.status === 201) {
               this.$parent.close()
@@ -135,13 +124,10 @@
               console.log(response)
               this.emitMessage('FAILURE: Link Registration Unsuccessful, check browser console log', 'is-danger')
             }
-
           }).catch(error => {
-
             // Return any error if any.
             console.log(error)
-            console.log(error.response.data)
-            this.emitMessage('Failure: Check the browser console log for more information', 'is-danger')
+            console.log(error.response.data)this.emitMessage('Failure: Check the browser console log for more information', 'is-danger')
 
           })
         }
