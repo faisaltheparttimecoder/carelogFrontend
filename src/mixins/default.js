@@ -39,7 +39,9 @@ export default {
         links: process.env.API_URL + 'api/links/',
         category: process.env.API_URL + 'api/category/',
         security: process.env.API_URL + 'api/security/',
-        product: process.env.API_URL + 'api/products/'
+        product: process.env.API_URL + 'api/products/',
+        searchOrg: process.env.API_URL + 'api/zendesk/search/query=type:organization name:',
+        org: process.env.API_URL + 'api/zendesk/organisation/',
       }
 
     }

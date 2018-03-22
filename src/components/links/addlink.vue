@@ -127,8 +127,8 @@
           }).catch(error => {
             // Return any error if any.
             console.log(error)
-            console.log(error.response.data)this.emitMessage('Failure: Check the browser console log for more information', 'is-danger')
-
+            console.log(error.response.data)
+            this.emitMessage('Failure: Check the browser console log for more information', 'is-danger')
           })
         }
       }

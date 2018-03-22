@@ -61,7 +61,7 @@
         // All Navbar left items
         navLeftItems: [{
           item: 'Customer',
-          route: '/customer/'
+          route: '/tickets/'
         },{
           item: 'Products',
           route: '/products/'
