@@ -2,10 +2,12 @@
   <div>
     <app-menu
       :menu-items="menuItems"
+      :selectedItem="selectedItem"
       :menuTitle="menuTitle"
       :sourceInfo=true
       :sourceUrl="sourceUrl"
-      :sourceTitle="sourceTitle">
+      :sourceTitle="sourceTitle"
+      v-on:refreshContent="clickedContent($event)">
 
       <!--Extra contents for the menu-->
       <div slot="menuTop">
@@ -19,9 +21,9 @@
         <div v-if="!menuFormActive" class="field">
           <p class="control">
             <a class="button is-success is-outlined" v-on:click="activateCustomerSearch">
-          <span class="icon is-small">
-            <i class="far fa-building"></i>
-          </span>
+              <span class="icon is-small">
+                <i class="far fa-building"></i>
+              </span>
               <span>Find & Add Customer</span>
             </a>
           </p>
@@ -86,6 +88,7 @@
     data() {
       return {
         data: [],
+        selectedItem: [],
         name: '',
         selected: null,
         isFetching: false,
@@ -99,23 +102,37 @@
     created: function() {
       this.axios.get(this.api.org).then(response => {
         this.menuItems = response.data
+
+        if (!this.arrayEmpty(this.menuItems)) {
+          this.clickedContent(this.menuItems[0]['id'])
+        }
       })
     },
 
     methods: {
+      // Send the clicked content information to the calling components
+      clickedContent: function(clicked) {
+        this.axios.get(this.api.org + clicked + '/'). then(response => {
+          this.selectedItem = response.data.name
+          return this.$emit('selectedOrg', {
+            event: response.data.org_id,
+            who: 'customer'
+          })
+        })
+      },
       // You have to install and import debounce to use it,
       // it's not mandatory though.
       getAsyncData: debounce(function () {
         this.data = []
         this.isFetching = true
-        this.axios.get(this.api.searchOrg + this.name)
+        var url = this.api.search + 'organization name:'
+        this.axios.get(url + this.name + '*')
           .then(({ data }) => {
             data.results.forEach((item) => this.data.push(item))
             this.isFetching = false
           })
           .catch((error) => {
             this.isFetching = false
-            throw error
           })
       }, 500),
       // Activate Search field.
@@ -156,6 +173,7 @@
         }).catch(error => {
           console.log(error)
           console.log(error.response.data)
+          this.emitMessage("ERROR: Failed to save the customer on the database, check browser console log.", 'is-danger')
         })
       }
     }

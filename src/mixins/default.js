@@ -9,6 +9,9 @@ export default {
         perPage: 15,
         isNarrowed: true,
         isStriped: true,
+        hasMobileCards: true,
+        isEmpty: false,
+        isLoading: true,
         defaultSortDirection: 'desc'
       },
 
@@ -40,8 +43,12 @@ export default {
         category: process.env.API_URL + 'api/category/',
         security: process.env.API_URL + 'api/security/',
         product: process.env.API_URL + 'api/products/',
-        searchOrg: process.env.API_URL + 'api/zendesk/search/query=type:organization name:',
+        search: process.env.API_URL + 'api/zendesk/search/query=type:',
         org: process.env.API_URL + 'api/zendesk/organisation/',
+        ticketComments: process.env.API_URL + 'api/zendesk/comments/',
+        ticketNotes: process.env.API_URL + 'api/zendesk/ticketnotes',
+        ticketMetrics: process.env.API_URL + 'api/zendesk/metrics/',
+        ticketHot: process.env.API_URL + 'api/zendesk/hottickets/',
       }
 
     }

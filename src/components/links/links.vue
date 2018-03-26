@@ -14,22 +14,17 @@
 
           <!--Extra contents for the menu-->
           <div slot="menuTop">
-
             <!--Button to add new category-->
             <p class="menu-label has-text-danger has-text-weight-bold">
               Action
             </p>
-
             <!--The form to add a new category-->
             <app-category v-on:updatedMenuItem="updateMenu"> </app-category>
-
           </div>
-
         </app-menu>
       </div>
 
       <div class="column is-10">
-
         <!--Top navbar-->
         <nav class="level">
           <div class="level-left">
@@ -74,11 +69,10 @@
 
         <!--Table of information-->
         <div v-else class="columns">
-          <app-table :data="arraySlicer(filterLinks, 0)" v-on:editLink="openEditModal" v-on:deleteLink="deleteLink"> </app-table>
-          <app-table :data="arraySlicer(filterLinks, 1)" v-on:editLink="openEditModal" v-on:deleteLink="deleteLink"> </app-table>
-          <app-table :data="arraySlicer(filterLinks, 2)" v-on:editLink="openEditModal" v-on:deleteLink="deleteLink"> </app-table>
+          <app-table :data="arraySlicer(filterLinks, 0)" v-on:editLink="openEditModal" v-on:deleteLink="deleteLink" :loading="loading"> </app-table>
+          <app-table :data="arraySlicer(filterLinks, 1)" v-on:editLink="openEditModal" v-on:deleteLink="deleteLink" :loading="loading"> </app-table>
+          <app-table :data="arraySlicer(filterLinks, 2)" v-on:editLink="openEditModal" v-on:deleteLink="deleteLink" :loading="loading"> </app-table>
         </div>
-
       </div>
 
     </div>
@@ -126,6 +120,7 @@
           linkUrl: '',
           linkInfo: ''
         },
+        loading: false,
         noContentMessage: 'This category dont have any URL, add one using the register new link button'
       }
     },
@@ -140,6 +135,7 @@
 
     // Attaching the lifecycle hook, to pull the API.
     created: function() {
+      this.loading = true
       // All the categories
       this.axios.get(this.api.category).then(response => {
         this.menuItems = response.data
@@ -149,6 +145,7 @@
         this.tableData = response.data
         this.selectedItem = 'All Categories Links'
         this.contextExists = this.arrayEmpty(this.tableData)
+        this.loading = false
       })
     },
 
@@ -229,21 +226,25 @@
 
       // A new menu has been clicked.
       clickedContent: function(id) {
+        this.loading = true
         // Pull the data from the category API
         this.axios.get(this.api.category + id + '/').then(response => {
           this.tableData = response.data.category
           this.selectedItem = response.data.name
           this.contextExists = this.arrayEmpty(this.tableData)
+          this.loading = false
         })
       },
 
       // All content request
       allContent: function() {
+        this.loading = true
         // All the links
         this.axios.get(this.api.links).then(response => {
           this.tableData = response.data
           this.selectedItem = 'All Categories Links'
           this.contextExists = this.arrayEmpty(this.tableData)
+          this.loading = false
         })
       }
 

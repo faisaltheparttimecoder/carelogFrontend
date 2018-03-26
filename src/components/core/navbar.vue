@@ -57,7 +57,6 @@
     // All the data for the components
     data: function() {
       return {
-
         // All Navbar left items
         navLeftItems: [{
           item: 'Customer',
@@ -75,7 +74,6 @@
           item: 'Links',
           route: '/links/'
         }],
-
         // All navbar right items
         navRightItems: [{
           item: 'Report Bug',
@@ -93,7 +91,6 @@
           buttonClass: 'button is-outlined',
           icon: 'fas fa-sign-out-alt'
         }],
-
         // The bool that checks if the navbar burger menu is active or not.
         burgerMenuActive: false
       }

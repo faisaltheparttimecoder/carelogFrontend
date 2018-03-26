@@ -20,7 +20,7 @@
 
       <!--product content grid-->
       <div class="column is-10">
-        <app-releases :productTitle="selectedItem" :productContent="productContent"> </app-releases>
+        <app-releases :productTitle="selectedItem" :productContent="productContent" :loading="loading"> </app-releases>
       </div>
 
     </div>
@@ -54,35 +54,34 @@
         sourceUrl: 'https://network.pivotal.io/',
         sourceTitle: 'Pivotal Network',
 
+        // table loading
+        loading: false,
+
         // The Contents of the pivotal products
-        productContent: [{
-          version: '',
-          release_type: '',
-          release_date: '',
-          release_notes_url: '',
-          availability: '',
-          end_of_support_date: '',
-          end_of_guidance_date: ''
-        }]
+        productContent: []
       }
     },
 
     // Attaching the lifecycle hook, to pull the API.
     created: function() {
+      this.loading = true
       this.axios.get(this.api.product).then(response => {
         this.menuItems = response.data
         if (!this.arrayEmpty(this.menuItems)) {
           this.clickedContent(this.menuItems[0]['id'])
         }
+        this.loading = false
       })
     },
 
     methods: {
       // Get all the contents of the rss feed.
       clickedContent: function(id) {
+        this.loading = true
         this.axios.get(this.api.product + id + '/'). then(response => {
           this.selectedItem = response.data.name
           this.productContent = response.data.content.releases
+          this.loading = false
         })
       },
     }

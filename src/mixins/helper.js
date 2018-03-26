@@ -71,6 +71,16 @@ export default {
     // Provide the index where the dict is on the array based on row ID
     getObjectIndex: function(arrObjects, id) {
       return arrObjects.map(function(item) { return item.id; }).indexOf(id);
+    },
+
+    // Get date based on number of months
+    monthAgo: function(d, n) {
+      return new Date(d.setMonth(d.getMonth() - n))
+    },
+
+    // Replace a string escapes to HTML tags
+    replaceStringToHtml: function(str) {
+      return str.replace(/(?:\r\n|\r|\n)/g, '<br />')
     }
 
   }

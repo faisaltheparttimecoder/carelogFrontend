@@ -48,13 +48,14 @@
 
       <!--Buefy Table: https://buefy.github.io/#/documentation/table-->
       <b-table
-        :data="filterVersion"
+        :data="tableCustomization.isEmpty ? []:filterVersion"
         :paginated="tableCustomization.isPaginated"
         :per-page="tableCustomization.perPage"
         :current-page.sync="tableCustomization.currentPage"
         :pagination-simple="tableCustomization.isPaginationSimple"
         :narrowed="tableCustomization.isNarrowed"
         :striped="tableCustomization.isStriped"
+        :loading="loading"
         :default-sort-direction="tableCustomization.defaultSortDirection"
         default-sort="release_date"
         detailed
@@ -95,6 +96,21 @@
           </article>
         </template>
 
+        <!--If table is empty-->
+        <template slot="empty">
+          <section class="section">
+            <div class="content has-text-grey has-text-centered">
+              <p>
+                <b-icon
+                  icon="emoticon-sad"
+                  size="is-large">
+                </b-icon>
+              </p>
+              <p>Nothing here.</p>
+            </div>
+          </section>
+        </template>
+
       </b-table>
 
     </section>
@@ -114,7 +130,7 @@
 
     // All props
     props: [
-      'productTitle', 'productContent'
+      'productTitle', 'productContent', 'loading'
     ],
 
     // This components data

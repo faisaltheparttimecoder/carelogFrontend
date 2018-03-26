@@ -79,7 +79,6 @@
           console.log(error.response.data)
           this.emitMessage("Failure: Check the browser console log for more information", 'is-danger')
         })
-
       }
 
     }

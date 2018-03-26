@@ -3,7 +3,7 @@
   <section class="container">
 
     <div class="has-text-centered is-vcentered">
-      <i class="far fa-frown fa-6x"></i>
+      <i class="far fa-frown fa-4x"></i>
       <h1 class="title">..... Sorry .....</h1>
       <h2 class="subtitle">
         {{ message }}

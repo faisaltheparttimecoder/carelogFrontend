@@ -64,17 +64,14 @@
       isActive: function(item) {
         return item === this.selectedItem
       },
-
       // Request for the content
       refreshContent: function(id) {
         this.$emit('refreshContent', id)
       },
-
       // All content request
       allContent: function() {
         this.$emit('allContent')
       },
-
       // Use the filter to filter out the content based on user search.
       filterProducts: function() {
         return this.menuItems.filter((product) => {

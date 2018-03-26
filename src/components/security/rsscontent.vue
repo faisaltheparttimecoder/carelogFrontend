@@ -48,7 +48,7 @@
 
     <!--Buefy Table: https://buefy.github.io/#/documentation/table-->
     <b-table
-      :data="filterRssContent"
+      :data="tableCustomization.isEmpty ? []:filterRssContent"
       :paginated="tableCustomization.isPaginated"
       :per-page="tableCustomization.perPage"
       :current-page.sync="tableCustomization.currentPage"
@@ -56,6 +56,7 @@
       :narrowed="tableCustomization.isNarrowed"
       :striped="tableCustomization.isStriped"
       :default-sort-direction="tableCustomization.defaultSortDirection"
+      :loading="loading"
       default-sort="published"
       detailed
       detail-key="title">
@@ -82,6 +83,21 @@
         </article>
       </template>
 
+      <!-- Empty table-->
+      <template slot="empty">
+        <section class="section">
+          <div class="content has-text-grey has-text-centered">
+            <p>
+              <b-icon
+                icon="emoticon-sad"
+                size="is-large">
+              </b-icon>
+            </p>
+            <p>Nothing here.</p>
+          </div>
+        </section>
+      </template>
+
     </b-table>
 
   </section>
@@ -101,7 +117,7 @@
 
     // Props
     props: [
-      'rssTitle', 'rssContent'
+      'rssTitle', 'rssContent', 'loading'
     ],
 
     // Most of the data below are to control the table flow.

@@ -54,12 +54,9 @@
         </app-menu>
       </div>
 
-      <!--If there is no content then load this template-->
-      <app-nocontent v-if="contextExists" :message="noContentMessage"> </app-nocontent>
-
       <!--rss content grid-->
-      <div v-else class="column is-10">
-        <app-content :rssContent="rssContent" :rssTitle="selectedItem"> </app-content>
+      <div class="column is-10">
+        <app-content :rssContent="rssContent" :rssTitle="selectedItem" :loading="loading"> </app-content>
       </div>
 
     </div>
@@ -72,7 +69,6 @@
   // Import components
   import menu from '../core/menu'
   import content from './rsscontent'
-  import noContent from '../core/nocontent'
 
   // Import mixins
   import helpers from './../../mixins/helper'
@@ -93,7 +89,6 @@
     components: {
       'app-menu': menu,
       'app-content': content,
-      'app-nocontent': noContent,
     },
 
     // All data
@@ -103,14 +98,12 @@
         menuTitle: 'Rss Feeder',
         sourceUrl: 'https://pivotal.io/security',
         sourceTitle: 'Security Page',
-        noContentMessage: ' Cannot find any content of the RSS Feed. Add RSS Source, check the URL of the RSS feed or something is wrong ....',
 
         // The content from the selected feeds
-        rssContent: [{
-          title: '',
-          published: '',
-          summary: ''
-        }],
+        rssContent: [],
+
+        // Loading screen
+        loading: false,
 
         // Form input field
         feedname: '',
@@ -120,11 +113,13 @@
 
     // Extract the api data before create of vue instance
     created: function() {
+      this.loading = true
       this.axios.get(this.api.security).then(response => {
         this.menuItems = response.data
         if (!this.arrayEmpty(this.menuItems)) {
           this.clickedContent(this.menuItems[0]['id'])
         }
+        this.loading = false
       })
     },
 
@@ -133,10 +128,11 @@
 
       // Get all the contents of the rss feed.
       clickedContent: function(id) {
+        this.loading = true
         this.axios.get(this.api.security + id + '/'). then(response => {
           this.selectedItem = response.data.name
           this.rssContent = response.data.content
-          this.contextExists = this.arrayEmpty(this.rssContent)
+          this.loading = false
         })
       },
 

@@ -5,32 +5,28 @@
         :data="data"
         :narrowed="tableCustomization.isNarrowed"
         :striped="tableCustomization.isStriped"
+        :loading="loading"
         default-sort="name"
         detailed
         detail-key="id">
 
         <template slot-scope="props">
-
           <!--Link text-->
           <b-table-column field="name" label="Links" width="100%" sortable>
             <a target="_blank" :href="props.row.url">{{ props.row.name }}</a>
           </b-table-column>
-
           <b-table-column label="Action">
             <p class="field">
-
               <!--Update button-->
               <a class="button is-small is-info is-outlined" v-on:click="editLinks({
                 linkId: props.row.id, linkCategory: props.row.category_name,
                 linkName: props.row.name, linkUrl: props.row.url, linkInfo: props.row.info})">
                 <span class="icon is-small"><i class="fas fa-italic"></i></span>
               </a>
-
               <!--Delete button-->
               <a class="button is-small is-danger is-outlined" v-on:click="confirmDelete(props.row.id)">
                 <span class="icon is-small"> <i class="far fa-trash-alt"></i> </span>
               </a>
-
             </p>
           </b-table-column>
         </template>
@@ -63,7 +59,7 @@
       customDefaults
     ],
     props: [
-      'data'
+      'data', 'loading'
     ],
     methods: {
 

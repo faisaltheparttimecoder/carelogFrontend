@@ -1,12 +1,11 @@
 <template>
   <form action="">
-
     <div class="modal-card">
       <header class="modal-card-head">
         <p class="modal-card-title"> {{ modalProp.modalTitle }}</p>
       </header>
-      <section class="modal-card-body">
 
+      <section class="modal-card-body">
         <b-field label="Choose Category">
           <b-select v-model="modalProp.linkCategory" placeholder="Select Category" required>
             <option v-for="category in categories" :value="category.name">{{ category.name }}</option>
@@ -40,8 +39,8 @@
             required>
           </b-input>
         </b-field>
-
       </section>
+
       <footer class="modal-card-foot">
         <button class="button is-success is-outlined" @click.prevent="addNewLink">Add</button>
         <button class="button is-danger is-outlined" type="button" @click="$parent.close()">Close</button>
@@ -69,7 +68,6 @@
     ],
 
     methods: {
-
       // Adding a new link
       addNewLink: function () {
         // Check if all the fields are selected
