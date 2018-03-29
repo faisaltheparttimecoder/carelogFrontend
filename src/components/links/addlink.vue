@@ -15,6 +15,7 @@
         <b-field label="Link Name">
           <b-input
             type="text"
+            maxlength="100"
             v-model="modalProp.linkName"
             placeholder="Enter the link name"
             required>
@@ -24,6 +25,7 @@
         <b-field label="Link URL">
           <b-input
             type="url"
+            maxlength="500"
             v-model="modalProp.linkUrl"
             placeholder="Enter the link URL"
             required>
@@ -35,7 +37,7 @@
             type="textarea"
             v-model="modalProp.linkInfo"
             placeholder="Enter some information about this Link ..."
-            maxlength="200"
+            maxlength="500"
             required>
           </b-input>
         </b-field>

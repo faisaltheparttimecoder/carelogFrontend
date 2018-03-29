@@ -80,7 +80,7 @@
           <div class="media-content">
             <div class="field">
               <p class="control">
-                <textarea v-model="newNotes" class="textarea" placeholder="Add a note..." maxlength="300"></textarea>
+                <b-input v-model="newNotes" type="textarea" placeholder="Add a note..." maxlength="500"></b-input>
               </p>
             </div>
             <div class="field">
@@ -99,8 +99,10 @@
 <script>
   import defaults from './../../mixins/default'
   import helpers from './../../mixins/helper'
+  import BInput from "buefy/src/components/input/Input";
   var qs = require('qs')
   export default {
+    components: {BInput},
     props: [
       'ticket', 'orgID'
     ],

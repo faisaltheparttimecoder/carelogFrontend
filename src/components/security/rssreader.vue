@@ -34,18 +34,18 @@
               <b-field>
                 <b-input
                   type="text"
+                  maxlength="100"
                   v-model="feedname"
                   placeholder="Enter feed name"
-                  required>
-                </b-input>
+                  required> </b-input>
               </b-field>
               <b-field>
                 <b-input
                   type="url"
+                  maxlength="500"
                   v-model="feedurl"
                   placeholder="Enter feed URL"
-                  required>
-                </b-input>
+                  required> </b-input>
               </b-field>
               <a class="button is-success is-outlined" @click="addNewFeed(feedname, feedurl)" > Add </a>
               <a class="button is-danger is-outlined" v-on:click="menuFormActive = false"> Cancel </a>

@@ -17,7 +17,7 @@
     <div v-if="menuFormActive">
       <form>
         <b-field>
-          <b-input v-model="categoryName" placeholder="Add a new category..." required></b-input>
+          <b-input v-model="categoryName" placeholder="Add a new category..." maxlength="100" required></b-input>
         </b-field>
         <a class="button is-success is-outlined" v-on:click="addCategory()"> Add </a>
         <a class="button is-danger is-outlined" v-on:click="menuFormActive = false"> Cancel </a>
