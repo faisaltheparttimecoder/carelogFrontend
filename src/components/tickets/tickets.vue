@@ -19,11 +19,12 @@
           <app-table :tableData="tableData"
                      :hotTickets="hotTickets"
                      :loading="loading"
+                     :orgID="org_id"
                      v-on:details="loadDetails($event)">
           </app-table>
         </div>
 
-        <app-details v-if="isDetails" v-on:closeDetails="isDetails=false" :ticket="ticketNo" :orgID="customer"> </app-details>
+        <app-details v-if="isDetails" v-on:closeDetails="isDetails=false" :ticket="ticketNo" :orgID="org_id"> </app-details>
 
       </div>
 
@@ -64,6 +65,7 @@
           priority: 'all'
         },
         customer: '',
+        org_id: '',
         loading: false,
         isDetails: false,
         ticketNo: '',
@@ -78,6 +80,7 @@
         // Update the values based on who send the event
         if (events.who === 'customer') {
           this.customer = events.event
+          this.org_id = events.org_id
         } else {
           this.options = events.event
         }

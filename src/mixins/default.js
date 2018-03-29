@@ -43,12 +43,15 @@ export default {
         category: process.env.API_URL + 'api/category/',
         security: process.env.API_URL + 'api/security/',
         product: process.env.API_URL + 'api/products/',
-        search: process.env.API_URL + 'api/zendesk/search/query=type:',
-        org: process.env.API_URL + 'api/zendesk/organisation/',
-        ticketComments: process.env.API_URL + 'api/zendesk/comments/',
-        ticketNotes: process.env.API_URL + 'api/zendesk/ticketnotes',
-        ticketMetrics: process.env.API_URL + 'api/zendesk/metrics/',
-        ticketHot: process.env.API_URL + 'api/zendesk/hottickets/',
+        search: process.env.API_URL + 'api/customer/search/query=type:',
+        org: process.env.API_URL + 'api/customer/organisation/',
+        ticketComments: process.env.API_URL + 'api/customer/comments/',
+        ticketNotes: process.env.API_URL + 'api/customer/ticketnotes',
+        ticketMetrics: process.env.API_URL + 'api/customer/metrics/',
+        ticketHot: process.env.API_URL + 'api/customer/hottickets/',
+        timeline: process.env.API_URL + 'api/customer/timeline/',
+        timelineCategory: process.env.API_URL + 'api/customer/timeline_category/',
+        timelineDetails: process.env.API_URL + 'api/customer/timeline_details/',
       }
 
     }

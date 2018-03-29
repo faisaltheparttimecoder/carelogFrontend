@@ -19,6 +19,19 @@
     <!--Left side of the navbar, and also the navoption which will be part of the burger menu-->
     <div v-bind:class="{'is-active': burgerMenuActive }"  class="navbar-menu">
       <div class="navbar-start">
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link">
+            Customer
+          </a>
+          <div class="navbar-dropdown is-boxed">
+            <a class="navbar-item" href="/tickets/">
+              Tickets
+            </a>
+            <a class="navbar-item" href="/timeline/">
+              Timeline
+            </a>
+          </div>
+        </div>
         <a v-for="navLeftItem in navLeftItems"
            class="navbar-item"
            :href="navLeftItem.route">
@@ -59,9 +72,6 @@
       return {
         // All Navbar left items
         navLeftItems: [{
-          item: 'Customer',
-          route: '/tickets/'
-        },{
           item: 'Products',
           route: '/products/'
         },{

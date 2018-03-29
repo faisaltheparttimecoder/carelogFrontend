@@ -17,6 +17,9 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 Vue.use(VueAxios, axios)
 
+// Moment for time
+Vue.use(require('vue-moment'));
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

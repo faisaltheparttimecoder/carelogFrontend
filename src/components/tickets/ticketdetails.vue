@@ -71,7 +71,7 @@
                 <br>
                 {{ ticketNote.notes }}
                 <br>
-                <small><a v-on:click="confirmDelete(ticketNote.id, index)">Delete</a>· {{ dateFormat(ticketNote.created) }}</small>
+                <small><a v-on:click="confirmDelete(ticketNote.id, index)">Delete</a>· {{ ticketNote.created | moment("Do, MMM YYYY") }}</small>
               </p>
             </div>
           </div>
@@ -122,6 +122,10 @@
         }
       },
       postNotes: function() {
+        if (this.emptyData(this.newNotes)) {
+          this.emitMessage("ERROR: Ticket notes cannot be blank", "is-danger")
+          return false
+        }
         this.axios.post(this.api.ticketNotes + '/', qs.stringify({
           ticket_id: this.ticket,
           org_id: this.orgID,

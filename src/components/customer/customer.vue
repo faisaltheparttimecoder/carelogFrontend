@@ -116,6 +116,7 @@
           this.selectedItem = response.data.name
           return this.$emit('selectedOrg', {
             event: response.data.org_id,
+            org_id: response.data.id,
             who: 'customer'
           })
         })

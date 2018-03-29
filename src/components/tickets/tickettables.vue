@@ -3,10 +3,6 @@
     <!--Show drop down to select number of entries from the table-->
     <b-table
       :data="tableCustomization.isEmpty ? []:tableData"
-      :paginated="tableCustomization.isPaginated"
-      :per-page="tableCustomization.perPage"
-      :current-page.sync="tableCustomization.currentPage"
-      :pagination-simple="tableCustomization.isPaginationSimple"
       :narrowed="tableCustomization.isNarrowed"
       :striped="tableCustomization.isStriped"
       :default-sort-direction="tableCustomization.defaultSortDirection"
@@ -43,9 +39,9 @@
         </b-table-column>
 
         <b-table-column field="action" label="Hot" centered>
-          <a v-on:click="itsHot(props.row.organization_id, props.row.id)">
+          <a v-on:click="itsHot(orgID, props.row.id)">
            <b-switch type="is-danger"
-                     v-model="hotTickets['zd'+props.row.organization_id+props.row.id]">
+                     v-model="hotTickets['zd'+orgID+props.row.id]">
            </b-switch>
           </a>
         </b-table-column>
@@ -83,18 +79,6 @@
       </template>
 
     </b-table>
-
-    <p class="level-item">
-      <strong>Per Page</strong>
-    </p>
-    <p class="level-item">
-      <b-select v-model="tableCustomization.perPage" :disabled="!tableCustomization.isPaginated">
-        <option value="15">15</option>
-        <option value="30">30</option>
-        <option value="45">45</option>
-      </b-select>
-    </p>
-
   </section>
 </template>
 
@@ -105,7 +89,7 @@
   import debounce from 'lodash.debounce'
   export default {
     props: [
-      'tableData', 'loading', 'hotTickets'
+      'tableData', 'loading', 'hotTickets', 'orgID'
     ],
     mixins: [
       defaults, helpers

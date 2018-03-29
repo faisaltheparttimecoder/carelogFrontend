@@ -1,4 +1,5 @@
 import tickets from '@/components/tickets/tickets'
+import timeline from '@/components/timeline/timelinemain'
 import security from '@/components/security/rssreader'
 import product from '@/components/products/products'
 import lifecycle from '@/components/lifecycle/lifecycle'
@@ -8,6 +9,9 @@ export default [
   {
     path: '/tickets',
     component: tickets
+  },{
+    path: '/timeline',
+    component: timeline
   },{
     path: '/security',
     component: security
