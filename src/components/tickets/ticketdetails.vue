@@ -25,13 +25,13 @@
       <div class="level-item has-text-centered">
         <div>
           <p class="heading">Created</p>
-          <p class="title">{{ dateFormat(ticketMetrics.created_at) }}</p>
+          <p class="title">{{ ticketMetrics.created_at | moment('ddd, DD MMM YYYY') }}</p>
         </div>
       </div>
       <div class="level-item has-text-centered">
         <div>
           <p class="heading">Last Comment</p>
-          <p class="title">{{ dateFormat(ticketMetrics.latest_comment_added_at) }}</p>
+          <p class="title">{{ ticketMetrics.latest_comment_added_at | moment('ddd, DD MMM YYYY') }}</p>
         </div>
       </div>
     </nav>
@@ -50,7 +50,7 @@
               <div class="content">
                 <p>
                   <strong v-html="getUserName(comment.author_id)"></strong>
-                  <small>{{ dateFormat(comment.created_at) }}</small>
+                  <small>{{ comment.created_at | moment('ddd, DD MMM YYYY') }}</small>
                   <br>
                   <span v-html="comment.html_body"></span>
                 </p>
