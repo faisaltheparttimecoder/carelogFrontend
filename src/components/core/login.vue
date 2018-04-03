@@ -1,6 +1,6 @@
 <template>
   <div>
-    <section class="hero is-info is-fullheight">
+    <section class="hero is-info is-large">
       <div class="hero-body">
         <div class="container has-text-centered">
           <div class="column is-6 is-offset-3">
@@ -47,8 +47,12 @@
 </script>
 
 <style>
+  html {
+    background: black;
+  }
 
   .hero.is-info {
+    margin-top: 3%;
     background: linear-gradient(rgba(0, 0, 0, 0.5),
     rgba(0, 0, 0, 0.5)), url('https://unsplash.it/1200/900?random') no-repeat center center fixed;
     -webkit-background-size: cover;
