@@ -47,10 +47,6 @@
 </script>
 
 <style>
-  html.has-navbar-fixed-top {
-    padding-top: 0rem;
-    overflow: hidden;
-  }
 
   .hero.is-info {
     background: linear-gradient(rgba(0, 0, 0, 0.5),

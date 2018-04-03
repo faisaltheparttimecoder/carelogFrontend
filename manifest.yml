@@ -1,0 +1,9 @@
+---
+applications:
+- name: carelog
+buildpack: nodejs_buildpack
+memory: 256M
+instance: 1
+disk_quota: 500M
+command: node server.js
+

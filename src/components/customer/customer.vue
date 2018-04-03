@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <section>
     <app-menu :menu-items="menuItems" :selectedItem="selectedItem" :menuTitle="menuTitle" :sourceInfo=infoSource
               :sourceUrl="sourceUrl" :sourceTitle="sourceTitle" v-on:refreshContent="clickedContent($event)">
 
@@ -51,7 +51,7 @@
 
       </div>
     </app-menu>
-  </div>
+  </section>
 </template>
 
 <script>
