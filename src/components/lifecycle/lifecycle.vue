@@ -10,10 +10,13 @@
 <script>
   export default {
     name: 'lifecycle',
-    data: function() {
+    data: function () {
       return {
         sourceURL: 'https://d1fto35gcfffzn.cloudfront.net/support/PivotalLifecycleMatrix.pdf'
       }
+    },
+    created: function () {
+      return this.$store.dispatch('activeNavbarAction', 'Life Cycle')
     }
   }
 </script>

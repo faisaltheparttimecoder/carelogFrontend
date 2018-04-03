@@ -4,7 +4,7 @@
     <!--New category button-->
     <div v-if="!menuFormActive" class="field">
       <p class="control">
-        <a class="button is-success is-outlined" v-on:click="activateForm">
+        <a class="button is-outlined" v-on:click="activateForm">
           <span class="icon is-small">
             <i class="fas fa-plus-square"></i>
           </span>
@@ -16,9 +16,15 @@
     <!--Form to create the category-->
     <div v-if="menuFormActive">
       <form>
-        <b-field>
-          <b-input v-model="categoryName" placeholder="Add a new category..." maxlength="100" required></b-input>
-        </b-field>
+        <div class="field">
+          <div class="control">
+            <input class="input"
+                   maxlength="100"
+                   v-model="categoryName"
+                   placeholder="Add a new category..."
+                   required>
+          </div>
+        </div>
         <a class="button is-success is-outlined" v-on:click="addCategory()"> Add </a>
         <a class="button is-danger is-outlined" v-on:click="menuFormActive = false"> Cancel </a>
       </form>
@@ -39,24 +45,20 @@
     mixins: [
       helper, defaults
     ],
-
     // Default values for this component
     data: function () {
       return {
         categoryName: '',
       }
     },
-
     methods: {
-
       // reset the form and activate the form
-      activateForm: function() {
+      activateForm: function () {
         this.menuFormActive = true
         this.categoryName = ''
       },
-
       // Add new category method
-      addCategory: function() {
+      addCategory: function () {
         // Emit error if the field is blank
         if (this.emptyData(this.categoryName)) {
           this.emitMessage("ERROR: Missing data for the category name", 'is-danger')
@@ -64,7 +66,7 @@
         }
         // if all good lets post it
         this.axios.post(this.api.category, qs.stringify({
-          'name': this.categoryName.toLowerCase(),
+          'name': this.capitalizeFirstLetter(this.categoryName),
         })).then(response => {
           if (response.statusText === 'Created' && response.status === 201) {
             this.menuFormActive = false
@@ -80,7 +82,6 @@
           this.emitMessage("Failure: Check the browser console log for more information", 'is-danger')
         })
       }
-
     }
   }
 </script>

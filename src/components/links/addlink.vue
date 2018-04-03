@@ -6,41 +6,42 @@
       </header>
 
       <section class="modal-card-body">
-        <b-field label="Choose Category">
-          <b-select v-model="modalProp.linkCategory" placeholder="Select Category" required>
-            <option v-for="category in categories" :value="category.name">{{ category.name }}</option>
-          </b-select>
-        </b-field>
 
-        <b-field label="Link Name">
-          <b-input
-            type="text"
-            maxlength="100"
-            v-model="modalProp.linkName"
-            placeholder="Enter the link name"
-            required>
-          </b-input>
-        </b-field>
+        <div class="field">
+          <label class="label">Choose Category</label>
+          <div class="control">
+            <div class="select">
+              <select v-model="modalProp.linkCategory" placeholder="Select Category" required>
+                <option v-for="category in categories" :value="category.name">{{ category.name }}</option>
+              </select>
+            </div>
+          </div>
+        </div>
 
-        <b-field label="Link URL">
-          <b-input
-            type="url"
-            maxlength="500"
-            v-model="modalProp.linkUrl"
-            placeholder="Enter the link URL"
-            required>
-          </b-input>
-        </b-field>
+        <div class="field">
+          <label class="label">Link Name</label>
+          <div class="control">
+            <input class="input" type="text" maxlength="100" v-model="modalProp.linkName"
+                   placeholder="Enter the link name" required>
+          </div>
+        </div>
 
-        <b-field label="Link Information">
-          <b-input
-            type="textarea"
-            v-model="modalProp.linkInfo"
-            placeholder="Enter some information about this Link ..."
-            maxlength="500"
-            required>
-          </b-input>
-        </b-field>
+        <div class="field">
+          <label class="label">Link URL</label>
+          <div class="control">
+            <input class="input" type="url" maxlength="500" v-model="modalProp.linkUrl" placeholder="Enter the link URL"
+                   required>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Message</label>
+          <div class="control">
+            <textarea class="textarea" v-model="modalProp.linkInfo"
+                      placeholder="Enter some information about this Link ..." maxlength="500" required></textarea>
+          </div>
+        </div>
+
       </section>
 
       <footer class="modal-card-foot">
@@ -63,12 +64,10 @@
     props: [
       'modalProp', 'categories', 'is_it_edit'
     ],
-
     // All mixins
     mixins: [
       helpers, defaults
     ],
-
     methods: {
       // Adding a new link
       addNewLink: function () {
@@ -87,7 +86,7 @@
         if (this.is_it_edit) {
           // Send a put request to update the link
           this.axios.put(this.api.links + this.modalProp.linkId + '/', qs.stringify({
-            'name': this.modalProp.linkName,
+            'name': this.capitalizeFirstLetter(this.modalProp.linkName),
             'url': this.modalProp.linkUrl,
             'info': this.modalProp.linkInfo,
             'category_id': category_id
@@ -110,7 +109,7 @@
         } else {
           // Send a post request to create the link
           this.axios.post(this.api.links, qs.stringify({
-            'name': this.modalProp.linkName,
+            'name': this.capitalizeFirstLetter(this.modalProp.linkName),
             'url': this.modalProp.linkUrl,
             'info': this.modalProp.linkInfo,
             'category_id': category_id

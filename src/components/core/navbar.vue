@@ -1,14 +1,13 @@
 <template>
   <!--Bulma Navbar: https://bulma.io/documentation/components/navbar/-->
-  <nav class="navbar is-white is-fixed-top">
+  <nav class="navbar is-white is-fixed-top is-black">
 
     <!--Navbar brand information and also the burger button-->
     <div class="navbar-brand">
       <a class="navbar-item" href="/">
-        <h1 class="title is-5">Pivotal CareLog</h1>
+        <h1 class="title is-5 has-text-white">Pivotal CareLog</h1>
       </a>
-      <div v-on:click=" burgerMenuActive = !burgerMenuActive"
-           :class="{ 'is-active': burgerMenuActive }"
+      <div v-on:click=" burgerMenuActive = !burgerMenuActive" :class="{ 'is-active': burgerMenuActive }"
            class="navbar-burger burger">
         <span></span>
         <span></span>
@@ -17,45 +16,71 @@
     </div>
 
     <!--Left side of the navbar, and also the navoption which will be part of the burger menu-->
-    <div v-bind:class="{'is-active': burgerMenuActive }"  class="navbar-menu">
+    <div v-bind:class="{'is-active': burgerMenuActive }" class="navbar-menu">
       <div class="navbar-start">
-        <div class="navbar-item has-dropdown is-hoverable">
+        <div v-for="(LeftItems, index) in navLeftItems" class="navbar-item has-dropdown is-hoverable">
           <a class="navbar-link">
-            Customer
+            <b-icon class="media-left" :pack="LeftItems.iconpack" :icon="LeftItems.icon"></b-icon>
+            {{ index }}
           </a>
           <div class="navbar-dropdown is-boxed">
-            <a class="navbar-item" href="/tickets/">
-              Tickets
-            </a>
-            <a class="navbar-item" href="/timeline/">
-              Timeline
+            <a v-for="LeftItem in LeftItems.items" class="navbar-item"
+               :class="{'is-active': $store.state.activeNavbar === LeftItem.item}" :href="LeftItem.route">
+              <div class="media">
+                <b-icon class="media-left" :pack="LeftItem.iconpack" :icon="LeftItem.icon"></b-icon>
+                <div class="media-content">
+                  <h3>{{ LeftItem.item }}</h3>
+                  <small>{{ LeftItem.description }}</small>
+                </div>
+              </div>
             </a>
           </div>
         </div>
-        <a v-for="navLeftItem in navLeftItems"
-           class="navbar-item"
-           :href="navLeftItem.route">
-          {{ navLeftItem.item }}
-        </a>
       </div>
     </div>
 
     <!--Right side of the navbar-->
     <div class="navbar-end">
-      <div class="navbar-item">
-        <div class="field is-grouped">
-          <p v-for="navRightItem in navRightItems" class="control">
-            <a target="_blank"
-               :class="navRightItem.buttonClass"
-               :href="navRightItem.route">
-              <span class="icon">
-                <i :class="navRightItem.icon"></i>
-              </span>
-              <span>
-                {{ navRightItem.item }}
-              </span>
-            </a>
-          </p>
+      <div v-for="(rightItems, index) in navRightItems" class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          <b-icon class="media-left" :pack="rightItems.iconpack" :icon="rightItems.icon"></b-icon>
+          {{ connectedUser }}
+        </a>
+        <div class="navbar-dropdown is-right">
+          <!--Version Information-->
+          <div class="navbar-item">
+            <div class="media">
+              <b-icon class="media-left" pack="fas" icon="code-branch"></b-icon>
+              <div class="media-content">
+                <h3>Version</h3>
+                <a href="https://github.com/faisaltheparttimecoder/carelogFrontend/releases" target="_blank">
+                  <small>Carelog Release: 1.0</small>
+                </a>
+              </div>
+            </div>
+          </div>
+          <hr class="navbar-divider">
+          <!--Menu Items-->
+          <a v-for="rightItem in rightItems.items" class="navbar-item is-disabled" :href="rightItem.route"
+             target="_blank">
+            <div class="media">
+              <b-icon class="media-left" :pack="rightItem.iconpack" :icon="rightItem.icon"></b-icon>
+              <div class="media-content">
+                <h3>{{ rightItem.item }}</h3>
+                <small>{{ rightItem.description }}</small>
+              </div>
+            </div>
+          </a>
+          <!--Logged out option-->
+          <a v-on:click="$emit('logout')" class="navbar-item">
+            <div class="media">
+              <b-icon class="media-left" pack="fas" icon="sign-out-alt"></b-icon>
+              <div class="media-content">
+                <h3>Logout</h3>
+                <small>Sign out of carelog app</small>
+              </div>
+            </div>
+          </a>
         </div>
       </div>
     </div>
@@ -68,46 +93,97 @@
     name: "navbar",
 
     // All the data for the components
-    data: function() {
+    data: function () {
       return {
         // All Navbar left items
-        navLeftItems: [{
-          item: 'Products',
-          route: '/products/'
-        },{
-          item: 'Security',
-          route: '/security/'
-        },{
-          item: 'Life Cycle',
-          route: '/lifecycle/'
-        },{
-          item: 'Links',
-          route: '/links/'
-        }],
-        // All navbar right items
-        navRightItems: [{
-          item: 'Report Bug',
-          route: 'https://github.com/faisaltheparttimecoder/carelogFrontend/issues',
-          buttonClass: 'button is-outlined',
-          icon: 'fas fa-bug'
-        },{
-          item: 'Source Code',
-          route: 'https://github.com/faisaltheparttimecoder/carelogFrontend',
-          buttonClass: 'button is-outlined',
-          icon: 'fab fa-github'
-        },{
-          item: 'Logout',
-          route: '#',
-          buttonClass: 'button is-outlined',
-          icon: 'fas fa-sign-out-alt'
-        }],
+        navLeftItems: {
+          Customers: {
+            iconpack: 'fas',
+            icon: 'users',
+            items: [{
+              item: 'Tickets',
+              route: '/tickets/',
+              description: 'Cust. Tickets & Agent Notes',
+              iconpack: 'fas',
+              icon: 'ticket-alt'
+            }, {
+              item: 'Timeline',
+              route: '/timeline/',
+              description: 'Timeline of activities',
+              iconpack: 'fas',
+              icon: 'sitemap'
+            }]
+          },
+          Pivotal: {
+            iconpack: 'far',
+            icon: 'building',
+            items: [{
+              item: 'Products',
+              route: '/products/',
+              description: 'Pivotal Products General Availability',
+              iconpack: 'fab',
+              icon: 'product-hunt'
+            }, {
+              item: 'Security',
+              route: '/security/',
+              description: 'Pivotal Security vulnerabilities',
+              iconpack: 'fas',
+              icon: 'user-secret'
+            }, {
+              item: 'Life Cycle',
+              route: '/lifecycle/',
+              description: 'Pivotal Product Life Cycle Matrix',
+              iconpack: 'fas',
+              icon: 'heartbeat'
+            }],
+          },
+          Extras: {
+            iconpack: 'fab',
+            icon: 'hire-a-helper',
+            items: [{
+              item: 'Links',
+              route: '/links/',
+              description: 'General & Useful Links',
+              iconpack: 'fas',
+              icon: 'link'
+            }]
+          },
+        },
+        // Right Side NavBar
+        navRightItems: {
+          anonymous: {
+            iconpack: 'fas',
+            icon: 'user',
+            items: [{
+              item: 'Report Bug',
+              route: 'https://github.com/faisaltheparttimecoder/carelogFrontend/issues',
+              description: 'Let us know of any issues',
+              iconpack: 'fas',
+              icon: 'bug'
+            }, {
+              item: 'Source Code',
+              route: 'https://github.com/faisaltheparttimecoder/carelogFrontend',
+              description: 'View the source code',
+              iconpack: 'fab',
+              icon: 'github'
+            }]
+          }
+        },
         // The bool that checks if the navbar burger menu is active or not.
         burgerMenuActive: false
+      }
+    },
+    computed: {
+      connectedUser: function () {
+        this.$store.dispatch('loggedUserAction')
+        return this.$store.state.loggedUser
       }
     }
   }
 </script>
 
 <style scoped>
-
+  a {
+    color: black;
+  }
 </style>

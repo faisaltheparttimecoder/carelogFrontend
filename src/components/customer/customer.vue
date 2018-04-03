@@ -1,26 +1,20 @@
 <template>
   <div>
-    <app-menu
-      :menu-items="menuItems"
-      :selectedItem="selectedItem"
-      :menuTitle="menuTitle"
-      :sourceInfo=true
-      :sourceUrl="sourceUrl"
-      :sourceTitle="sourceTitle"
-      v-on:refreshContent="clickedContent($event)">
+    <app-menu :menu-items="menuItems" :selectedItem="selectedItem" :menuTitle="menuTitle" :sourceInfo=infoSource
+              :sourceUrl="sourceUrl" :sourceTitle="sourceTitle" v-on:refreshContent="clickedContent($event)">
 
       <!--Extra contents for the menu-->
       <div slot="menuTop">
 
         <!--Button to add new category-->
-        <p class="menu-label has-text-danger has-text-weight-bold">
+        <p class="menu-label has-text-primary has-text-weight-bold">
           Action
         </p>
 
         <!--New customer button-->
         <div v-if="!menuFormActive" class="field">
           <p class="control">
-            <a class="button is-success is-outlined" v-on:click="activateCustomerSearch">
+            <a class="button is-outlined" v-on:click="activateCustomerSearch">
               <span class="icon is-small">
                 <i class="far fa-building"></i>
               </span>
@@ -32,16 +26,9 @@
         <!--Search for the customer -->
         <div v-if="menuFormActive">
           <b-field>
-            <b-autocomplete
-              rounded
-              v-model="name"
-              :data="data"
-              icon="magnify"
-              placeholder="Search Customer ..."
-              field="name"
-              :loading="isFetching"
-              @input="getAsyncData"
-              @select="option => selected = option">
+            <b-autocomplete rounded v-model="name" :data="data" icon="magnify" placeholder="Search Customer ..."
+                            field="name" :loading="isFetching" @input="getAsyncData"
+                            @select="option => selected = option">
 
               <template slot-scope="props">
                 <div class="media">
@@ -65,8 +52,6 @@
       </div>
     </app-menu>
   </div>
-
-
 </template>
 
 <script>
@@ -74,17 +59,19 @@
   import debounce from 'lodash.debounce'
   import helpers from './../../mixins/helper'
   import defaults from './../../mixins/default'
+
   var qs = require('qs')
 
   export default {
     components: {
       'app-menu': menu
     },
-
+    props: [
+      'infoSource'
+    ],
     mixins: [
       helpers, defaults
     ],
-
     data() {
       return {
         data: [],
@@ -93,13 +80,12 @@
         selected: null,
         isFetching: false,
         menuTitle: 'Customers',
-        menuItems:[],
+        menuItems: [],
         sourceUrl: 'https://discuss.zendesk.com/',
         sourceTitle: 'Zendesk'
       }
     },
-
-    created: function() {
+    created: function () {
       this.axios.get(this.api.org).then(response => {
         this.menuItems = response.data
 
@@ -108,11 +94,10 @@
         }
       })
     },
-
     methods: {
       // Send the clicked content information to the calling components
-      clickedContent: function(clicked) {
-        this.axios.get(this.api.org + clicked + '/'). then(response => {
+      clickedContent: function (clicked) {
+        this.axios.get(this.api.org + clicked + '/').then(response => {
           this.selectedItem = response.data.name
           return this.$emit('selectedOrg', {
             event: response.data.org_id,
@@ -128,7 +113,9 @@
         this.isFetching = true
         var url = this.api.search + 'organization name:'
         this.axios.get(url + this.name + '*')
-          .then(({ data }) => {
+          .then(({
+                   data
+                 }) => {
             data.results.forEach((item) => this.data.push(item))
             this.isFetching = false
           })
@@ -137,18 +124,18 @@
           })
       }, 500),
       // Activate Search field.
-      activateCustomerSearch: function() {
+      activateCustomerSearch: function () {
         this.name = ''
         this.menuFormActive = true
       },
       // Formating the location
-      trimLocation: function(data) {
+      trimLocation: function (data) {
         if (data !== null) {
           return data.slice(9,).toUpperCase()
         }
       },
       // Save the new customers.
-      addCustomer: function() {
+      addCustomer: function () {
         // Check if user actually selected the organization from the list
         if (this.selected === null) {
           this.emitMessage("ERROR: The Organisation name doesn't exists", 'is-danger')
@@ -179,7 +166,6 @@
       }
     }
   }
-
 </script>
 
 <style>

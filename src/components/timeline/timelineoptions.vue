@@ -21,12 +21,16 @@
           </span>
         </div>
         <p class="level-item">
-          <a class="button is-success" v-on:click="registerTimeline"> ADD </a>
+          <a class="button is-success is-outlined" v-on:click="registerTimeline"> ADD </a>
         </p>
+        <p class="level-item">
+          <a class="button is-danger is-outlined" v-on:click="cancelForm"> Cancel </a>
+        </p>
+
       </div>
       <!--Add new timeline button-->
       <p class="level-item" v-if="!addTimeline">
-        <a class="button is-success" v-on:click="addTimeline = true">
+        <a class="button is-outlined" v-on:click="addTimeline = true">
           <span class="icon is-small">
             <i class="fas fa-plus"></i>
           </span>
@@ -41,6 +45,7 @@
   var qs = require('qs')
   import defaults from './../../mixins/default'
   import helpers from './../../mixins/helper'
+
   export default {
     mixins: [
       defaults, helpers
@@ -56,19 +61,17 @@
       }
     },
     methods: {
-      registerTimeline: function() {
+      registerTimeline: function () {
         if (this.emptyData(this.timelineTitle) || this.emptyData(this.timelineDesc)) {
           this.emitMessage("ERROR: All fields are mandatory", "is-danger")
           return false
         }
         this.axios.post(this.api.timeline, qs.stringify({
-          title: this.timelineTitle,
+          title: this.capitalizeFirstLetter(this.timelineTitle),
           description: this.timelineDesc,
           org_id: this.customer
         })).then(response => {
-          this.timelineTitle = ''
-          this.timelineDesc = ''
-          this.addTimeline = false
+          this.cancelForm()
           this.emitMessage("New timeline successfully created", 'is-success')
           return this.$emit('newTimeline', response.data)
         }).catch(error => {
@@ -76,6 +79,11 @@
           console.log(error.response)
           this.emitMessage("ERROR: Couldn't create timeline, see browser console log for more information", 'is-danger')
         })
+      },
+      cancelForm: function () {
+        this.timelineTitle = ''
+        this.timelineDesc = ''
+        this.addTimeline = false
       }
     }
   }

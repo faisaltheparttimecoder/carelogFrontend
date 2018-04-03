@@ -26,7 +26,6 @@
       </div>
     </div>
 
-
     <div class="field">
       <label class="label">Select Category</label>
       <div class="control has-icons-left has-icons-right">
@@ -43,16 +42,17 @@
     <div class="field">
       <label class="label">Message</label>
       <div class="control">
-        <textarea class="textarea" placeholder="Enter the timeline details..." v-model="form.message" maxlength="600" required></textarea>
+        <textarea class="textarea" placeholder="Enter the timeline details..." v-model="form.message" maxlength="600"
+                  required></textarea>
       </div>
     </div>
 
     <div class="field is-grouped">
       <div class="control">
-        <button class="button is-success" v-on:click="addTimeline">Submit</button>
+        <button class="button is-success is-outlined" v-on:click="addTimeline">Submit</button>
       </div>
       <div class="control">
-        <button class="button is-info" v-on:click="clearForm">Clear</button>
+        <button class="button is-info is-outlined" v-on:click="clearForm">Clear</button>
       </div>
     </div>
   </section>
@@ -62,6 +62,7 @@
 <script>
   import defaults from './../../mixins/default'
   import helpers from './../../mixins/helper'
+
   var qs = require('qs')
   export default {
     mixins: [
@@ -70,7 +71,7 @@
     props: [
       'timeline', 'orgID', 'form'
     ],
-    data: function() {
+    data: function () {
       const today = new Date()
       return {
         maxDate: new Date(today.getFullYear(), today.getMonth(), today.getDate()),
@@ -78,7 +79,7 @@
       }
     },
     methods: {
-      addTimeline: function() {
+      addTimeline: function () {
         if (this.emptyData(this.form.title) || this.emptyData(this.form.message) || this.form.category === undefined) {
           this.emitMessage("All Fields are mandatory", "is-danger")
           return false
@@ -89,7 +90,7 @@
             org_id: this.orgID,
             category_id: this.form.category,
             created: this.form.date,
-            title: this.form.title,
+            title: this.capitalizeFirstLetter(this.form.title),
             description: this.form.message.replace(/(?:\r\n|\r|\n)/g, '<br />')
           })).then(response => {
             this.emitMessage('Successfully update the note to the timeline', 'is-success')
@@ -118,11 +119,11 @@
         }
 
       },
-      clearForm: function() {
+      clearForm: function () {
         return this.$emit('clearForm')
       }
     },
-    created: function() {
+    created: function () {
       this.axios.get(this.api.timelineCategory).then(response => {
         this.categories = response.data
       })

@@ -109,26 +109,23 @@
 
   export default {
     name: 'rssReaderContents',
-
     // Global functions
     mixins: [
       customDefaults, helpers
     ],
-
     // Props
     props: [
       'rssTitle', 'rssContent', 'loading'
     ],
-
     // Most of the data below are to control the table flow.
-    data: function() {
+    data: function () {
       return {
         contentSearch: ''
       }
     },
     computed: {
       // Use the filter to filter out the content based on user search.
-      filterRssContent: function() {
+      filterRssContent: function () {
         return this.rssContent.filter((rssContent) => {
           return rssContent.summary.toLowerCase().includes(this.contentSearch.toLowerCase())
         })

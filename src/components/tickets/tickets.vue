@@ -4,17 +4,16 @@
 
       <!--Load customer menu sidebar-->
       <div class="column is-2">
-          <app-customer v-on:selectedOrg="loadTicketTable($event)"> </app-customer>
+        <app-customer v-on:selectedOrg="loadTicketTable($event)" :infoSource=true></app-customer>
       </div>
 
       <!--Load the ticket data-->
       <div class="column is-10">
-
         <!--Using keep alive to keep the data in memory when switching the component so that-->
         <!--we dont have to refresh the data again-->
         <div v-if="!isDetails">
           <keep-alive>
-            <app-options :options="options"  v-on:refresh="loadTicketTable($event)"> </app-options>
+            <app-options :options="options" v-on:refresh="loadTicketTable($event)"></app-options>
           </keep-alive>
           <app-table :tableData="tableData"
                      :hotTickets="hotTickets"
@@ -24,7 +23,8 @@
           </app-table>
         </div>
 
-        <app-details v-if="isDetails" v-on:closeDetails="isDetails=false" :ticket="ticketNo" :orgID="org_id"> </app-details>
+        <app-details v-if="isDetails" v-on:closeDetails="isDetails=false" :ticket="ticketNo"
+                     :orgID="org_id"></app-details>
 
       </div>
 
@@ -48,11 +48,9 @@
       'app-table': ticketTab,
       'app-details': details
     },
-
     mixins: [
       helper, defaults
     ],
-
     data: function () {
       return {
         tableData: [],
@@ -71,7 +69,9 @@
         ticketNo: '',
       }
     },
-
+    created: function () {
+      return this.$store.dispatch('activeNavbarAction', 'Tickets')
+    },
     methods: {
       // Load ticket data
       loadTicketTable: function (events) {
@@ -114,7 +114,7 @@
         return url
       },
       // Turn on the details page.
-      loadDetails: function(ticketNo){
+      loadDetails: function (ticketNo) {
         this.ticketNo = ticketNo
         this.isDetails = true
       }

@@ -1,7 +1,7 @@
 <template>
   <section class="section">
     <!--if there is timelines-->
-    <div v-if="!isTimeline" >
+    <div v-if="!isTimeline">
       <div class="columns" v-for="timelines in chunkedTimelines">
         <div v-for="timeline in timelines" class="column">
           <div class="card">
@@ -14,7 +14,7 @@
               <div class="content">
                 {{ timeline.description }}
                 <br><br>
-                <p><strong>Created: </strong> {{ timeline.created | moment("ddd, MMMM Do YYYY") }}</p>
+                <p><i class="far fa-clock"></i> {{ timeline.created | moment("ddd, MMMM Do YYYY") }}</p>
               </div>
             </div>
             <footer class="card-footer">
@@ -22,7 +22,7 @@
                                                        id: timeline.id,
                                                        name: timeline.title})">
                 View Details</a>
-              <a class="card-footer-item" v-on:click="confirmCustomDelete(timeline.id)" >Delete</a>
+              <a class="card-footer-item" v-on:click="confirmCustomDelete(timeline.id)">Delete</a>
             </footer>
           </div>
         </div>
@@ -42,7 +42,7 @@
   import helpers from './../../mixins/helper'
   import noContent from './../core/nocontent'
 
-  export default  {
+  export default {
     props: [
       'timelines', 'isTimeline'
     ],
@@ -58,17 +58,17 @@
       }
     },
     methods: {
-      deleteTimeline: function(timeline) {
+      deleteTimeline: function (timeline) {
         this.axios.delete(this.api.timeline + timeline + '/').then(response => {
           var index = this.getObjectIndex(this.timelines, timeline)
           this.timelines.splice(index, 1)
           return this.$emit('isTimelineEmpty')
         })
       },
-      TimelineDetails: function(id) {
+      TimelineDetails: function (id) {
         return this.$emit('TimelineDetails', id)
       },
-      confirmCustomDelete(timeline) {
+      confirmCustomDelete: function(timeline) {
         this.$dialog.confirm({
           title: 'Deleting Timeline',
           message: 'Are you sure you want to <b>delete</b> this timeline? This action cannot be undone.',

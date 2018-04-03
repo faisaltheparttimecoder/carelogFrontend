@@ -12,7 +12,8 @@
       </div>
       <!-- Right side -->
       <div class="level-right">
-        <p class="level-item"><a class="button is-success" v-on:click="toggleForm = !toggleForm">Toggle Activity Form</a></p>
+        <p class="level-item"><a class="button is-outlined" v-on:click="toggleForm = !toggleForm">Toggle Activity
+          Form</a></p>
       </div>
     </nav>
 
@@ -22,9 +23,10 @@
         <i class="fas fa-times my-float"></i>
       </a>
 
-      <div  class="columns">
+      <div class="columns">
         <!--If no data available request user to add it-->
-        <app-nocontent v-if="noContent" :message="'No data available, add some activity using the form.'"> </app-nocontent>
+        <app-nocontent v-if="noContent"
+                       :message="'No data available, add some activity using the form.'"></app-nocontent>
         <!--else show the data-->
         <div v-else class="column is-8">
           <div class="timeline">
@@ -33,18 +35,19 @@
               <span class="tag is-large is-primary">Start</span>
             </header>
             <!--Dummy item to get the line-->
-            <div  class="timeline-item">
+            <div class="timeline-item">
             </div>
             <div v-for="(timelineContents, index) in convertArrayToObject">
               <!--Choose the heading if we switch the month-->
               <header class="timeline-header">
                 <span class="subtitle"><strong>{{ index | moment('MMM, YYYY')}}</strong></span>
               </header>
-              <div v-for="(timelineContent, index) in timelineContents" class="timeline-item" :class="timelineContent.category_color">
+              <div v-for="(timelineContent, index) in timelineContents" class="timeline-item"
+                   :class="timelineContent.category_color">
                 <!--The colour / icon of the box , based on category-->
                 <div class="timeline-marker is-image is-32x32 centerWrapper"
                      :class="timelineContent.category_color"
-                    v-html="timelineContent.category_icon">
+                     v-html="timelineContent.category_icon">
                 </div>
                 <div class="timeline-content">
                   <!--the timeline contents-->
@@ -85,7 +88,7 @@
                     :orgID="customer"
                     :form="form"
                     v-on:newTimelineData="loadTimeLineData"
-                    v-on:clearForm="cleanForm"> </app-form>
+                    v-on:clearForm="cleanForm"></app-form>
         </div>
       </div>
 
@@ -112,13 +115,13 @@
     props: [
       'customer', 'timeline', 'title'
     ],
-    data: function() {
+    data: function () {
       return {
         timelineData: [],
         monthTracker: '',
         noContent: true,
         toggleForm: true,
-        form : {
+        form: {
           title: '',
           date: new Date(),
           message: '',
@@ -127,26 +130,26 @@
       }
     },
     methods: {
-      closeDetails: function() {
+      closeDetails: function () {
         return this.$emit('closeDetails')
       },
-      replaceBrWithLineBreak: function(str) {
+      replaceBrWithLineBreak: function (str) {
         return str.replace(/<br\s*[\/]?>/gi, "\n")
       },
-      loadTimeLineData: function() {
-        this.axios.get(this.api.timelineDetails + '?org_id=' + this.customer + '&timeline_id=' + this.timeline ).then( response => {
+      loadTimeLineData: function () {
+        this.axios.get(this.api.timelineDetails + '?org_id=' + this.customer + '&timeline_id=' + this.timeline).then(response => {
           this.timelineData = response.data
           this.noContent = this.arrayEmpty(this.timelineData)
           this.cleanForm()
         })
       },
-      deleteDetails: function(id, index) {
+      deleteDetails: function (id, index) {
         this.axios.delete(this.api.timelineDetails + id + '/').then(response => {
           this.timelineData.splice(index, 1)
           this.noContent = this.arrayEmpty(this.timelineData)
         })
       },
-      confirmDelete(id, index) {
+      confirmDelete: function (id, index) {
         this.$dialog.confirm({
           title: 'Deleting Timeline Note',
           message: 'Are you sure you want to <b>delete</b> this timeline note? This action cannot be undone.',
@@ -156,11 +159,11 @@
           onConfirm: () => this.deleteDetails(id, index)
         })
       },
-      updateTimelineNotes: function(formData) {
+      updateTimelineNotes: function (formData) {
         this.toggleForm = true
         this.form = formData
       },
-      cleanForm: function() {
+      cleanForm: function () {
         this.form = {
           title: '',
           date: new Date(),
@@ -169,14 +172,14 @@
         }
       }
     },
-    created: function() {
+    created: function () {
       this.loadTimeLineData()
     },
     computed: {
-      convertArrayToObject: function() {
+      convertArrayToObject: function () {
         var collector = {}
         for (let el of this.timelineData) {
-          var date = this.dateFormat(el.created).substring(0,10)
+          var date = this.dateFormat(el.created).substring(0, 10)
           if (collector[date] === undefined) {
             collector[date] = [el]
           } else {
@@ -192,25 +195,26 @@
 
 <style scoped>
 
-  .float{
-    position:fixed;
-    width:60px;
-    height:60px;
-    bottom:40px;
-    right:40px;
+  .float {
+    position: fixed;
+    width: 60px;
+    height: 60px;
+    bottom: 40px;
+    right: 40px;
     background-color: red;
-    color:#FFF;
-    border-radius:50px;
-    text-align:center;
+    color: #FFF;
+    border-radius: 50px;
+    text-align: center;
     box-shadow: 2px 2px 3px #999;
     z-index: 999;
   }
-  .my-float{
-    margin-top:22px;
+
+  .my-float {
+    margin-top: 22px;
   }
 
   .centerWrapper:before {
-    content:'';
+    content: '';
     height: 100%;
     display: inline-block;
     vertical-align: middle;

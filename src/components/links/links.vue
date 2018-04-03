@@ -3,23 +3,17 @@
     <div class="columns">
 
       <div class="column is-2">
-        <app-menu
-          :menu-items="menuItems"
-          :selectedItem='selectedItem'
-          :menuTitle="'Categories'"
-          :sourceInfo=false
-          :allActive=true
-          v-on:refreshContent="clickedContent($event)"
-          v-on:allContent="allContent">
+        <app-menu :menu-items="menuItems" :selectedItem='selectedItem' :menuTitle="'Categories'" :sourceInfo=false
+                  :allActive=true v-on:refreshContent="clickedContent($event)" v-on:allContent="allContent">
 
           <!--Extra contents for the menu-->
           <div slot="menuTop">
             <!--Button to add new category-->
-            <p class="menu-label has-text-danger has-text-weight-bold">
+            <p class="menu-label has-text-primary has-text-weight-bold">
               Action
             </p>
             <!--The form to add a new category-->
-            <app-category v-on:updatedMenuItem="updateMenu"> </app-category>
+            <app-category v-on:updatedMenuItem="updateMenu"></app-category>
           </div>
         </app-menu>
       </div>
@@ -34,7 +28,7 @@
           </div>
           <div class="level-right">
             <div class="level-item">
-              <a class="button is-success is-outlined" @click="openNewModal">
+              <a class="button is-outlined" @click="openNewModal">
                 <span class="icon is-small">
                   <i class="fas fa-link"></i>
                 </span>
@@ -56,22 +50,22 @@
 
         <!--Add & Edit new link-->
         <b-modal :active.sync="addEditModal" has-modal-card>
-          <modal-addEdit :modalProp="modalProp"
-                         :categories="menuItems"
-                         :is_it_edit="is_it_edit"
-                         v-on:newLink="addNewLink"
-                         v-on:updateLink="updateEditLink">
+          <modal-addEdit :modalProp="modalProp" :categories="menuItems" :is_it_edit="is_it_edit"
+                         v-on:newLink="addNewLink" v-on:updateLink="updateEditLink">
           </modal-addEdit>
         </b-modal>
 
         <!--If content doesn't exists-->
-        <app-nocontent v-if="contextExists" :message="noContentMessage"> </app-nocontent>
+        <app-nocontent v-if="contextExists" :message="noContentMessage"></app-nocontent>
 
         <!--Table of information-->
         <div v-else class="columns">
-          <app-table :data="arraySlicer(filterLinks, 0)" v-on:editLink="openEditModal" v-on:deleteLink="deleteLink" :loading="loading"> </app-table>
-          <app-table :data="arraySlicer(filterLinks, 1)" v-on:editLink="openEditModal" v-on:deleteLink="deleteLink" :loading="loading"> </app-table>
-          <app-table :data="arraySlicer(filterLinks, 2)" v-on:editLink="openEditModal" v-on:deleteLink="deleteLink" :loading="loading"> </app-table>
+          <app-table :data="arraySlicer(filterLinks, 0)" v-on:editLink="openEditModal" v-on:deleteLink="deleteLink"
+                     :loading="loading"></app-table>
+          <app-table :data="arraySlicer(filterLinks, 1)" v-on:editLink="openEditModal" v-on:deleteLink="deleteLink"
+                     :loading="loading"></app-table>
+          <app-table :data="arraySlicer(filterLinks, 2)" v-on:editLink="openEditModal" v-on:deleteLink="deleteLink"
+                     :loading="loading"></app-table>
         </div>
       </div>
 
@@ -111,7 +105,8 @@
           url: '',
           info: '',
           category_id: '',
-          category_name: ''}],
+          category_name: ''
+        }],
         modalProp: {
           modalTitle: "Register New Link",
           linkId: '',
@@ -126,16 +121,16 @@
     },
     computed: {
       // Use the filter to filter out the content based on user search.
-      filterLinks: function() {
+      filterLinks: function () {
         return this.tableData.filter((links) => {
           return links.name.toLowerCase().includes(this.searchLinks.toLowerCase()) || links.info.toLowerCase().includes(this.searchLinks.toLowerCase())
         })
       }
     },
-
     // Attaching the lifecycle hook, to pull the API.
-    created: function() {
+    created: function () {
       this.loading = true
+      this.$store.dispatch('activeNavbarAction', 'Links')
       // All the categories
       this.axios.get(this.api.category).then(response => {
         this.menuItems = response.data
@@ -148,18 +143,15 @@
         this.loading = false
       })
     },
-
     methods: {
-
       // Update the menu item when the new category is added.
-      updateMenu: function(newMenuItem) {
+      updateMenu: function (newMenuItem) {
         this.menuItems.push(newMenuItem)
       },
-
       // Open modal to add a new link
-      openNewModal: function() {
+      openNewModal: function () {
         // Set the values and open the modal
-        this.modalProp =  {
+        this.modalProp = {
           modalTitle: "Register New Link",
           linkId: '',
           linkCategory: '',
@@ -170,18 +162,16 @@
         this.addEditModal = true
         this.is_it_edit = false
       },
-
       // Add new link
-      addNewLink: function(link) {
+      addNewLink: function (link) {
         // only update the table if the category name is the selected one
         if (this.selectedItem === 'All Categories Links' || this.selectedItem === link.category_name) {
           this.tableData.push(link)
         }
         this.contextExists = this.arrayEmpty(this.tableData)
       },
-
       // Edit the link
-      openEditModal: function(linkInfo) {
+      openEditModal: function (linkInfo) {
         // Set the values and open the modal
         this.modalProp = {
           modalTitle: "Edit Link",
@@ -194,9 +184,8 @@
         this.addEditModal = true
         this.is_it_edit = true
       },
-
       // Update the link.
-      updateEditLink: function(link, id) {
+      updateEditLink: function (link, id) {
         this.tableData.splice(this.getObjectIndex(this.tableData, id), 1);
         // only update the table if the category name is the selected one
         if (this.selectedItem === 'All Categories Links' || this.selectedItem === link.category_name) {
@@ -204,9 +193,8 @@
         }
         this.contextExists = this.arrayEmpty(this.tableData)
       },
-
       // Delete the link when called.
-      deleteLink: function(id) {
+      deleteLink: function (id) {
         this.axios.delete(this.api.links + id + '/').then(response => {
           // Respond based on the response from backend server
           if (response.statusText === 'No Content' && response.status === 204) {
@@ -223,9 +211,8 @@
           this.emitMessage('FAILURE: Link Deletion Unsuccessful, check browser console log for more details', 'is-danger')
         })
       },
-
       // A new menu has been clicked.
-      clickedContent: function(id) {
+      clickedContent: function (id) {
         this.loading = true
         // Pull the data from the category API
         this.axios.get(this.api.category + id + '/').then(response => {
@@ -235,9 +222,8 @@
           this.loading = false
         })
       },
-
       // All content request
-      allContent: function() {
+      allContent: function () {
         this.loading = true
         // All the links
         this.axios.get(this.api.links).then(response => {

@@ -45,10 +45,10 @@
       </div>
       <p class="level-item"> Ex. CLOSED: </p>
       <div class="level-item">
-        <b-switch v-model="options.excludeClosed" type="is-success"> </b-switch>
+        <b-switch v-model="options.excludeClosed" type="is-success"></b-switch>
       </div>
       <p class="level-item">
-        <a class="button is-success" v-on:click="refreshData">
+        <a class="button is-outlined" v-on:click="refreshData">
           <span class="icon is-small">
             <i class="fas fa-sync-alt"></i>
           </span>
@@ -68,7 +68,7 @@
     ],
     methods: {
       // Send / emit the data to the root when refresh button is clicked.
-      refreshData: function() {
+      refreshData: function () {
         return this.$emit('refresh', {
           event: this.options,
           who: 'tableOptions'

@@ -12,16 +12,16 @@
 
         <template slot-scope="props">
           <!--Link text-->
-          <b-table-column field="name" label="Links" width="100%" sortable>
+          <b-table-column field="name" label="Links" sortable>
             <a target="_blank" :href="props.row.url">{{ props.row.name }}</a>
           </b-table-column>
-          <b-table-column label="Action">
+          <b-table-column field="actions" label="Action">
             <p class="field">
               <!--Update button-->
               <a class="button is-small is-info is-outlined" v-on:click="editLinks({
                 linkId: props.row.id, linkCategory: props.row.category_name,
                 linkName: props.row.name, linkUrl: props.row.url, linkInfo: props.row.info})">
-                <span class="icon is-small"><i class="fas fa-italic"></i></span>
+                <span class="icon is-small"><i class="fas fa-pencil-alt"></i></span>
               </a>
               <!--Delete button-->
               <a class="button is-small is-danger is-outlined" v-on:click="confirmDelete(props.row.id)">
@@ -62,19 +62,16 @@
       'data', 'loading'
     ],
     methods: {
-
       // call edit link handler when clicked
-      editLinks: function(modalData) {
+      editLinks: function (modalData) {
         return this.$emit('editLink', modalData)
       },
-
       // call delete link handler when clicked.
-      deleteLink: function(linkId) {
+      deleteLink: function (linkId) {
         return this.$emit('deleteLink', linkId)
       },
-
       // Delete confirmation
-      confirmDelete(id) {
+      confirmDelete: function (id) {
         this.$dialog.confirm({
           title: 'Deleting Link',
           message: 'Are you sure you want to <b>delete</b> this link? <b>Please NOTE:</b> This action cannot be undone.',
@@ -84,10 +81,12 @@
           onConfirm: () => this.deleteLink(id)
         })
       }
-
     }
   }
 </script>
 
-<style>
+<style scoped>
+  td[data-label="Links"] {
+    width: 73%
+  }
 </style>

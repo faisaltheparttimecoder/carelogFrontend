@@ -3,12 +3,12 @@
     <div class="columns">
       <!--Load customer menu sidebar-->
       <div class="column is-2">
-        <app-customer v-on:selectedOrg="loadTimeline($event)"> </app-customer>
+        <app-customer v-on:selectedOrg="loadTimeline($event)" :infoSource=false></app-customer>
       </div>
       <!--Load the timeline data-->
       <div class="column is-10">
         <div v-if="!isTimelineDetails">
-          <app-options :customer="orgID" v-on:newTimeline="addTimeline($event)"> </app-options>
+          <app-options :customer="orgID" v-on:newTimeline="addTimeline($event)"></app-options>
           <app-card :timelines="timeline"
                     :isTimeline="isTimeline"
                     v-on:isTimelineEmpty="isTimelineEmpty"
@@ -44,7 +44,7 @@
     mixins: [
       defaults, helpers
     ],
-    data: function() {
+    data: function () {
       return {
         customer: '',
         orgID: '',
@@ -55,8 +55,11 @@
         timelineTitle: ''
       }
     },
+    created: function () {
+      return this.$store.dispatch('activeNavbarAction', 'Timeline')
+    },
     methods: {
-      loadTimeline: function(events) {
+      loadTimeline: function (events) {
         this.isTimelineDetails = false
         this.customer = events.event
         this.orgID = events.org_id
@@ -65,19 +68,19 @@
           this.isTimelineEmpty()
         })
       },
-      addTimeline: function(event) {
+      addTimeline: function (event) {
         this.timeline.push(event)
         this.isTimelineEmpty()
       },
-      isTimelineEmpty: function() {
+      isTimelineEmpty: function () {
         this.isTimeline = this.arrayEmpty(this.timeline)
       },
-      TimelineDetails: function(event) {
+      TimelineDetails: function (event) {
         this.timelineID = event.id
         this.timelineTitle = event.name
         this.isTimelineDetails = true
       },
-      closeTimelineDetails: function() {
+      closeTimelineDetails: function () {
         this.isTimelineDetails = false
       }
     }

@@ -3,7 +3,7 @@ export default {
 
   methods: {
     // Open up a snack bar for the message
-    emitMessage: function(message, type) {
+    emitMessage: function (message, type) {
       return this.$toast.open({
         message: message,
         type: type,
@@ -14,7 +14,7 @@ export default {
     },
 
     // Date Formatter
-    dateFormat: function(data) {
+    dateFormat: function (data) {
       var date = new Date(data)
       var year = date.getFullYear();
       var month = (1 + date.getMonth()).toString();
@@ -25,12 +25,12 @@ export default {
     },
 
     // Trim leading and trailing spaces on the form
-    trimSpaces: function(data) {
+    trimSpaces: function (data) {
       return data.trim()
     },
 
     // is the data empty
-    emptyData: function(data) {
+    emptyData: function (data) {
       if (this.trimSpaces(data) === "") {
         return true
       } else {
@@ -50,8 +50,8 @@ export default {
     },
 
     // Is array length empty
-    arrayEmpty: function(arr) {
-      if ( arr.length === 0 ) {
+    arrayEmpty: function (arr) {
+      if (arr.length === 0) {
         return true
       } else {
         return false
@@ -59,8 +59,8 @@ export default {
     },
 
     // Get the dict using the key.
-    getValueOfKey: function(arrObjects, keyObjects) {
-      for (let element of arrObjects ) {
+    getValueOfKey: function (arrObjects, keyObjects) {
+      for (let element of arrObjects) {
         if (element.name === keyObjects) {
           return element.id
         }
@@ -69,18 +69,25 @@ export default {
     },
 
     // Provide the index where the dict is on the array based on row ID
-    getObjectIndex: function(arrObjects, id) {
-      return arrObjects.map(function(item) { return item.id; }).indexOf(id);
+    getObjectIndex: function (arrObjects, id) {
+      return arrObjects.map(function (item) {
+        return item.id;
+      }).indexOf(id);
     },
 
     // Get date based on number of months
-    monthAgo: function(d, n) {
+    monthAgo: function (d, n) {
       return new Date(d.setMonth(d.getMonth() - n))
     },
 
     // Replace a string escapes to HTML tags
-    replaceStringToHtml: function(str) {
+    replaceStringToHtml: function (str) {
       return str.replace(/(?:\r\n|\r|\n)/g, '<br />')
+    },
+
+    // Convert first alphabet to upper case
+    capitalizeFirstLetter: function (string) {
+      return string.charAt(0).toUpperCase() + string.slice(1);
     }
 
   }

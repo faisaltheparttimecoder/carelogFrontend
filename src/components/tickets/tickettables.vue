@@ -40,14 +40,14 @@
 
         <b-table-column field="action" label="Hot" centered>
           <a v-on:click="itsHot(orgID, props.row.id)">
-           <b-switch type="is-danger"
-                     v-model="hotTickets['zd'+orgID+props.row.id]">
-           </b-switch>
+            <b-switch type="is-danger"
+                      v-model="hotTickets['zd'+orgID+props.row.id]">
+            </b-switch>
           </a>
         </b-table-column>
 
         <b-table-column field="action" label="Action" centered>
-          <a class="button is-success" v-on:click="ticketDetails(props.row.id)"> Details </a>
+          <a class="button is-outlined" v-on:click="ticketDetails(props.row.id)"> Details </a>
         </b-table-column>
 
       </template>
@@ -85,8 +85,10 @@
 <script>
   import defaults from './../../mixins/default'
   import helpers from './../../mixins/helper'
+
   var qs = require('qs')
   import debounce from 'lodash.debounce'
+
   export default {
     props: [
       'tableData', 'loading', 'hotTickets', 'orgID'
@@ -94,10 +96,10 @@
     mixins: [
       defaults, helpers
     ],
-    data: function() {
+    data: function () {
       return {
         selected: false,
-        priorityTable : {
+        priorityTable: {
           urgent: 'S1',
           high: 'S2',
           normal: 'S3',
@@ -107,11 +109,11 @@
     },
     methods: {
       // Get the details of the ticket
-      ticketDetails: function(ticketNo) {
+      ticketDetails: function (ticketNo) {
         return this.$emit('details', ticketNo)
       },
       // Store the ticket hotness to the database
-      itsHot: debounce(function(orgId, ticketId) {
+      itsHot: debounce(function (orgId, ticketId) {
         var clickedSwitch = 'zd' + orgId + ticketId
         var selected = this.hotTickets[clickedSwitch]
         if (selected) {
@@ -123,7 +125,8 @@
             this.hotTickets[clickedSwitch] = selected
           })
         } else {
-          this.axios.delete(this.api.ticketHot + ticketId).then(response => {})
+          this.axios.delete(this.api.ticketHot + ticketId).then(response => {
+          })
         }
       }),
     },
