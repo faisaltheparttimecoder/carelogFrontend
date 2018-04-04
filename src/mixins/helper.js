@@ -88,7 +88,26 @@ export default {
     // Convert first alphabet to upper case
     capitalizeFirstLetter: function (string) {
       return string.charAt(0).toUpperCase() + string.slice(1);
-    }
+    },
 
+    // Convert http to links
+    convertTextToLinks: function (text) {
+      if (text.match( /(href)|(src)/i )) {
+        return text; // text already has a hyper link in it
+      }
+      text = text.replace(
+        /\b(https?:\/\/[^\s\(\)\'\"\<\>]+)/ig,
+        "<a ref='nofollow' href='$1'>$1</a>"
+      );
+      text = text.replace(
+        /\s(www\.[^\s\(\)\'\"\<\>]+)/ig,
+        "<a ref='nofollow' href='http://$1'>$1</a>"
+      );
+      text = text.replace(
+        /^(www\.[^\s\(\)\'\"\<\>]+)/ig,
+        "<a ref='nofollow' href='http://$1'>$1</a>"
+      );
+      return text;
+    }
   }
 }

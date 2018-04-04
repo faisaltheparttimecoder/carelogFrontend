@@ -57,16 +57,15 @@
       :striped="tableCustomization.isStriped"
       :default-sort-direction="tableCustomization.defaultSortDirection"
       :loading="loading"
-      default-sort="published"
       detailed
       detail-key="title">
 
       <!--Table rows-->
       <template slot-scope="props">
-        <b-table-column field="published" label="Published Date" width="250" sortable>
+        <b-table-column field="published" label="Published Date" width="250">
           {{ dateFormat(props.row.published) }}
         </b-table-column>
-        <b-table-column field="title" label="Vulnerability" sortable>
+        <b-table-column field="title" label="Vulnerability">
           {{ props.row.title }}
         </b-table-column>
       </template>

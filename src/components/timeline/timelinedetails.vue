@@ -53,7 +53,7 @@
                   <!--the timeline contents-->
                   <p class="heading">{{ timelineContent.created | moment('DD MMMM, YYYY')}}</p>
                   <h4 class="title is-4"> {{ timelineContent.title }}</h4>
-                  <p class="subtitle" v-html="timelineContent.description"></p>
+                  <p class="subtitle" v-html="convertTextToLinks(timelineContent.description)"></p>
                   <!--Buttons to manipulate the timeline content-->
                   <nav class="level is-mobile">
                     <div class="level-left">
