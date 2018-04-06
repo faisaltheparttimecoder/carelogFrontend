@@ -13,7 +13,7 @@
         <!--we dont have to refresh the data again-->
         <div v-if="!isDetails">
           <keep-alive>
-            <app-options :options="options" v-on:refresh="loadTicketTable($event)"></app-options>
+            <app-options :options="options" v-on:refresh="loadTicketTable($event)"> </app-options>
           </keep-alive>
           <app-table :tableData="tableData"
                      :hotTickets="hotTickets"
@@ -23,8 +23,11 @@
           </app-table>
         </div>
 
-        <app-details v-if="isDetails" v-on:closeDetails="isDetails=false" :ticket="ticketNo"
-                     :orgID="org_id"></app-details>
+        <app-details v-if="isDetails"
+                     v-on:closeDetails="isDetails=false"
+                     :ticket="ticketNo"
+                     :orgID="org_id">
+        </app-details>
 
       </div>
 

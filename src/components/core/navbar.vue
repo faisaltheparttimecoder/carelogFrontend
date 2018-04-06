@@ -95,9 +95,9 @@
     // All the data for the components
     data: function () {
       return {
+        version: '1.0.1',
         // All Navbar left items
         navLeftItems: {
-          version: '1.0.1',
           Customers: {
             iconpack: 'fas',
             icon: 'users',

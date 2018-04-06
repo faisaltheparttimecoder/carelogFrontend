@@ -26,7 +26,8 @@
       <div class="columns">
         <!--If no data available request user to add it-->
         <app-nocontent v-if="noContent"
-                       :message="'No data available, add some activity using the form.'"></app-nocontent>
+                       :message="'No data available, add some activity using the form.'">
+        </app-nocontent>
         <!--else show the data-->
         <div v-else class="column is-8">
           <div class="timeline">
