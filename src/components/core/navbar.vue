@@ -54,7 +54,7 @@
               <div class="media-content">
                 <h3>Version</h3>
                 <a href="https://github.com/faisaltheparttimecoder/carelogFrontend/releases" target="_blank">
-                  <small>Carelog Release: 1.0</small>
+                  <small>Carelog Release: {{ version }}</small>
                 </a>
               </div>
             </div>
@@ -97,6 +97,7 @@
       return {
         // All Navbar left items
         navLeftItems: {
+          version: '1.0.1',
           Customers: {
             iconpack: 'fas',
             icon: 'users',
