@@ -176,7 +176,12 @@
     computed: {
       connectedUser: function () {
         this.$store.dispatch('loggedUserAction')
-        return this.$store.state.loggedUser
+        // Lets check if the users token still works
+        if (this.$store.state.unauthorizedOrExpireToken) { // nope its expired, log him out
+          this.$emit('logout')
+        } else {
+          return this.$store.state.loggedUser
+        }
       }
     }
   }

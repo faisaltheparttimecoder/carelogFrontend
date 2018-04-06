@@ -4,7 +4,7 @@
     <!--If the user is authenticated then send to the main page-->
     <div class="authentication-status" v-if="$auth.isAuthenticated()">
       <!--All the template would have the navbar, so adding it here-->
-      <app-navbar v-on:logout="authLogout"></app-navbar>
+      <app-navbar v-on:logout="authLogout"> </app-navbar>
       <!--Based on the router link clicked upload the specific component-->
       <router-view/>
     </div>
@@ -21,8 +21,6 @@
   import navbar from './components/core/navbar'
   import login from './components/core/login'
 
-  var qs = require('qs')
-  const keys = require('./config/keys')
   export default {
     name: 'App',
     components: {
@@ -45,7 +43,7 @@
       },
       // Login Method
       auth: function (provider) {
-        if (this.$auth.isAuthenticated()) {
+        if (!this.$auth.isAuthenticated()) {
           this.$auth.logout()
         }
         var this_ = this;

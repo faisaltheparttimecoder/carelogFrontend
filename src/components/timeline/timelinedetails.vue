@@ -179,7 +179,7 @@
       convertArrayToObject: function () {
         var collector = {}
         for (let el of this.timelineData) {
-          var date = this.dateFormat(el.created).substring(0, 10)
+          var date = this.dateFormat(el.created).substring(0, 7)
           if (collector[date] === undefined) {
             collector[date] = [el]
           } else {
