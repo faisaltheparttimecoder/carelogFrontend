@@ -5,8 +5,10 @@
     <div class="authentication-status" v-if="$auth.isAuthenticated()">
       <!--All the template would have the navbar, so adding it here-->
       <app-navbar v-on:logout="authLogout"> </app-navbar>
-      <!--Based on the router link clicked upload the specific component-->
-      <router-view/>
+      <transition name="fade" mode="out-in">
+        <!--Based on the router link clicked upload the specific component-->
+        <router-view/>
+      </transition>
     </div>
     <!--Else redirect them to the login page-->
     <div v-if="!$auth.isAuthenticated()">

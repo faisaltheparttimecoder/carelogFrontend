@@ -24,8 +24,8 @@
             {{ index }}
           </a>
           <div class="navbar-dropdown is-boxed">
-            <a v-for="LeftItem in LeftItems.items" class="navbar-item"
-               :class="{'is-active': $store.state.activeNavbar === LeftItem.item}" :href="LeftItem.route">
+            <router-link v-for="(LeftItem, index) in LeftItems.items" class="navbar-item"
+               :class="{'is-active': $store.state.activeNavbar === LeftItem.item}" :to="LeftItem.route" :key="index">
               <div class="media">
                 <b-icon class="media-left" :pack="LeftItem.iconpack" :icon="LeftItem.icon"></b-icon>
                 <div class="media-content">
@@ -33,7 +33,7 @@
                   <small>{{ LeftItem.description }}</small>
                 </div>
               </div>
-            </a>
+            </router-link>
           </div>
         </div>
       </div>

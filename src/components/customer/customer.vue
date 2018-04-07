@@ -147,7 +147,8 @@
           name: this.selected.name,
           created_at: this.dateFormat(this.selected.created_at),
           location: this.selected.organization_fields.customer_location,
-          expired_contract: this.selected.organization_fields.expired_contract
+          expired_contract: this.selected.organization_fields.expired_contract,
+          recently_added: true
         }
         this.axios.post(this.api.org, qs.stringify(saveOrg)).then(response => {
           if (response.statusText === 'Created' && response.status === 201) {
