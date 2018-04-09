@@ -102,6 +102,7 @@
           return this.$emit('selectedOrg', {
             event: response.data.org_id,
             org_id: response.data.id,
+            recently_added: response.data.recently_added,
             who: 'customer'
           })
         })

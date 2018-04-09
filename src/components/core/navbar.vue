@@ -102,6 +102,12 @@
             iconpack: 'fas',
             icon: 'users',
             items: [{
+              item: 'Dashboard',
+              route: '/dashboard/',
+              description: 'Cust. at-a-glance views of KPIs',
+              iconpack: 'fas',
+              icon: 'table'
+            }, {
               item: 'Tickets',
               route: '/tickets/',
               description: 'Cust. Tickets & Agent Notes',

@@ -1,3 +1,4 @@
+import dashboard from '@/components/dashboard/dashboard'
 import tickets from '@/components/tickets/tickets'
 import timeline from '@/components/timeline/timelinemain'
 import security from '@/components/security/rssreader'
@@ -8,8 +9,12 @@ import links from '@/components/links/links'
 export default [
   {
     path: '/',
-    component: tickets,
+    component: dashboard,
     name: 'home'
+  }, {
+    path: '/dashboard',
+    component: dashboard,
+    name: 'dashboard'
   }, {
     path: '/tickets',
     component: tickets,
