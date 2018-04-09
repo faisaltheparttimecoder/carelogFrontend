@@ -95,7 +95,7 @@
     // All the data for the components
     data: function () {
       return {
-        version: '1.0.1',
+        version: '1.1',
         // All Navbar left items
         navLeftItems: {
           Customers: {
