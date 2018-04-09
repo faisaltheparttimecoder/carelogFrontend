@@ -126,6 +126,7 @@
     created: function () {
       this.axios.get(this.api.timelineCategory).then(response => {
         this.categories = response.data
+        return this.$emit('populateCategory', this.categories)
       })
     }
   }

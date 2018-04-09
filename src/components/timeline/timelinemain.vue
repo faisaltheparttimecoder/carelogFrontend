@@ -7,20 +7,24 @@
       </div>
       <!--Load the timeline data-->
       <div class="column is-10">
-        <div v-if="!isTimelineDetails">
-          <app-options :customer="orgID" v-on:newTimeline="addTimeline($event)"></app-options>
-          <app-card :timelines="timeline"
-                    :isTimeline="isTimeline"
-                    v-on:isTimelineEmpty="isTimelineEmpty"
-                    v-on:TimelineDetails="TimelineDetails($event)">
-          </app-card>
-        </div>
-        <app-details v-if="isTimelineDetails"
-                     :customer="orgID"
-                     :timeline="timelineID"
-                     :title="timelineTitle"
-                     v-on:closeDetails="closeTimelineDetails">
-        </app-details>
+        <transition enter-active-class="animated slideInRight">
+          <div v-if="!isTimelineDetails">
+            <app-options :customer="orgID" v-on:newTimeline="addTimeline($event)"></app-options>
+            <app-card :timelines="timeline"
+                      :isTimeline="isTimeline"
+                      v-on:isTimelineEmpty="isTimelineEmpty"
+                      v-on:TimelineDetails="TimelineDetails($event)">
+            </app-card>
+          </div>
+        </transition>
+        <transition enter-active-class="animated slideInRight">
+          <app-details v-if="isTimelineDetails"
+                       :customer="orgID"
+                       :timeline="timelineID"
+                       :title="timelineTitle"
+                       v-on:closeDetails="closeTimelineDetails">
+          </app-details>
+        </transition>
       </div>
     </div>
   </section>

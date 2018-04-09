@@ -60,4 +60,12 @@
 </script>
 
 <style>
+
+  .animated {
+    -webkit-animation-duration: 0.9s;
+    animation-duration: 0.9s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+  }
+
 </style>

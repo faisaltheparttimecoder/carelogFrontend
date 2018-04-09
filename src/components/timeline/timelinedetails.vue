@@ -12,8 +12,25 @@
       </div>
       <!-- Right side -->
       <div class="level-right">
-        <p class="level-item"><a class="button is-outlined" v-on:click="toggleForm = !toggleForm">Toggle Activity
-          Form</a></p>
+        <p class="level-item">
+          Filter Via Category
+        </p>
+        <p class="level-item">
+          <div class="control has-icons-left">
+            <div class="select">
+              <select v-model="choosenCategory">
+                <option value="0" selected>All</option>
+                <option v-for="category in categories" :value="category.id">{{ category.name }}</option>
+              </select>
+            </div>
+            <div class="icon is-small is-left">
+              <i class="fas fa-globe"></i>
+            </div>
+          </div>
+        </p>
+        <p class="level-item">
+          <a class="button is-outlined" v-on:click="toggleForm = !toggleForm">Toggle Activity Form</a>
+        </p>
       </div>
     </nav>
 
@@ -38,13 +55,13 @@
             <!--Dummy item to get the line-->
             <div class="timeline-item">
             </div>
-            <div v-for="(timelineContents, index) in convertArrayToObject">
+            <div v-for="(timelineContents, index) in convertArrayToObject" >
               <!--Choose the heading if we switch the month-->
               <header class="timeline-header">
                 <span class="subtitle"><strong>{{ index | moment('MMM, YYYY')}}</strong></span>
               </header>
               <div v-for="(timelineContent, index) in timelineContents" class="timeline-item"
-                   :class="timelineContent.category_color">
+                   :class="timelineContent.category_color" v-if="isThisVisible(timelineContent.category_id)">
                 <!--The colour / icon of the box , based on category-->
                 <div class="timeline-marker is-image is-32x32 centerWrapper"
                      :class="timelineContent.category_color"
@@ -84,13 +101,17 @@
             </header>
           </div>
         </div>
-        <div class="column is-4" v-if="toggleForm">
-          <app-form :timeline="timeline"
-                    :orgID="customer"
-                    :form="form"
-                    v-on:newTimelineData="loadTimeLineData"
-                    v-on:clearForm="cleanForm"></app-form>
-        </div>
+        <transition enter-active-class="animated bounceInRight" leave-active-class="animated bounceOutRight">
+          <div class="column is-4" v-if="toggleForm">
+            <app-form :timeline="timeline"
+                      :orgID="customer"
+                      :form="form"
+                      v-on:newTimelineData="loadTimeLineData"
+                      v-on:clearForm="cleanForm"
+                      v-on:populateCategory="loadCategories($event)">
+            </app-form>
+          </div>
+        </transition>
       </div>
 
     </section>
@@ -127,7 +148,9 @@
           date: new Date(),
           message: '',
           update: false
-        }
+        },
+        categories: '',
+        choosenCategory: '0'
       }
     },
     methods: {
@@ -170,6 +193,16 @@
           date: new Date(),
           message: '',
           update: false,
+        }
+      },
+      loadCategories: function (category) {
+        this.categories = category
+      },
+      isThisVisible: function(id) {
+        if (id === this.choosenCategory || this.choosenCategory === '0') {
+          return true
+        } else {
+          return false
         }
       }
     },

@@ -11,24 +11,26 @@
       <div class="column is-10">
         <!--Using keep alive to keep the data in memory when switching the component so that-->
         <!--we dont have to refresh the data again-->
-        <div v-if="!isDetails">
-          <keep-alive>
-            <app-options :options="options" v-on:refresh="loadTicketTable($event)"> </app-options>
-          </keep-alive>
-          <app-table :tableData="tableData"
-                     :hotTickets="hotTickets"
-                     :loading="loading"
-                     :orgID="org_id"
-                     v-on:details="loadDetails($event)">
-          </app-table>
-        </div>
-
-        <app-details v-if="isDetails"
-                     v-on:closeDetails="isDetails=false"
-                     :ticket="ticketNo"
-                     :orgID="org_id">
-        </app-details>
-
+        <transition enter-active-class="animated slideInRight">
+          <div v-if="!isDetails">
+            <keep-alive>
+              <app-options :options="options" v-on:refresh="loadTicketTable($event)"> </app-options>
+            </keep-alive>
+            <app-table :tableData="tableData"
+                       :hotTickets="hotTickets"
+                       :loading="loading"
+                       :orgID="org_id"
+                       v-on:details="loadDetails($event)">
+            </app-table>
+          </div>
+        </transition>
+        <transition enter-active-class="animated slideInRight">
+          <app-details v-if="isDetails"
+                       v-on:closeDetails="isDetails=false"
+                       :ticket="ticketNo"
+                       :orgID="org_id">
+          </app-details>
+        </transition>
       </div>
 
     </div>
