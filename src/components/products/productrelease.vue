@@ -56,14 +56,14 @@
 
       <!--Table rows-->
       <template slot-scope="props">
+        <b-table-column field="version" label="Version" sortable>
+          {{ props.row.version }}
+        </b-table-column>
         <b-table-column field="release_date" label="Release Date" sortable>
           {{ formatDate(props.row.release_date) }}
         </b-table-column>
         <b-table-column field="version" label="End of Support Date" sortable>
           {{ formatDate(props.row.end_of_support_date) }}
-        </b-table-column>
-        <b-table-column field="version" label="Version" sortable>
-          {{ props.row.version }}
         </b-table-column>
         <b-table-column field="release_type" label="Release Type" sortable>
           {{ props.row.release_type }}
