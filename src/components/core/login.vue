@@ -6,7 +6,7 @@
     </div>
     <div class="container has-text-centered is-flex-mobile">
       <div class="column">
-        <figure class="is-hidden-mobile">
+        <figure>
           <img src="../../assets/logo.png">
         </figure>
         <h1 class="title white">
@@ -115,16 +115,12 @@
 
   img {
     width: 60%;
+    margin-left: 2%;
   }
 
   .container.has-text-centered {
-    height: 200px;
-    position: fixed;
-    top: 40%;
-    left: 50%;
-    margin-top: -100px;
-    margin-left: -200px;
-    display: inline-block;
+    margin: 0 auto;
+    text-align: left;
   }
 
   @media (max-width: 1000px) {
