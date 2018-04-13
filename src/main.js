@@ -22,6 +22,10 @@ Vue.use(VueAxios, axios)
 // Moment for time
 Vue.use(require('vue-moment'));
 
+// For charts
+import VCharts from 'v-charts'
+Vue.use(VCharts)
+
 // Google signin
 const keys = require('./config/keys')
 import VueAuthenticate from 'vue-authenticate'

@@ -2,13 +2,19 @@
 export default {
   data: function () {
     return {
-      backgroundColor: [
-        "#ffe0b2", "rgb(249, 199, 168)", "rgb(243, 154, 155)",
-        "rgb(236, 110, 141)", "rgb(215, 74, 136)",
-        "rgb(169, 55, 144)", "rgb(123, 35, 151)",
-        "rgb(92, 24, 134)", "rgb(70, 18, 102)",
-        "rgb(48, 12, 70)"
-      ]
+        chartColors: ['#845EC2','#D65DB1', '#FF6F91', '#FF9671', '#0081CF','#00C9A7',  '#FF8066', '#C34A36','#4B4453', '#983F65', '#D5CABD'],
+      loading: true,
+      dataEmpty: false,
+      datacollection: null,
+      legendPosition: 'bottom',
+      toolbox: {
+        feature: {
+          saveAsImage: {
+            title: "Save",
+            name: "Carelog"
+          }
+        },
+      }
     }
   },
   methods: {
@@ -35,6 +41,21 @@ export default {
     },
     isInArray: function(value, array) {
       return array.indexOf(value) > -1;
+    }
+  },
+  computed: {
+    chartData: function () {
+      this.loading = true
+      this.dataEmpty = false
+      this.datacollection = {
+        columns: ['label', 'total'],
+        rows: this.data
+      }
+      this.loading = false
+      if (this.datacollection.rows.length === 0) {
+        this.dataEmpty = true
+      }
+      return this.datacollection
     }
   }
 }
