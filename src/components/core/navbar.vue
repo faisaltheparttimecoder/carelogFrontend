@@ -108,6 +108,12 @@
               iconpack: 'fas',
               icon: 'table'
             }, {
+              item: 'Environment',
+              route: '/environment/',
+              description: 'Cust. Environment Information',
+              iconpack: 'fab',
+              icon: 'envira'
+            }, {
               item: 'Tickets',
               route: '/tickets/',
               description: 'Cust. Tickets & Agent Notes',
@@ -116,7 +122,7 @@
             }, {
               item: 'Timeline',
               route: '/timeline/',
-              description: 'Timeline of activities',
+              description: 'Cust. Timeline of Activities',
               iconpack: 'fas',
               icon: 'sitemap'
             }]

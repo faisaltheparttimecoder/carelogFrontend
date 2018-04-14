@@ -30,7 +30,11 @@
     },
     data () {
       return {
-        chartSettings: {}
+        chartSettings: {},
+        datacollection:  {
+          columns: [],
+          rows: []
+        }
       }
     },
     computed: {

@@ -30,6 +30,7 @@ Vue.use(VCharts)
 const keys = require('./config/keys')
 import VueAuthenticate from 'vue-authenticate'
 
+
 const oauthRedirectUri = window.location.origin + '/auth/google/redirect'
 Vue.use(VueAuthenticate, {
   baseUrl: keys.baseUrl, // Your API domain

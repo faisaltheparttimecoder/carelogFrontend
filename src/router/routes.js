@@ -1,6 +1,7 @@
 import dashboard from '@/components/dashboard/dashboard'
 import tickets from '@/components/tickets/tickets'
 import timeline from '@/components/timeline/timelinemain'
+import environment from '@/components/environment/environment'
 import security from '@/components/security/rssreader'
 import product from '@/components/products/products'
 import lifecycle from '@/components/lifecycle/lifecycle'
@@ -22,6 +23,9 @@ export default [
   }, {
     path: '/timeline',
     component: timeline
+  }, {
+    path: '/environment',
+    component: environment
   }, {
     path: '/security',
     component: security
