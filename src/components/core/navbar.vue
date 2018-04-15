@@ -98,6 +98,29 @@
         version: '1.1',
         // All Navbar left items
         navLeftItems: {
+          Home: {
+            iconpack: 'fas',
+            icon: 'home',
+            items: [{
+              item: 'Main',
+              route: '/',
+              description: 'BCS Home Page',
+              iconpack: 'fab',
+              icon: 'font-awesome-flag'
+            }, {
+              item: 'Engaging & Pricing',
+              route: '/engagement',
+              description: 'BCS Engagement & Pricing',
+              iconpack: 'fas',
+              icon: 'microphone'
+            }, {
+              item: 'Team',
+              route: '/team',
+              description: 'Meet the Team',
+              iconpack: 'fas',
+              icon: 'graduation-cap'
+            }]
+          },
           Customers: {
             iconpack: 'fas',
             icon: 'users',

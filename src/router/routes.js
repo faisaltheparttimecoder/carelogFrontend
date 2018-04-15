@@ -1,3 +1,6 @@
+import home from '@/components/main/main'
+import engagement from '@/components/engagement/engagement'
+import team from '@/components/team/team'
 import dashboard from '@/components/dashboard/dashboard'
 import tickets from '@/components/tickets/tickets'
 import timeline from '@/components/timeline/timelinemain'
@@ -10,8 +13,16 @@ import links from '@/components/links/links'
 export default [
   {
     path: '/',
-    component: dashboard,
+    component: home,
     name: 'home'
+  }, {
+    path: '/engagement',
+    component: engagement,
+    name: 'engagement'
+  }, {
+    path: '/team',
+    component: team,
+    name: 'team'
   }, {
     path: '/dashboard',
     component: dashboard,

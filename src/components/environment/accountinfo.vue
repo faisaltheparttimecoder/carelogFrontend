@@ -40,7 +40,7 @@
     <!--If the user clicks on edit disply this below-->
     <section v-if="!markdownSwitches.show">
       <b-field>
-        <b-input maxlength="5000" type="textarea" v-model="markdownSwitches.source" rows="100"></b-input>
+        <b-input type="textarea" v-model="markdownSwitches.source" rows="100"></b-input>
       </b-field>
     </section>
 

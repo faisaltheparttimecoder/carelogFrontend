@@ -53,7 +53,8 @@ export default {
         timelineCategory: process.env.API_URL + 'api/customer/timeline_category/',
         timelineDetails: process.env.API_URL + 'api/customer/timeline_details/',
         dashboard: process.env.API_URL + 'api/customer/tickets/',
-        environment:  process.env.API_URL + 'api/customer/environment/'
+        environment:  process.env.API_URL + 'api/customer/environment/',
+        team: process.env.API_URL + 'api/bcs/team/'
       }
 
     }

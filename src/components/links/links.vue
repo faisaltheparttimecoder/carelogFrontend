@@ -13,7 +13,7 @@
               Action
             </p>
             <!--The form to add a new category-->
-            <app-category v-on:updatedMenuItem="updateMenu"></app-category>
+            <app-category v-on:updatedMenuItem="updateMenu"> </app-category>
           </div>
         </app-menu>
       </div>
@@ -28,14 +28,6 @@
           </div>
           <div class="level-right">
             <div class="level-item">
-              <a class="button is-outlined" @click="openNewModal">
-                <span class="icon is-small">
-                  <i class="fas fa-link"></i>
-                </span>
-                <span> Register Link</span>
-              </a>
-            </div>
-            <div class="level-item">
               <div class="field">
                 <p class="control has-icons-left has-icons-right">
                   <input class="input is-rounded" v-model="searchLinks" type="text" placeholder="Search...">
@@ -44,6 +36,14 @@
                 </span>
                 </p>
               </div>
+            </div>
+            <div class="level-item">
+              <a class="button is-outlined" @click="openNewModal">
+                <span class="icon is-small">
+                  <i class="fas fa-link"></i>
+                </span>
+                <span> Add Link</span>
+              </a>
             </div>
           </div>
         </nav>
@@ -56,16 +56,16 @@
         </b-modal>
 
         <!--If content doesn't exists-->
-        <app-nocontent v-if="contextExists" :message="noContentMessage"></app-nocontent>
+        <app-nocontent v-if="contextExists" :message="noContentMessage"> </app-nocontent>
 
         <!--Table of information-->
         <div v-else class="columns">
           <app-table :data="arraySlicer(filterLinks, 0)" v-on:editLink="openEditModal" v-on:deleteLink="deleteLink"
-                     :loading="loading"></app-table>
+                     :loading="loading"> </app-table>
           <app-table :data="arraySlicer(filterLinks, 1)" v-on:editLink="openEditModal" v-on:deleteLink="deleteLink"
-                     :loading="loading"></app-table>
+                     :loading="loading"> </app-table>
           <app-table :data="arraySlicer(filterLinks, 2)" v-on:editLink="openEditModal" v-on:deleteLink="deleteLink"
-                     :loading="loading"></app-table>
+                     :loading="loading"> </app-table>
         </div>
       </div>
 

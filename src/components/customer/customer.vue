@@ -18,7 +18,29 @@
               <span class="icon is-small">
                 <i class="far fa-building"></i>
               </span>
-              <span>Find & Add Customer</span>
+              <span>Find / Add Customer</span>
+            </a>
+          </p>
+        </div>
+
+        <div v-if="!menuFormActive" class="field">
+          <p class="control">
+            <a class="button is-outlined">
+              <span class="icon is-small">
+                <i class="far fa-file-archive"></i>
+              </span>
+              <span>Archive Customer &nbsp;&nbsp;&nbsp;</span>
+            </a>
+          </p>
+        </div>
+
+        <div v-if="!menuFormActive" class="field">
+          <p class="control">
+            <a class="button is-outlined">
+              <span class="icon is-small">
+                <i class="far fa-trash-alt"></i>
+              </span>
+              <span>Delete Customer &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
             </a>
           </p>
         </div>

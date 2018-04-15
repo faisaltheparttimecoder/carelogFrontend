@@ -19,6 +19,10 @@
             <b-tab-item label="Environment Details" icon="leaf">
 
             </b-tab-item>
+
+            <b-tab-item label="Environment Notes" icon="onenote">
+
+            </b-tab-item>
           </b-tabs>
         </section>
       </div>
