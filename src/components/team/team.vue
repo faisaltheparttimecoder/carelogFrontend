@@ -9,7 +9,7 @@
       <!-- Right side -->
       <div class="level-right">
         <div class="level-item">
-          <a class="button is-outlined" v-on:click="addEditModal = true">
+          <a class="button is-outlined" v-on:click="addNewTeamModal">
           <span class="icon is-small">
             <i class="fas fa-plus"></i>
           </span>
@@ -170,6 +170,10 @@
       }
     },
     methods: {
+      addNewTeamModal: function () {
+        this.cleanForm()
+        this.addEditModal = true
+      },
       cleanForm: function() {
         this.modalProps =  {
           title: "Add New Member",
@@ -187,8 +191,7 @@
       },
       updateTeam: function(event, id) {
         this.team.splice(this.getObjectIndex(this.team, id), 1);
-        this.team.push(event)
-        this.cleanForm()
+        this.pushNewTeam(event)
       },
       chunked: function(role, chunkNo) {
         var tempArr = []

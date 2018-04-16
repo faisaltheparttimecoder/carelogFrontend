@@ -1,6 +1,6 @@
 <template>
   <section>
-    <app-menu :menu-items="menuItems" :selectedItem="selectedItem" :menuTitle="menuTitle" :sourceInfo=infoSource
+    <app-menu :menu-items="unarchivedCustomers" :selectedItem="selectedItem" :menuTitle="menuTitle" :sourceInfo=infoSource
               :sourceUrl="sourceUrl" :sourceTitle="sourceTitle" v-on:refreshContent="clickedContent($event)">
 
       <!--Extra contents for the menu-->
@@ -25,30 +25,25 @@
 
         <div v-if="!menuFormActive" class="field">
           <p class="control">
-            <a class="button is-outlined">
+            <a class="button is-outlined" @click="modal = true">
               <span class="icon is-small">
-                <i class="far fa-file-archive"></i>
+                <i class="fas fa-wrench"></i>
               </span>
-              <span>Archive Customer &nbsp;&nbsp;&nbsp;</span>
+              <span>Modify Customer &nbsp;&nbsp;&nbsp;&nbsp;</span>
             </a>
           </p>
         </div>
 
-        <div v-if="!menuFormActive" class="field">
-          <p class="control">
-            <a class="button is-outlined">
-              <span class="icon is-small">
-                <i class="far fa-trash-alt"></i>
-              </span>
-              <span>Delete Customer &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-            </a>
-          </p>
-        </div>
+        <!--Modal to modify the customer list-->
+        <b-modal :active.sync="modal" has-modal-card>
+          <app-modal :customerList="menuItems"
+                     v-on:deleteOrg="spliceOrg" v-on:updateOrg="updateOrg"> </app-modal>
+        </b-modal>
 
         <!--Search for the customer -->
         <div v-if="menuFormActive">
-          <b-field>
-            <b-autocomplete rounded v-model="name" :data="data" icon="magnify" placeholder="Search Customer ..."
+          <b-field label="Find Customer">
+            <b-autocomplete v-model="name" :data="data" icon="magnify" placeholder="Search Customer ..."
                             field="name" :loading="isFetching" @input="getAsyncData"
                             @select="option => selected = option">
 
@@ -66,13 +61,43 @@
                 </div>
               </template>
             </b-autocomplete>
+
+          </b-field>
+          <b-field label="Customers HQ Location">
+            <b-select v-model="selectedCountry" placeholder="Select Country of Location" icon="map-marker">
+              <option
+                v-for="country in countriesList"
+                :value="country.name">
+                {{ country.name }}
+              </option>
+            </b-select>
           </b-field>
           <a class="button is-success is-outlined" v-on:click="addCustomer"> Save </a>
           <a class="button is-danger is-outlined" v-on:click="menuFormActive = false"> Cancel </a>
         </div>
 
       </div>
+
+
+      <div slot="menuBottom">
+
+        <p class="menu-label has-text-weight-bold has-text-primary">
+          Archived Customers
+        </p>
+        <ul class="menu-list">
+          <li v-for="menuItem in archivedCustomers">
+            <a class="heading is-disabled" >
+              {{ menuItem.name }}
+            </a>
+          </li>
+        </ul>
+
+      </div>
+
     </app-menu>
+
+
+
   </section>
 </template>
 
@@ -81,12 +106,14 @@
   import debounce from 'lodash.debounce'
   import helpers from './../../mixins/helper'
   import defaults from './../../mixins/default'
+  import customerModal from './customermodal'
 
   var qs = require('qs')
 
   export default {
     components: {
-      'app-menu': menu
+      'app-menu': menu,
+      'app-modal': customerModal
     },
     props: [
       'infoSource'
@@ -96,9 +123,14 @@
     ],
     data() {
       return {
+        archivedCustomers: [],
+        unarchivedCustomers: [],
+        modal: false,
+        countriesList: [],
         data: [],
         selectedItem: [],
         name: '',
+        selectedCountry: '',
         selected: null,
         isFetching: false,
         menuTitle: 'Customers',
@@ -110,13 +142,41 @@
     created: function () {
       this.axios.get(this.api.org).then(response => {
         this.menuItems = response.data
-
         if (!this.arrayEmpty(this.menuItems)) {
           this.clickedContent(this.menuItems[0]['id'])
         }
+        this.archiveCustomer()
+      })
+      this.axios.get(this.api.country).then(response => {
+        this.countriesList = response.data
       })
     },
     methods: {
+      archiveCustomer: function() {
+        for (let i in this.menuItems) {
+          if (this.menuItems[i]['archived']) {
+            this.archivedCustomers.push(this.menuItems[i])
+          } else {
+            this.unarchivedCustomers.push(this.menuItems[i])
+          }
+        }
+      },
+      // delete org from the list
+      spliceOrg: function(id) {
+        this.menuItems.splice(this.getObjectIndex(this.menuItems, id), 1);
+        this.updateArchive()
+      },
+      // update org in the list
+      updateOrg: function (id, data) {
+        this.spliceOrg(id)
+        this.menuItems.push(data)
+        this.updateArchive()
+      },
+      updateArchive: function () {
+        this.archivedCustomers = []
+        this.unarchivedCustomers = []
+        this.archiveCustomer()
+      },
       // Send the clicked content information to the calling components
       clickedContent: function (clicked) {
         this.axios.get(this.api.org + clicked + '/').then(response => {
@@ -150,6 +210,7 @@
       activateCustomerSearch: function () {
         this.name = ''
         this.menuFormActive = true
+        this.selectedCountry = ''
       },
       // Formating the location
       trimLocation: function (data) {
@@ -164,6 +225,10 @@
           this.emitMessage("ERROR: The Organisation name doesn't exists", 'is-danger')
           return false
         }
+        if (this.selectedCountry === '') {
+          this.emitMessage("ERROR: Please choose the location of this customer", 'is-danger')
+          return false
+        }
         // All good lets save the entry on the database.
         var saveOrg = {
           org_id: this.selected.id,
@@ -171,12 +236,15 @@
           created_at: this.dateFormat(this.selected.created_at),
           location: this.selected.organization_fields.customer_location,
           expired_contract: this.selected.organization_fields.expired_contract,
-          recently_added: true
+          recently_added: true,
+          archived: false,
+          country: this.selectedCountry
         }
         this.axios.post(this.api.org, qs.stringify(saveOrg)).then(response => {
           if (response.statusText === 'Created' && response.status === 201) {
             this.menuFormActive = false
             this.menuItems.push(response.data)
+            this.updateArchive()
             this.emitMessage('Customer Successfully Registered', 'is-success')
           } else {
             console.log(response)
@@ -193,5 +261,13 @@
 </script>
 
 <style>
+
+  .is-disabled {
+    cursor: no-drop;
+    background-color: white;
+  }
+  a.is-disabled:hover {
+    background-color: white;
+  }
 
 </style>

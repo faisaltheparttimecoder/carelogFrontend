@@ -7,7 +7,11 @@
 </template>
 
 <script>
-  module.exports = {
+  import defaults from './../../mixins/default'
+  export default  {
+    mixins: [
+      defaults
+    ],
     created: function () {
       this.chartData = {
         columns: ['location', 'GDP'],
