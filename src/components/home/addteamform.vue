@@ -113,8 +113,8 @@
 
 <script>
 
-  import defaults from './../../mixins/default'
-  import helpers from './../../mixins/helper'
+  import defaults from '../../mixins/default'
+  import helpers from '../../mixins/helper'
   var qs = require('qs')
 
   export default {

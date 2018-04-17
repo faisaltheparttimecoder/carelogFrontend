@@ -260,7 +260,7 @@
   }
 </script>
 
-<style>
+<style scoped>
 
   .is-disabled {
     cursor: no-drop;

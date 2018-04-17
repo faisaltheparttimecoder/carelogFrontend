@@ -139,8 +139,8 @@
 
 <script>
   import modelAddEdit from './addteamform'
-  import defaults from './../../mixins/default'
-  import helpers from './../../mixins/helper'
+  import defaults from '../../mixins/default'
+  import helpers from '../../mixins/helper'
   var chunk = require('chunk')
 
   export default {

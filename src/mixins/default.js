@@ -55,6 +55,7 @@ export default {
         dashboard: process.env.API_URL + 'api/customer/tickets/',
         environment:  process.env.API_URL + 'api/customer/environment/',
         team: process.env.API_URL + 'api/bcs/team/',
+        main: process.env.API_URL + 'api/bcs/main/',
         country: process.env.API_URL+ 'api/customer/country/',
       }
 
