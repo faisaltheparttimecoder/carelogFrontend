@@ -1,5 +1,5 @@
 import home from '@/components/home/main'
-import engagement from '@/components/engagement/engagement'
+import engagement from '@/components/home/engagement'
 import team from '@/components/home/team'
 import dashboard from '@/components/dashboard/dashboard'
 import tickets from '@/components/tickets/tickets'

@@ -14,7 +14,7 @@
       <div class="hero-body">
         <div class="container">
           <h1 class="title is-1">
-            Business Critical Support
+            Engaging & Pricing of Businsess Critical Service
           </h1>
           <br/>
           <section class="content">
@@ -23,11 +23,11 @@
           <section v-if="!markdownSwitches.show">
             <a target="_blank" href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet"> Markdown Cheet Sheet </a>
             <b-field>
-              <b-input type="textarea" v-model="markdownSwitches.source" rows="20"></b-input>
+              <b-input type="textarea" v-model="markdownSwitches.source" rows="20"> </b-input>
             </b-field>
             <br/>
           </section>
-          <app-map> </app-map>
+
         </div>
       </div>
     </section>
@@ -55,7 +55,7 @@
     data: function () {
       return {
         id: '',
-        page: 'main',
+        page: 'engagement'
       }
     },
     created: function () {
@@ -66,7 +66,7 @@
           this.markdownSwitches.originalSource = this.markdownSwitches.source
         }
       })
-      return this.$store.dispatch('activeNavbarAction', 'Main')
+      return this.$store.dispatch('activeNavbarAction', 'Engagement & Pricing')
     }
   }
 </script>

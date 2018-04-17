@@ -108,7 +108,7 @@
               iconpack: 'fab',
               icon: 'font-awesome-flag'
             }, {
-              item: 'Engaging & Pricing',
+              item: 'Engagement & Pricing',
               route: '/engagement',
               description: 'BCS Engagement & Pricing',
               iconpack: 'fas',
