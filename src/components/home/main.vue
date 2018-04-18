@@ -21,7 +21,6 @@
             <app-editor :markdownSwitches="markdownSwitches"> </app-editor>
           </section>
           <section v-if="!markdownSwitches.show">
-            <a target="_blank" href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet"> Markdown Cheet Sheet </a>
             <b-field>
               <b-input type="textarea" v-model="markdownSwitches.source" rows="20"></b-input>
             </b-field>
@@ -41,7 +40,7 @@
   import helpers from './../../mixins/helper'
   import options from './mainoptions'
   import editor from './editor.js'
-  import markdownEditor from './markdowneditor'
+  import markdownEditor from '../core/markdowneditor'
 
   export default {
     components: {

@@ -82,4 +82,9 @@
     font-size: 14px;
   }
 
+  .panel-danger {
+    background-color: #ff3860;
+    color: white;
+  }
+
 </style>

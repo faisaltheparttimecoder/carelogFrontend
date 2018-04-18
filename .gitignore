@@ -16,4 +16,5 @@ yarn-error.log*
 # Ignore the  file
 src/config/keys.js
 to-be-added.txt
-
+xslxextractor
+src/components/xslxextractor/index.js

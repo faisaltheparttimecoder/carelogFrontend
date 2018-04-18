@@ -9,12 +9,12 @@
         <section>
           <b-tabs type="is-boxed is-right">
             <b-tab-item label="Account Information" icon="account-convert">
-              <app-account-info :info="collector.account_info"
-                                :orgID="orgID"
-              > </app-account-info>
+              <app-account-info :info="collector.account_info" :orgID="orgID">
+              </app-account-info>
             </b-tab-item>
             <b-tab-item label="Contact Information" icon="phone-plus">
-
+              <app-customer-contact :info="collector.contact_info" :orgID="orgID">
+              </app-customer-contact>
             </b-tab-item>
             <b-tab-item label="Environment Details" icon="leaf">
 
@@ -32,22 +32,29 @@
 
 <script>
   import customer from './../customer/customer'
-  import accountInfo from './accountinfo'
+  import accountInfo from './accountinformation'
+  import customerContact from './contactInformation'
   import defaults from './../../mixins/default'
 
   export default {
     components: {
       'app-customer': customer,
-      'app-account-info': accountInfo
+      'app-account-info': accountInfo,
+      'app-customer-contact': customerContact
     },
     data: function() {
       return {
         orgID: "",
         environment: [
-          'account_info',
+          'account_info', 'contact_info'
         ],
         collector: {
           'account_info': {
+            info: '',
+            org_id: '',
+            id: ''
+          },
+          'contact_info': {
             info: '',
             org_id: '',
             id: ''
