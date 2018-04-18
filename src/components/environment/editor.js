@@ -82,9 +82,24 @@ export default {
     toggleEdit: function() { // Toggle b/w Edit View and Preview
       this.markdownSwitches.show =! this.markdownSwitches.show
     },
+    loadEnvironment: function (event) {
+      this.orgID = event.org_id;
+      for (let i in this.environment) {
+        this.axios.get(this.api.environment + this.environment[i] + '/?org_id=' + this.orgID ).then(response => {
+          if (response.data.length > 0 ) {
+            this.collector[this.environment[i]] = response.data
+          } else {
+            this.collector[this.environment[i]] = this.orginalCollector[this.environment[i]]
+          }
+        }).catch(e => {
+          console.log(e)
+          console.log(e.response)
+        })
+      }
+    },
     saveAccountInformation: function () { // Save the information on database
-      if (this.id === undefined) {
-        this.axios.post(this.api.environment + this.subApi, qs.stringify({
+      if (this.id === '') {
+        this.axios.post(this.api.environment + this.subApi + '/', qs.stringify({
           org_id: this.orgID,
           updated: new Date(),
           info: this.markdownSwitches.source
@@ -101,7 +116,7 @@ export default {
           console.log(e.response)
         })
       } else {
-        this.axios.put(this.api.environment + this.subApi + this.id + '/', qs.stringify({
+        this.axios.put(this.api.environment + this.subApi + '/' + this.id + '/', qs.stringify({
           org_id: this.orgID,
           updated: new Date(),
           info: this.markdownSwitches.source

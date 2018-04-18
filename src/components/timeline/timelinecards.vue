@@ -5,23 +5,15 @@
       <div class="columns" v-for="timelines in chunkedTimelines">
         <div v-for="timeline in timelines" class="column">
           <div class="card">
-            <header class="card-header">
-              <p class="card-header-title subtitle has-text-primary">
-                {{ timeline.title }}
-              </p>
-            </header>
             <div class="card-content">
-              <div class="content">
-                {{ timeline.description }}
-                <br><br>
-                <p><i class="far fa-clock"></i> {{ timeline.created | moment("ddd, MMMM Do YYYY") }}</p>
-              </div>
+              <p class="title"> {{ timeline.title }} </p>
+              <div class="content"> {{ timeline.description }} </div>
+              <p class="heading"> <strong> created: </strong>{{ timeline.created | moment("ddd, MMMM Do YYYY HH:MM:ss Z") }}</p>
             </div>
             <footer class="card-footer">
               <a class="card-footer-item" v-on:click="TimelineDetails({
                                                        id: timeline.id,
-                                                       name: timeline.title})">
-                View Details</a>
+                                                       name: timeline.title})"> Details </a>
               <a class="card-footer-item" v-on:click="confirmCustomDelete(timeline.id)">Delete</a>
             </footer>
           </div>

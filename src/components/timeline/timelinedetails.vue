@@ -71,7 +71,10 @@
                   <!--the timeline contents-->
                   <p class="heading">{{ timelineContent.created | moment('DD MMMM, YYYY')}}</p>
                   <h4 class="title is-4"> {{ timelineContent.title }}</h4>
-                  <p class="subtitle" v-html="convertTextToLinks(timelineContent.description)"></p>
+                  <!--<p class="subtitle" v-html="convertTextToLinks(timelineContent.description)"></p>-->
+                  <div class="content" style="margin-top: -15%">
+                    <app-markdown :source="timelineContent.description"> </app-markdown>
+                  </div>
                   <!--Buttons to manipulate the timeline content-->
                   <nav class="level is-mobile">
                     <div class="level-left">
@@ -82,7 +85,7 @@
                                                           category: timelineContent.category_id,
                                                           date: new Date(timelineContent.created),
                                                           title: timelineContent.title,
-                                                          message: replaceBrWithLineBreak(timelineContent.description),
+                                                          message: timelineContent.description,
                                                           update: true
                                                         })">
                         <span class="icon is-small"><i class="fas fa-pencil-alt"></i></span>
@@ -125,10 +128,12 @@
   import defaults from './../../mixins/default'
   import helpers from './../../mixins/helper'
   import noContent from './../core/nocontent'
+  import VueMarkdown from 'vue-markdown'
 
   export default {
     components: {
       'app-form': timelineForm,
+      'app-markdown': VueMarkdown,
       'app-nocontent': noContent
     },
     mixins: [

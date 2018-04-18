@@ -91,7 +91,7 @@
             category_id: this.form.category,
             created: this.form.date,
             title: this.capitalizeFirstLetter(this.form.title),
-            description: this.form.message.replace(/(?:\r\n|\r|\n)/g, '<br />')
+            description: this.form.message
           })).then(response => {
             this.emitMessage('Successfully update the note to the timeline', 'is-success')
             this.$emit('newTimelineData')
@@ -107,7 +107,7 @@
             category_id: this.form.category,
             created: this.form.date,
             title: this.form.title,
-            description: this.form.message.replace(/(?:\r\n|\r|\n)/g, '<br />')
+            description: this.form.message
           })).then(response => {
             this.emitMessage('Successfully added a new note to the timeline', 'is-success')
             this.$emit('newTimelineData')

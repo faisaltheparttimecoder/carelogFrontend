@@ -1,7 +1,7 @@
 <template>
   <nav class="level">
     <div class="level-left">
-      <p class="heading"><strong>Last Updated:</strong> {{ updatedDate | moment('MMMM, DD YYYY HH:MM:ss Z') }} </p>
+      <p class="heading"><strong>Last Updated:</strong> {{ updatedDate | moment('ddd, MMMM Do YYYY HH:MM:ss Z') }} </p>
     </div>
     <div class="level-right">
       <div class="field has-addons">
