@@ -58,7 +58,6 @@
             <p class="title">{{note.title}}</p>
             <p class="content">
               <app-markdown :source="snippet(note.info)"> </app-markdown>
-              <!--{{note.info | snippet}}-->
               <a v-on:click="loadDetails(note.id, note.info, note.title)"> Read More ... </a>
             </p>
             <br/>
@@ -205,6 +204,10 @@
     watch: {
       'info': function () {
         this.notes = this.info
+      },
+      'orgID': function () {
+        this.showDetails = false
+        this.markdownSwitches.show = true
       }
     }
   }

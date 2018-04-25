@@ -32,7 +32,7 @@
                                           )"><b-icon
               pack="fas"
               :icon="props.row.archived === false ? 'arrow-right' : 'arrow-left'"
-              :type="props.row.archived === false ? 'is-danger' : 'is-success'"
+              :type="props.row.archived === false ? 'is-primary' : 'is-success'"
               size="is-small">
             </b-icon></a>
           </b-table-column>
@@ -41,7 +41,7 @@
             <a v-on:click="confirmDelete(props.row.id)"><b-icon
               pack="fas"
               icon="trash"
-              type="is-danger"
+              type="is-primary"
               size="is-small">
             </b-icon></a>
           </b-table-column>

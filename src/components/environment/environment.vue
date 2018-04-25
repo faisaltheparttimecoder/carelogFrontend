@@ -19,11 +19,11 @@
             </b-tab-item>
 
             <b-tab-item label="Environment Details" icon="leaf">
-
+              <app-details :orgID="orgID"> </app-details>
             </b-tab-item>
 
             <b-tab-item label="Environment Notes" icon="onenote">
-              <app-details :info="collector.environment_notes" :orgID="orgID"> </app-details>
+              <app-notes :info="collector.environment_notes" :orgID="orgID"> </app-notes>
             </b-tab-item>
 
           </b-tabs>
@@ -38,6 +38,7 @@
   import accountInfo from './accountinformation'
   import customerContact from './contactInformation'
   import notes from './environmentnotes'
+  import details from './environmentdetails'
   import defaults from './../../mixins/default'
 
   export default {
@@ -45,7 +46,8 @@
       'app-customer': customer,
       'app-account-info': accountInfo,
       'app-customer-contact': customerContact,
-      'app-details': notes
+      'app-notes': notes,
+      'app-details': details
     },
     data: function() {
       return {

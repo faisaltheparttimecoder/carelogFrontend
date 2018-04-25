@@ -36,7 +36,6 @@ export default {
       // All content request
       allActive: false,
 
-
       // All the API link
       api: {
         links: process.env.API_URL + 'api/links/',
@@ -57,8 +56,11 @@ export default {
         team: process.env.API_URL + 'api/bcs/team/',
         main: process.env.API_URL + 'api/bcs/main/',
         country: process.env.API_URL+ 'api/customer/country/',
+        envProductList: process.env.API_URL + 'api/customer/environment/environment_details_product_list/',
+        envInstance:  process.env.API_URL + 'api/customer/environment/environment_instance/',
+        envInstanceProductList:  process.env.API_URL + 'api/customer/environment/environment_instance_product/',
+        envInstanceType:  process.env.API_URL + 'api/customer/environment/environment_type/'
       }
-
     }
   }
 }
