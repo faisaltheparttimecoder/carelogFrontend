@@ -49,6 +49,12 @@ export default {
         icon: 'fas fa-ban',
         action: 'cancel',
       }],
+      info: {
+        info: '',
+        org_id: '',
+        updated: '',
+        id: ''
+      } ,
     }
   },
   methods: {
@@ -106,6 +112,7 @@ export default {
         })).then(response => {
           this.toggleAllActionButtons()
           this.addOrEdit()
+          this.id = response.data.id
           this.markdownSwitches.originalSource = this.markdownSwitches.source
           this.updatedDate = response.data.updated
           this.toggleEdit()
@@ -133,6 +140,50 @@ export default {
           console.log(e.response)
         })
       }
+    },
+    orgChangedAdjustData: function() {
+      if (this.info.id !== "" || this.info.id !== undefined ) {
+        this.markdownSwitches.show = true
+        this.id = this.info.id
+        this.updatedDate = this.info.updated
+        this.markdownSwitches.source = this.info.info
+        this.markdownSwitches.originalSource = this.markdownSwitches.source
+      } else {
+        this.markdownSwitches.source = ""
+      }
+
+      // User changed the customer while the form or button was active
+      // So now we cleanup the visbility
+      if (!this.buttonDisable.save) {
+        this.toggleAllActionButtons()
+      }
+
+      if (this.markdownSwitches.source === "") {
+        this.buttonDisable.add = false
+        this.buttonDisable.edit = true
+      } else {
+        this.buttonDisable.edit = false
+        this.buttonDisable.add = true
+      }
+    },
+    orgChangedGetData: function() {
+      this.axios.get(this.api.environment + this.subApi + '/?org_id=' + this.orgID ).then(response => {
+        this.info = {
+          info: '',
+          org_id: '',
+          updated: '',
+          id: ''
+        }
+        if (response.data.length > 0 ) {
+          this.info = response.data[0]
+        }
+        this.orgChangedAdjustData()
+      }).catch(e => {
+        console.log(e)
+        console.log(e.response)
+        this.emitMessage("Failed to load data for " + this.subAPi +", check the browser log form more information", 'is-danger')
+        return false
+      })
     },
     addOrEdit: function() { // Based on the data is it a Add Or Edit
       if (this.id !== undefined || (this.markdownSwitches.source !== '' && this.markdownSwitches.source !== undefined) ) {

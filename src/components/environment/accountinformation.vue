@@ -49,7 +49,7 @@
       defaults, helpers, editor
     ],
     props: [
-      'orgID', 'info'
+      'orgID'
     ],
     data: function() {
       return {
@@ -60,30 +60,8 @@
       }
     },
     watch: { // watch the info property and change the value based on the changes.
-      'info': function() {
-        if (this.info.id !== "" || this.info.id !== undefined ) {
-          this.markdownSwitches.show = true
-          this.id = this.info.id
-          this.updatedDate = this.info.updated
-          this.markdownSwitches.source = this.info.info
-          this.markdownSwitches.originalSource = this.markdownSwitches.source
-        } else {
-          this.markdownSwitches.source = ""
-        }
-
-        // User changed the customer while the form or button was active
-        // So now we cleanup the visbility
-        if (!this.buttonDisable.save) {
-          this.toggleAllActionButtons()
-        }
-
-        if (this.markdownSwitches.source === "") {
-          this.buttonDisable.add = false
-          this.buttonDisable.edit = true
-        } else {
-          this.buttonDisable.edit = false
-          this.buttonDisable.add = true
-        }
+      'orgID': function () {
+        this.orgChangedGetData()
       }
     }
   }

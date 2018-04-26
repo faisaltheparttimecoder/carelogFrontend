@@ -1,6 +1,5 @@
 <template>
   <section class="section">
-    <b-loading :is-full-page="isFullPage" :active.sync="isLoading"></b-loading>
     <div class="columns">
       <!--Load customer menu sidebar-->
       <div class="column is-2">
@@ -11,11 +10,11 @@
           <b-tabs type="is-boxed is-right">
 
             <b-tab-item label="Account Information" icon="account-convert">
-              <app-account-info :info="collector.account_info[0]" :orgID="orgID"> </app-account-info>
+              <app-account-info :orgID="orgID"> </app-account-info>
             </b-tab-item>
 
             <b-tab-item label="Contact Information" icon="phone-plus">
-              <app-customer-contact :info="collector.contact_info[0]" :orgID="orgID"> </app-customer-contact>
+              <app-customer-contact :orgID="orgID"> </app-customer-contact>
             </b-tab-item>
 
             <b-tab-item label="Environment Details" icon="leaf">
@@ -23,7 +22,7 @@
             </b-tab-item>
 
             <b-tab-item label="Environment Notes" icon="onenote">
-              <app-notes :info="collector.environment_notes" :orgID="orgID"> </app-notes>
+              <app-notes :orgID="orgID"> </app-notes>
             </b-tab-item>
 
           </b-tabs>
@@ -52,55 +51,7 @@
     data: function() {
       return {
         orgID: "",
-        isLoading: false,
         isFullPage: true,
-        environment: [
-          'account_info', 'contact_info', 'environment_notes'
-        ],
-        orginalCollector: {
-          'account_info': [{
-            info: '',
-            org_id: '',
-            updated: '',
-            id: ''
-          }],
-          'contact_info': [{
-            info: '',
-            org_id: '',
-            updated: '',
-            id: ''
-          }],
-          'environment_notes': [{
-            info: '',
-            org_id: '',
-            title: '',
-            created: '',
-            update: '',
-            id: ''
-          }],
-        },
-        collector: {
-          'account_info': [{
-            info: '',
-            org_id: '',
-            updated: '',
-            id: ''
-          }],
-          'contact_info': [{
-            info: '',
-            org_id: '',
-            updated: '',
-            id: ''
-          }],
-          'environment_notes': [{
-            info: '',
-            org_id: '',
-            title: '',
-            created: '',
-            update: '',
-            id: ''
-          }],
-        }
       }
     },
     mixins: [
@@ -112,19 +63,6 @@
     methods: {
       loadEnvironment: function (event) {
         this.orgID = event.org_id;
-        this.isLoading = true
-        for (let i in this.environment) {
-          this.collector[this.environment[i]] = this.orginalCollector[this.environment[i]]
-          this.axios.get(this.api.environment + this.environment[i] + '/?org_id=' + this.orgID ).then(response => {
-            if (response.data.length > 0 ) {
-              this.collector[this.environment[i]] = response.data
-            }
-          }).catch(e => {
-            console.log(e)
-            console.log(e.response)
-          })
-        }
-        this.isLoading = false
       }
     }
   }

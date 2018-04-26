@@ -113,7 +113,7 @@
       'app-nocontent': noContent
     },
     props: [
-      'orgID', 'info'
+      'orgID'
     ],
     mixins: [
       defaults, helpers, options
@@ -202,12 +202,20 @@
       }
     },
     watch: {
-      'info': function () {
-        this.notes = this.info
-      },
       'orgID': function () {
         this.showDetails = false
         this.markdownSwitches.show = true
+        this.axios.get(this.api.environment + this.subAPi + '/?org_id=' + this.orgID ).then(response => {
+          this.notes = [{id: ''}]
+          if (response.data.length > 0 ) {
+            this.notes = response.data
+          }
+        }).catch(e => {
+          console.log(e)
+          console.log(e.response)
+          this.emitMessage("Failed to load data, check the browser log form more information", 'is-danger')
+          return false
+        })
       }
     }
   }
