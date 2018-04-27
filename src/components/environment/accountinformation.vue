@@ -55,7 +55,7 @@
       return {
         id: '',
         updatedDate: '',
-        sample: sample.sampleTemplate,
+        sample: sample.accountSampleTemplate,
         subApi: 'account_info'
       }
     },
