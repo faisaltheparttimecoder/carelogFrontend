@@ -31,6 +31,9 @@ export default {
 
     // is the data empty
     emptyData: function (data) {
+      if (data === undefined) {
+        return true
+      }
       if (this.trimSpaces(data) === "") {
         return true
       } else {

@@ -13,10 +13,10 @@ export const accountSampleTemplate = `<!--- NOTES: -->
   <div class="hero-body">
     <div class="container has-text-centered">
       <h1 class="title is-1">
-        HSBC
+        [ customer name ]
       </h1>
       <h2 class="subtitle is-5"> 
-      	DSE: David Farell
+      	DSE: [ DSE's Name ]
       </h2>
     </div>
   </div>
@@ -31,6 +31,7 @@ Summary of company profile.
 + **Headquarters:** [Location of HQ]
 + **Employees:** [Employee count]
 + **Offices:** [Number of office] 
++ **Annual Sales:** [Annual Sales] 
 + **Slogan:** [Slogan of the company]
 + **Website:** [Company website]
 
