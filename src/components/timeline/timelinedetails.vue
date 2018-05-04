@@ -72,7 +72,7 @@
                   <p class="heading">{{ timelineContent.created | moment('DD MMMM, YYYY')}}</p>
                   <h4 class="title is-4"> {{ timelineContent.title }}</h4>
                   <!--<p class="subtitle" v-html="convertTextToLinks(timelineContent.description)"></p>-->
-                  <div class="content" style="margin-top: -15%">
+                  <div class="content">
                     <app-markdown :source="timelineContent.description"> </app-markdown>
                   </div>
                   <!--Buttons to manipulate the timeline content-->
