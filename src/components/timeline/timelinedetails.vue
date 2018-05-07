@@ -35,11 +35,6 @@
     </nav>
 
     <section class="section">
-      <!--Floating button to close the page-->
-      <a v-on:click="closeDetails" class="float">
-        <i class="fas fa-times my-float"></i>
-      </a>
-
       <div class="columns">
         <!--If no data available request user to add it-->
         <app-nocontent v-if="noContent"
@@ -106,13 +101,20 @@
         </div>
         <transition enter-active-class="animated bounceInRight" leave-active-class="animated bounceOutRight">
           <div class="column is-4" v-if="toggleForm">
-            <app-form :timeline="timeline"
-                      :orgID="customer"
-                      :form="form"
-                      v-on:newTimelineData="loadTimeLineData"
-                      v-on:clearForm="cleanForm"
-                      v-on:populateCategory="loadCategories($event)">
-            </app-form>
+            <!--Floating button to close the page-->
+            <a v-on:click="closeDetails" class="float">
+              <i class="fas fa-times my-float"></i>
+            </a>
+            <div class="float-form">
+              <app-form :timeline="timeline"
+                        :orgID="customer"
+                        :form="form"
+                        v-on:newTimelineData="loadTimeLineData"
+                        v-on:clearForm="cleanForm"
+                        v-on:populateCategory="loadCategories($event)">
+              </app-form>
+            </div>
+
           </div>
         </transition>
       </div>
@@ -233,6 +235,13 @@
 </script>
 
 <style scoped>
+
+  .float-form {
+    position: fixed;
+    width: 20%;
+    right: 40px;
+    z-index: 999;
+  }
 
   .float {
     position: fixed;
