@@ -40,6 +40,7 @@ export default {
     post: function(url, data) {  // Post Request
       return this.axios.post(url, qs.parse(data))
         .then((response) => Promise.resolve(response.data))
+        .catch((error) => Promise.reject(error))
 
     },
     patch: function(url, data) {  // Update Request

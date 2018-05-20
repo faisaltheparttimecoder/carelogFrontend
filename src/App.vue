@@ -3,15 +3,13 @@
     <!--If the user is authenticated then send to the main page-->
     <div class="authentication-status" v-if="$auth.isAuthenticated()">
       <!--loading spinner-->
-      <!--<app-loading :loading="true"> </app-loading>-->
+      <app-loading :loading="this.$store.state.appLoading"> </app-loading>
       <!--Notification components-->
       <vue-snotify> </vue-snotify>
       <!--All the template would have the navbar, so adding it here-->
       <app-navbar v-on:logout="authLogout"> </app-navbar>
       <!--Based on the router link clicked upload the specific component-->
-      <transition name="fade" mode="out-in">
-        <router-view/>
-      </transition>
+      <router-view :class="{'toggleOpacity': this.$store.state.appLoading}"/>
     </div>
     <!--Else redirect them to the login page-->
     <div v-if="!$auth.isAuthenticated()">
@@ -64,6 +62,10 @@
 </script>
 
 <style>
+  /* Loading page opacity */
+  .toggleOpacity {
+    opacity: 0.3
+  }
   /* Overwrite the snotify styling */
   .snotifyToast {
     border: 1px solid black;

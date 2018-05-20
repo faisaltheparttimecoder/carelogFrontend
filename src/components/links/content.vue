@@ -92,9 +92,11 @@
     methods: {
       // All content request
       allContent: function () {
+        this.toggleLoading(true)
         this.get(this.api.links).then(response => {
           this.allLinks = response
           this.categoryTitle = 'All Categories'
+          this.toggleLoading(false)
         }).catch(error => {
           this.errorParser(this.selectedLinkLoadFailure, error)
         })

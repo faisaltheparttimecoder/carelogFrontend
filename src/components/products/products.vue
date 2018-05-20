@@ -43,9 +43,11 @@
     methods: {
       // Get all the contents of the rss feed.
       clickedContent: function (id) {
+        this.toggleLoading(true)
         this.get(this.api.product + id + '/').then(response => {
           this.selectedItem = response.name
           this.productContent = response.content.releases
+          this.toggleLoading(false)
         }).catch(error => {
           this.errorParser(this.productReleaseFailure, error)
         })

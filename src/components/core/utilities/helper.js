@@ -35,6 +35,10 @@ export default {
         onConfirm: () => this.deleteData(data)
       })
     },
+    // toggle the loading screen
+    toggleLoading: function(action) {
+      this.$store.dispatch('toggleLoadingAction', action)
+    },
     // Trim leading and trailing spaces of the data
     trimSpaces: function (data) {
       return data.trim()

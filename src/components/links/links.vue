@@ -93,11 +93,13 @@
       },
       // A new menu has been clicked.
       clickedContent: function (id) {
+        this.toggleLoading(true)
         // Pull the data from the category API
         this.get(this.api.category + id + '/').then(response => {
           this.tableData = response.category
           this.selectedItem = response.name
           this.categoryID = response.id
+          this.toggleLoading(false)
         }).catch(error => {
           this.errorParser(this.selectedCategoryLoadFailure, error)
         })

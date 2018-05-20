@@ -8,7 +8,8 @@ export const store = new Vuex.Store({
   state: {
     loggedUser: 'Anonymous',
     activeNavbar: '',
-    unauthorizedOrExpireToken: false
+    unauthorizedOrExpireToken: false,
+    appLoading: false,
   },
   // Call the mutation to commit new changes to the store.
   mutations: {
@@ -20,6 +21,9 @@ export const store = new Vuex.Store({
     },
     expiredToken: (state, expired) => {   // commit the user expiration date of the token
       state.unauthorizedOrExpireToken = expired
+    },
+    toggleLoading: (state, toggle) => { // toogle the visibility of loading action
+      state.appLoading = toggle
     }
   },
   // Perform the async operation to pull all the data from the API.
@@ -38,6 +42,9 @@ export const store = new Vuex.Store({
     },
     activeNavbarAction: (context, navItem) => {
       context.commit('activeNavbarMutation', navItem)
+    },
+    toggleLoadingAction: (context, switchLoading) => {
+      context.commit('toggleLoading', switchLoading)
     }
   }
 })

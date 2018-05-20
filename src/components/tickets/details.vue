@@ -122,6 +122,7 @@
       }
     },
     created: function () {
+      this.toggleLoading(true)
       // Pull all the comments
       this.get(this.api.ticketComments + this.ticket + '/').then(response => {
         this.comments = response.comments
@@ -131,6 +132,7 @@
             photo: element.photo
           }
         }
+        this.toggleLoading(false)
       }).catch(error => {
         this.errorParser(this.ticketCommentLoadFailure, error)
       })

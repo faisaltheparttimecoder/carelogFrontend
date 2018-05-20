@@ -224,6 +224,7 @@
       saveData: function () {
         var success = true
         this.timelineContent = ''
+        this.toggleLoading(true)
         // Loop through the product list
         for (let i in this.instanceDetails.inputs) {
           // if there is no information about the product
@@ -276,6 +277,7 @@
           // Update the environment page
           _this.$emit('updateInstance')
           _this.envInstanceInfo = []
+          _this.toggleLoading(false)
         }, 1000)
       },
       // For all the product create a time line content

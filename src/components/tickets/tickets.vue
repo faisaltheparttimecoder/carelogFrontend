@@ -40,10 +40,8 @@
   import optionBar from './../core/skeletons/optionbar'
   import table from './table'
   import details from './details'
-  import DotLoader from "vue-spinner/src/DotLoader";
   export default {
     components: {
-      DotLoader,
       'app-option-bar': optionBar,
       'app-table': table,
       'app-details': details
@@ -86,6 +84,7 @@
       // Load ticket data
       loadTicketTable: function (events) {
         this.isDetails = false
+        this.toggleLoading(true)
         if (events.who === 'customer') { // Update the values based on who send the event
           this.customer = events.zendesk_org_id
           this.org_id = events.org_id
@@ -93,7 +92,7 @@
         this.get(this.generateURL()).then(response => {
           this.tableData = response.results
           this.ticketAttributes = response.tickets_attributes
-          this.$emit('loadingOff')
+          this.toggleLoading(false)
         }).catch(error => {
           this.errorParser(this.ticketLoadFailure, error)
         })

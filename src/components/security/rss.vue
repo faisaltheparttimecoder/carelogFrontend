@@ -140,9 +140,11 @@
       },
       // Get all the contents of the rss feed.
       clickedContent: function (id) {
+        this.toggleLoading(true)
         this.get(this.api.security + id + '/').then(response => {
           this.selectedItem = response.name
           this.rssContent = response.content
+          this.toggleLoading(false)
         }).catch(error => {
           this.errorParser(this.rssContentFailure, error)
         })
