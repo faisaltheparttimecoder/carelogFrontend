@@ -1,30 +1,31 @@
+<!--Environment template-->
 <template>
   <section class="section">
     <div class="columns">
-      <!--Load customer menu sidebar-->
+      <!--Customers sidebar-->
       <div class="column is-2">
-        <app-customer :infoSource=false v-on:selectedOrg="loadEnvironment($event)"> </app-customer>
+        <app-customer :infoSource=false v-on:selectedOrg="orgID = $event.org_id"> </app-customer>
       </div>
+      <!--All the environment tab-->
       <div class="column is-10">
         <section>
           <b-tabs type="is-boxed is-right">
-
+            <!--Account Information Page-->
             <b-tab-item label="Account Information" icon="account-convert">
-              <app-account-info :orgID="orgID"> </app-account-info>
+              <app-account :orgID="orgID"> </app-account>
             </b-tab-item>
-
+            <!--Contact Information Page-->
             <b-tab-item label="Contact Information" icon="phone-plus">
-              <app-customer-contact :orgID="orgID"> </app-customer-contact>
+              <app-contact :orgID="orgID"> </app-contact>
             </b-tab-item>
-
+            <!--Environment Details Page-->
             <b-tab-item label="Environment Details" icon="leaf">
-              <app-details :orgID="orgID"> </app-details>
+              <app-detail :orgID="orgID"> </app-detail>
             </b-tab-item>
-
+            <!--Environment Notes Page-->
             <b-tab-item label="Environment Notes" icon="onenote">
               <app-notes :orgID="orgID"> </app-notes>
             </b-tab-item>
-
           </b-tabs>
         </section>
       </div>
@@ -33,42 +34,25 @@
 </template>
 
 <script>
-  import customer from './../customer/customer'
-  import accountInfo from './accountinformation'
-  import customerContact from './contactInformation'
-  import notes from './environmentnotes'
-  import details from './environmentdetails'
-  import defaults from './../../mixins/default'
+  import account from './account/account'
+  import contact from './contact/contact'
+  import detail from './details/details'
+  import notes from './notes/notes'
 
   export default {
     components: {
-      'app-customer': customer,
-      'app-account-info': accountInfo,
-      'app-customer-contact': customerContact,
-      'app-notes': notes,
-      'app-details': details
+      'app-account': account,
+      'app-contact': contact,
+      'app-detail': detail,
+      'app-notes': notes
     },
     data: function() {
       return {
         orgID: "",
-        isFullPage: true,
       }
     },
-    mixins: [
-      defaults
-    ],
     created: function () {
       return this.$store.dispatch('activeNavbarAction', 'Environment')
     },
-    methods: {
-      loadEnvironment: function (event) {
-        this.orgID = event.org_id;
-      }
-    }
   }
-
 </script>
-
-<style scoped>
-
-</style>

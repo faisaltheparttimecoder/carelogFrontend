@@ -4,76 +4,64 @@
 
     <!--Spilt the container into two grids one half for menu and other for the content-->
     <div class="columns is-fullheight">
-
       <!--menu grid-->
       <div class="column is-2 is-sidebar-menu is-hidden-mobile">
-        <app-menu :menuItems="menuItems" :selectedItem="selectedItem" :menuTitle="menuTitle" :sourceUrl="sourceUrl"
-                  :sourceTitle="sourceTitle" :sourceInfo=true v-on:refreshContent="clickedContent($event)">
+        <app-menu :menuItems="menuItems" :selectedItem="selectedItem"
+                  :menuTitle="menuTitle" :sourceUrl="sourceUrl"
+                  :menuModification="false"
+                  :sourceTitle="sourceTitle" :sourceInfo=true
+                  v-on:refreshContent="clickedContent($event)">
         </app-menu>
       </div>
-
       <!--product content grid-->
       <div class="column is-10">
-        <app-releases :productTitle="selectedItem" :productContent="productContent" :loading="loading"></app-releases>
+        <app-releases :productTitle="selectedItem"
+                      :productContent="productContent">
+        </app-releases>
       </div>
-
     </div>
-
   </section>
 </template>
 
 <script>
-  import menu from '../core/menu'
-  import releases from './productrelease'
-  import helpers from './../../mixins/helper'
-  import defaults from './../../mixins/default'
-
+  import releases from './releases'
   export default {
     name: 'product',
     components: {
-      'app-menu': menu,
       'app-releases': releases
     },
-    // All global mixins
-    mixins: [
-      helpers, defaults
-    ],
     data() {
       return {
-        // This component default values
-        menuTitle: 'Pivotal Products',
+        menuTitle: 'Pivotal Products',   // This component default values
         sourceUrl: 'https://network.pivotal.io/',
         sourceTitle: 'Pivotal Network',
-
-        // table loading
-        loading: false,
-
-        // The Contents of the pivotal products
-        productContent: []
+        menuItems: [],
+        selectedItem: '',
+        productContent: []              // The Contents of the pivotal products
       }
-    },
-    // Attaching the lifecycle hook, to pull the API.
-    created: function () {
-      this.loading = true
-      this.$store.dispatch('activeNavbarAction', 'Products')
-      this.axios.get(this.api.product).then(response => {
-        this.menuItems = response.data
-        if (!this.arrayEmpty(this.menuItems)) {
-          this.clickedContent(this.menuItems[0]['id'])
-        }
-        this.loading = false
-      })
     },
     methods: {
       // Get all the contents of the rss feed.
       clickedContent: function (id) {
-        this.loading = true
-        this.axios.get(this.api.product + id + '/').then(response => {
-          this.selectedItem = response.data.name
-          this.productContent = response.data.content.releases
-          this.loading = false
+        this.get(this.api.product + id + '/').then(response => {
+          this.selectedItem = response.name
+          this.productContent = response.content.releases
+        }).catch(error => {
+          this.errorParser(this.productReleaseFailure, error)
         })
       },
+    },
+    // Attaching the lifecycle hook, to pull the API.
+    created: function () {
+      this.get(this.api.product).then(response => {
+        this.menuItems = response
+        if (!this.arrayEmpty(this.menuItems)) {
+          this.clickedContent(this.menuItems[0]['id'])
+        }
+      }).catch(error => {
+        this.errorParser(this.productLoadFailure, error)
+      })
+      this.$store.dispatch('activeNavbarAction', 'Products')
     }
   }
 </script>
@@ -86,7 +74,6 @@
     flex-direction: row;
     justify-content: stretch;
   }
-
   .columns.is-fullheight .column {
     overflow-y: auto;
   }

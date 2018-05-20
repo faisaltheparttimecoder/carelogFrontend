@@ -10,10 +10,10 @@
           <img src="../../assets/logo.png">
         </figure>
         <h1 class="title white">
-          Carelog
+          Pivotal Business Critical Support
         </h1>
-        <h2 class="subtitle">
-          Please sign in
+        <h2 class="subtitle is-6">
+          An extension of our customers
         </h2>
         <b-message v-if="unauthorizedLogin" title="UnAuthorized User" type="is-danger" has-icon>
           {{ unAuthorizedUserMessage }}
@@ -51,13 +51,11 @@
 </script>
 
 <style scoped>
-
   #container {
     width: 100%;
     height: 100%;
     overflow: hidden;
   }
-
   #first-blind {
     position: absolute;
     width: 100%;
@@ -70,25 +68,20 @@
     -webkit-animation-fill-mode: forwards;
     animation-fill-mode: forwards;
   }
-
   @keyframes first {
     50% {
       -webkit-clip-path: polygon(0% 0%, 0% 0%, 21% 100%, 0% 100%);
       clip-path: polygon(0% 0%, 0% 0%, 21% 100%, 0% 100%);
     }
-
     80% {
       -webkit-clip-path: polygon(0% 20%, 0% 20%, 21% 100%, 0% 100%);
       clip-path: polygon(0% 20%, 0% 20%, 21% 100%, 0% 100%);
     }
-
     100% {
       -webkit-clip-path: polygon(0% 20%, 0% 20%, 21% 100%, 0% 100%);
       clip-path: polygon(0% 20%, 0% 20%, 21% 100%, 0% 100%);
     }
-
   }
-
   #second-blind {
     position: absolute;
     width: 100%;
@@ -100,29 +93,23 @@
     animation: second 0.3s ease-out;
     -webkit-animation-delay: 0.3s; /* Chrome, Safari, Opera */
     animation-delay: 0.3s;
-
     -webkit-animation-fill-mode: forwards;
     animation-fill-mode: forwards;
   }
-
   @keyframes second {
-
     100% {
       -webkit-clip-path: polygon(0 94%, 100% 85%, 100% 100%, 0% 100%);
       clip-path: polygon(0 94%, 100% 85%, 100% 100%, 0% 100%);
     }
   }
-
   img {
     width: 60%;
     margin-left: 2%;
   }
-
   .container.has-text-centered {
     margin: 0 auto;
     text-align: left;
   }
-
   @media (max-width: 1000px) {
     .container.has-text-centered {
       width: 400px;
@@ -133,7 +120,6 @@
       width: 600px;
     }
   }
-
   .google-button {
     cursor: pointer;
     height: 40px;
@@ -155,13 +141,11 @@
     padding: 0;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   }
-
   .google-button:focus,
   .google-button:hover {
     -webkit-box-shadow: 1px 4px 5px 1px rgba(0, 0, 0, 0.1);
     box-shadow: 1px 4px 5px 1px rgba(0, 0, 0, 0.1);
   }
-
   .google-button:active {
     background-color: #e5e5e5;
     -webkit-box-shadow: none;
@@ -169,7 +153,6 @@
     -webkit-transition-duration: 10ms;
     transition-duration: 10ms;
   }
-
   .google-button__icon {
     display: inline-block;
     vertical-align: middle;
@@ -179,11 +162,9 @@
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
   }
-
   .google-button__icon--plus {
     width: 27px;
   }
-
   .google-button__text {
     display: inline-block;
     vertical-align: middle;

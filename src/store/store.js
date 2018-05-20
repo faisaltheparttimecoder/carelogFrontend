@@ -1,33 +1,33 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
+import Vue from 'vue'
+import Vuex from 'vuex'
 
-Vue.use(Vuex);
+Vue.use(Vuex)
 
 // Collect all the modules onto variable called store.
 export const store = new Vuex.Store({
   state: {
-    loggedUser: '',
+    loggedUser: 'Anonymous',
     activeNavbar: '',
     unauthorizedOrExpireToken: false
   },
+  // Call the mutation to commit new changes to the store.
   mutations: {
-    // Call the mutation to commit new changes to the store.
-    loggedUserMutation: (state, content) => {
+    loggedUserMutation: (state, content) => {   // commit connected user name
       state.loggedUser = content.data
     },
-    activeNavbarMutation: (state, navItem) => {
+    activeNavbarMutation: (state, navItem) => {  // commit active navbar
       state.activeNavbar = navItem
     },
-    expiredToken: (state, expired) => {
+    expiredToken: (state, expired) => {   // commit the user expiration date of the token
       state.unauthorizedOrExpireToken = expired
     }
   },
+  // Perform the async operation to pull all the data from the API.
   actions: {
-    // Perform the async operation to pull all the data from the API.
-    loggedUserAction: (context) => {
+    loggedUserAction: (context) => {    // Get the connected username from django
       Vue.axios.get(process.env.API_URL + 'connected_user/').then(function (response) {
         context.commit('loggedUserMutation', response)
-      }).catch(err => {
+      }).catch(err => {   // If we get a 401 error means the token has expired, so send the login screen to the user
         if ( err.response.status === 401 && err.response.statusText === 'Unauthorized' ) {
           context.commit('expiredToken', true)
         } else {
