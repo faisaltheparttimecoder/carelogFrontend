@@ -1,129 +1,112 @@
 <template>
   <section class="section">
     <div class="columns">
-
       <!--Load customer menu sidebar-->
       <div class="column is-2">
-        <app-customer v-on:selectedOrg="loadTicketTable($event)" :infoSource=true></app-customer>
+        <app-customer :infoSource=true @selectedOrg="loadTicketTable"> </app-customer>
       </div>
-
       <!--Load the ticket data-->
       <div class="column is-10">
-        <!--Using keep alive to keep the data in memory when switching the component so that-->
-        <!--we dont have to refresh the data again-->
-        <transition enter-active-class="animated slideInRight">
-          <div v-if="!isDetails">
-            <keep-alive>
-              <app-options :options="options" v-on:refresh="loadTicketTable($event)"> </app-options>
-            </keep-alive>
-            <app-table :tableData="tableData"
-                       :hotTickets="hotTickets"
-                       :loading="loading"
-                       :orgID="org_id"
-                       v-on:details="loadDetails($event)">
-            </app-table>
-          </div>
-        </transition>
-        <transition enter-active-class="animated slideInRight">
-          <app-details v-if="isDetails"
-                       v-on:closeDetails="isDetails=false"
-                       :ticket="ticketNo"
-                       :orgID="org_id">
-          </app-details>
-        </transition>
+        <div v-if="!isDetails">
+          <!--Using keep alive to keep the data in memory when switching the component so that-->
+          <!--we dont have to refresh the data again-->
+          <keep-alive>
+            <!--Option bar, which allow customers to change the date for the data-->
+            <app-option-bar title="Tickets"
+                            :switches="switches"
+                            v-on:refresh="loadTicketTable(options)"
+                            :options.sync="options">
+            </app-option-bar>
+          </keep-alive>
+          <app-table :tableData="tableData"
+                     :ticketAttributes="ticketAttributes"
+                     :orgID="org_id"
+                     v-on:details="loadDetails($event)">
+          </app-table>
+        </div>
+        <!--Ticket Detail page-->
+        <app-details v-if="isDetails"
+                     v-on:closeDetails="isDetails=false"
+                     :ticket="ticketNo"
+                     :orgID="org_id">
+        </app-details>
       </div>
-
     </div>
   </section>
 
 </template>
 
 <script>
-  import customer from './../customer/customer'
-  import options from './ticketoptions'
-  import ticketTab from './tickettables'
-  import helper from './../../mixins/helper'
-  import defaults from './../../mixins/default'
-  import details from './ticketdetails'
-
+  import optionBar from './../core/skeletons/optionbar'
+  import table from './table'
+  import details from './details'
+  import DotLoader from "vue-spinner/src/DotLoader";
   export default {
     components: {
-      'app-customer': customer,
-      'app-options': options,
-      'app-table': ticketTab,
+      DotLoader,
+      'app-option-bar': optionBar,
+      'app-table': table,
       'app-details': details
     },
-    mixins: [
-      helper, defaults
-    ],
     data: function () {
       return {
-        tableData: [],
-        hotTickets: {},
+        switches: {
+          priority: true,
+          closed: true,
+        },
         options: {
-          status: 'all',
-          fromDate: this.monthAgo(new Date(), 1),
-          endDate: new Date(),
+          fromDate: new Date(this.monthAgo(1)),
+          endDate: new Date(this.monthAgo(0)),
           excludeClosed: true,
           priority: 'all'
         },
+        tableData: [],
+        ticketAttributes: {},
         customer: '',
         org_id: '',
-        loading: false,
         isDetails: false,
         ticketNo: '',
       }
     },
-    created: function () {
-      return this.$store.dispatch('activeNavbarAction', 'Tickets')
-    },
     methods: {
-      // Load ticket data
-      loadTicketTable: function (events) {
-        this.loading = true
-        this.isDetails = false
-        // Update the values based on who send the event
-        if (events.who === 'customer') {
-          this.customer = events.event
-          this.org_id = events.org_id
-        } else {
-          this.options = events.event
-        }
-        // Load the data based on the request
-        this.axios.get(this.generateURL()).then(response => {
-          this.tableData = response.data.results
-          this.hotTickets = response.data.hot_tickets
-          this.loading = false
-        }).catch(error => {
-          console.log(error)
-          console.log(error.response.data)
-          this.emitMessage("FAILURE: Table loading failure, Check the browser log for more information.")
-        })
-      },
       // Generate URL based on options selected.
       generateURL: function () {
-        // Base url
-        var url = this.api.search + 'ticket organization:'
-        // Add Org name
-        url = url + this.customer
-        // Add the updated from & end date
-        url = url + ' updated>=' + this.dateFormat(this.options.fromDate) + ' updated<=' + this.dateFormat(this.options.endDate)
-        // Add priority
-        if (this.options.priority !== 'all') {
+        var url = this.api.search + 'ticket organization:'  // Base url
+        url = url + this.customer  // Add Org name
+        url = url + ' updated>=' + this.dateFormat(this.options.fromDate, '-') // Add the updated from
+        url = url + ' updated<=' + this.dateFormat(this.options.endDate, '-') // Add the updated end date
+        if (this.options.priority !== 'all') { // Add priority
           url = url + ' priority:' + this.options.priority
         }
-        // Add status
-        if (this.options.excludeClosed) {
+        if (this.options.excludeClosed) { // Add status
           url = url + ' status<solved'
         }
         return url
+      },
+      // Load ticket data
+      loadTicketTable: function (events) {
+        this.isDetails = false
+        if (events.who === 'customer') { // Update the values based on who send the event
+          this.customer = events.zendesk_org_id
+          this.org_id = events.org_id
+        }
+        this.get(this.generateURL()).then(response => {
+          this.tableData = response.results
+          this.ticketAttributes = response.tickets_attributes
+          this.$emit('loadingOff')
+        }).catch(error => {
+          this.errorParser(this.ticketLoadFailure, error)
+        })
       },
       // Turn on the details page.
       loadDetails: function (ticketNo) {
         this.ticketNo = ticketNo
         this.isDetails = true
       }
-    }
+    },
+    created: function () {
+      return this.$store.dispatch('activeNavbarAction', 'Tickets')
+    },
   }
 </script>
 

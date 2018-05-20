@@ -1,5 +1,5 @@
+<!--Template to create a iframe to load the lifecycle matrix-->
 <template>
-  <!--Template to create a iframe to load the lifecycle matrix-->
   <section class="section">
     <iframe :src="sourceURL">
       Your browser doesn't support iframes

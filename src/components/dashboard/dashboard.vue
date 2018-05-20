@@ -1,61 +1,62 @@
 <template>
   <section class="section">
     <div class="columns">
-
       <!--Load customer menu sidebar-->
       <div class="column is-2">
-        <app-customer :infoSource=true v-on:selectedOrg="loadOrgDashboard($event)"> </app-customer>
+        <app-customer :infoSource=true @selectedOrg="loadOrgDashboard"> </app-customer>
       </div>
-
-      <app-nocontent v-if="urlParams.recently_added"
-           :message="'Dashboard for this customer is not yet ready (sync is in progress). Come back later after 30 to 40 minutes....'">
-      </app-nocontent>
-
+      <!--If the customer is recently added, then tell them to wait till the background job finish to load the ticket data-->
+      <app-no-contents v-if="urlParams.recently_added" :message="recentlyAddedCustomer"> </app-no-contents>
+      <!--All the dashboard charts and options-->
       <div v-else class="column is-10">
-        <app-options :options="options" v-on:refresh="fixDateFormat($event)"> </app-options>
+        <!--Option bar, which allow customers to change the date for the data-->
+        <app-option-bar title="Dashboard"
+                        :switches="switches"
+                        v-on:refresh="fixDateFormat(options)"
+                        :options.sync="options">
+        </app-option-bar>
+        <!--Status bar -->
         <app-status-bar :statusCount="collector.status_count"> </app-status-bar>
-
+        <!--All the charts-->
         <div class="columns">
           <div class="column is-4">
             <div class="box">
               <h1 class="heading"> Support Tickets Creators (Top 10) </h1>
-              <p> {{ urlParams.fromDate | moment('DD MMM YYYY') }} - {{ urlParams.endDate | moment('DD MMM YYYY') }} </p>
+              <p> {{ dateRange }} </p>
               <app-pie-chart :data="collector.top_creators"> </app-pie-chart>
             </div>
           </div>
           <div class="column is-8">
             <div class="box">
               <h1 class="heading"> Support Tickets Created by Product Components (Top 10) </h1>
-              <p> {{ urlParams.fromDate | moment('DD MMM YYYY') }} - {{ urlParams.endDate | moment('DD MMM YYYY') }} </p>
+              <p> {{ dateRange  }} </p>
               <app-funnel-chart :data="collector.top_product_components"> </app-funnel-chart>
             </div>
           </div>
         </div>
-
         <div class="columns">
           <div class="column is-4">
             <div class="box">
               <h1 class="heading"> Support Tickets Created by Version </h1>
-              <p> {{ urlParams.fromDate | moment('DD MMM YYYY') }} - {{ urlParams.endDate | moment('DD MMM YYYY') }} </p>
+              <p> {{ dateRange  }} </p>
               <app-pie-chart :data="collector.ticket_by_version"> </app-pie-chart>
             </div>
           </div>
           <div class="column is-4">
             <div class="box">
               <h1 class="heading"> Support Tickets Created by Environment </h1>
-              <p> {{ urlParams.fromDate | moment('DD MMM YYYY') }} - {{ urlParams.endDate | moment('DD MMM YYYY') }} </p>
+              <p> {{ dateRange }} </p>
               <app-pie-chart :data="collector.ticket_by_environment"> </app-pie-chart>
             </div>
           </div>
           <div class="column is-4">
             <div class="box">
               <h1 class="heading"> Support Tickets Closed with reference to KB </h1>
-              <p> {{ urlParams.fromDate | moment('DD MMM YYYY') }} - {{ urlParams.endDate | moment('DD MMM YYYY') }} </p>
+              <p> {{ dateRange }} </p>
               <app-pie-chart :data="collector.ticket_by_kb"> </app-pie-chart>
             </div>
           </div>
         </div>
-
         <div class="columns">
           <div class="column is-6">
             <div class="box">
@@ -70,7 +71,6 @@
             </div>
           </div>
         </div>
-
         <div class="columns">
           <div class="column is-12">
             <div class="box">
@@ -79,32 +79,20 @@
             </div>
           </div>
         </div>
-
       </div>
-
     </div>
   </section>
 </template>
 
 <script>
-  import customer from './../customer/customer'
-  import options from './dashboardoptions'
-  import noContent from './../core/nocontent'
-  import helpers from './../../mixins/helper'
-  import defaults from './../../mixins/default'
-  import statusBar from './statusbar'
-  import funnel from '../charts/funnelchart'
-  import multipleLine from '../charts/multiplelinechart'
-  import pieChart from '../charts/piechart'
-
+  import optionBar from './../core/skeletons/optionbar'
+  import statusBar from './status'
+  import funnel from './../charts/funnel'
+  import multipleLine from './../charts/line'
+  import pieChart from './../charts/pie'
   export default {
-    mixins: [
-      helpers, defaults
-    ],
     components: {
-      'app-customer': customer,
-      'app-options': options,
-      'app-nocontent': noContent,
+      'app-option-bar': optionBar,
       'app-status-bar': statusBar,
       'app-funnel-chart': funnel,
       'app-multiple-line': multipleLine,
@@ -112,9 +100,14 @@
     },
     data: function () {
       return {
+        dateRange: '',
+        switches: {
+          priority: false,
+          closed: false,
+        },
         options: {
-          fromDate: this.monthAgo(new Date(), 1),
-          endDate: new Date(),
+          fromDate: new Date(this.monthAgo(1)),
+          endDate: new Date(this.monthAgo(0)),
         },
         urlParams: {
           recently_added: false,
@@ -122,11 +115,6 @@
           endDate: '',
           org_id: '',
         },
-        chartDashboard: [
-          'status_count', 'top_creators', 'top_product_components',
-          'tickets_created_by_month', 'ticket_created_solved', 'priority_tickets',
-          'ticket_by_version', 'ticket_by_environment', 'ticket_by_kb'
-        ],
         collector: {
           'status_count': [],
           'top_creators': [],
@@ -145,29 +133,25 @@
         this.urlParams.org_id = org.org_id
         this.urlParams.recently_added = org.recently_added
         this.fixDateFormat()
-        return this.$store.dispatch('activeNavbarAction', 'Dashboard')
       },
-      fixDateFormat: function(newDates) {
-        if (newDates === undefined) {
-          this.urlParams.fromDate = this.dateFormat(this.options.fromDate)
-          this.urlParams.endDate = this.dateFormat(this.options.endDate)
-        } else {
-          this.urlParams.fromDate = this.dateFormat(newDates.event.fromDate)
-          this.urlParams.endDate = this.dateFormat(newDates.event.endDate)
-        }
+      fixDateFormat: function() {
+        this.urlParams.fromDate = this.dateFormat(this.options.fromDate, '/')
+        this.urlParams.endDate = this.dateFormat(this.options.endDate, '/')
+        this.dateRange = this.urlParams.fromDate + ' - ' + this.urlParams.endDate
         this.refreshDashboard()
       },
       refreshDashboard: function() {
-        for (let i in this.chartDashboard) {
-          this.axios.get(this.api.dashboard + this.chartDashboard[i] + '?options=' + Object.entries(this.urlParams).map(pair => pair.map(encodeURIComponent).join('=')).join('&')).then(response => {
-            this.collector[this.chartDashboard[i]] = response.data
+        for (let i in this.collector) {
+          this.get(this.api.dashboard + i + '?options=' + Object.entries(this.urlParams).map(pair => pair.map(encodeURIComponent).join('=')).join('&')).then(response => {
+            this.collector[i] = response
+          }).catch(error => {
+            this.errorParser(this.dashboardDataFailure, error)
           })
         }
-      }
+      },
+    },
+    created: function () {
+      return this.$store.dispatch('activeNavbarAction', 'Dashboard')
     }
   }
 </script>
-
-<style>
-
-</style>

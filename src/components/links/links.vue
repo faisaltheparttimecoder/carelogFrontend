@@ -1,240 +1,119 @@
+<!--Main link components with which the page is built-->
 <template>
   <section class="section">
     <div class="columns">
-
+      <!--Menu SideBar-->
       <div class="column is-2">
-        <app-menu :menu-items="menuItems" :selectedItem='selectedItem' :menuTitle="'Categories'" :sourceInfo=false
-                  :allActive=true v-on:refreshContent="clickedContent($event)" v-on:allContent="allContent">
-
+        <app-menu :menu-items="menuItems"
+                  :selectedItem='selectedItem'
+                  menuTitle="Categories"
+                  :sourceInfo=false
+                  :allActive=true
+                  :menuModification="true"
+                  v-on:refreshContent="clickedContent($event)"
+                  v-on:allContent="categoryID = 'all'; selectedItem= 'All'"
+                  v-on:updateItem="updateItem"
+                  v-on:deleteItem="confirmDelete($event, 'Category')">
           <!--Extra contents for the menu-->
           <div slot="menuTop">
             <!--Button to add new category-->
             <p class="menu-label has-text-primary has-text-weight-bold">
               Action
             </p>
-            <!--The form to add a new category-->
-            <app-category v-on:updatedMenuItem="updateMenu"> </app-category>
+            <app-category @new="menuItems.push($event)"
+                          @update="updateMenuItem"
+                          :updateCategory="updateCategory">
+            </app-category>
           </div>
         </app-menu>
       </div>
-
+      <!--All the links from the selected category-->
       <div class="column is-10">
-        <!--Top navbar-->
-        <nav class="level">
-          <div class="level-left">
-            <h1 class="title">
-              {{ selectedItem }}
-            </h1>
-          </div>
-          <div class="level-right">
-            <div class="level-item">
-              <div class="field">
-                <p class="control has-icons-left has-icons-right">
-                  <input class="input is-rounded" v-model="searchLinks" type="text" placeholder="Search...">
-                  <span class="icon is-small is-left">
-                  <i class="fas fa-search"></i>
-                </span>
-                </p>
-              </div>
-            </div>
-            <div class="level-item">
-              <a class="button is-outlined" @click="openNewModal">
-                <span class="icon is-small">
-                  <i class="fas fa-link"></i>
-                </span>
-                <span> Add Link</span>
-              </a>
-            </div>
-          </div>
-        </nav>
-
-        <!--Add & Edit new link-->
-        <b-modal :active.sync="addEditModal" has-modal-card>
-          <modal-addEdit :modalProp="modalProp" :categories="menuItems" :is_it_edit="is_it_edit"
-                         v-on:newLink="addNewLink" v-on:updateLink="updateEditLink">
-          </modal-addEdit>
-        </b-modal>
-
-        <!--If content doesn't exists-->
-        <app-nocontent v-if="contextExists" :message="noContentMessage"> </app-nocontent>
-
-        <!--Table of information-->
-        <div v-else class="columns">
-          <app-table :data="arraySlicer(filterLinks, 0)" v-on:editLink="openEditModal" v-on:deleteLink="deleteLink"
-                     :loading="loading"> </app-table>
-          <app-table :data="arraySlicer(filterLinks, 1)" v-on:editLink="openEditModal" v-on:deleteLink="deleteLink"
-                     :loading="loading"> </app-table>
-          <app-table :data="arraySlicer(filterLinks, 2)" v-on:editLink="openEditModal" v-on:deleteLink="deleteLink"
-                     :loading="loading"> </app-table>
-        </div>
+        <app-content :categoryID="categoryID"
+                     :tableData="tableData"
+                     @new="tableData.push($event)"
+                     @update="tableData = updateElement(tableData, $event.id, $event)"
+                     @delete="removeElement(tableData, $event)"
+                     :categories="menuItems"
+                     :selectedItem="selectedItem">
+        </app-content>
       </div>
-
     </div>
   </section>
 </template>
 
 <script>
-  import addEditLink from './addlink'
-  import menu from './../core/menu'
-  import tabTemplate from './tabletemplate'
-  import helper from './../../mixins/helper'
-  import defaults from './../../mixins/default'
-  import addCategory from './addcategory'
-  import noContent from '../core/nocontent'
-
+  import category from './category'
+  import content from './content'
   export default {
     name: 'links',
-    mixins: [
-      helper, defaults
-    ],
     components: {
-      'modal-addEdit': addEditLink,
-      'app-menu': menu,
-      'app-table': tabTemplate,
-      'app-category': addCategory,
-      'app-nocontent': noContent,
+      'app-category': category,
+      'app-content': content
     },
     data: function () {
       return {
-        addEditModal: false,
-        is_it_edit: false,
-        searchLinks: '',
-        tableData: [{
-          id: '',
-          name: '',
-          url: '',
-          info: '',
-          category_id: '',
-          category_name: ''
-        }],
-        modalProp: {
-          modalTitle: "Register New Link",
-          linkId: '',
-          linkCategory: '',
-          linkName: '',
-          linkUrl: '',
-          linkInfo: ''
-        },
-        loading: false,
-        noContentMessage: 'This category dont have any URL, add one using the register new link button'
+        noContentMessage: 'This category don\'t have any URL, add one using the register new link button',
+        menuItems: [],
+        selectedItem: '',
+        tableData: [],
+        categoryID: '',
+        updateCategory: {id: '', name: ''},
       }
-    },
-    computed: {
-      // Use the filter to filter out the content based on user search.
-      filterLinks: function () {
-        return this.tableData.filter((links) => {
-          return links.name.toLowerCase().includes(this.searchLinks.toLowerCase()) || links.info.toLowerCase().includes(this.searchLinks.toLowerCase())
-        })
-      }
-    },
-    // Attaching the lifecycle hook, to pull the API.
-    created: function () {
-      this.loading = true
-      this.$store.dispatch('activeNavbarAction', 'Links')
-      // All the categories
-      this.axios.get(this.api.category).then(response => {
-        this.menuItems = response.data
-      })
-      // All the links
-      this.axios.get(this.api.links).then(response => {
-        this.tableData = response.data
-        this.selectedItem = 'All Categories Links'
-        this.contextExists = this.arrayEmpty(this.tableData)
-        this.loading = false
-      })
     },
     methods: {
-      // Update the menu item when the new category is added.
-      updateMenu: function (newMenuItem) {
-        this.menuItems.push(newMenuItem)
-      },
-      // Open modal to add a new link
-      openNewModal: function () {
-        // Set the values and open the modal
-        this.modalProp = {
-          modalTitle: "Register New Link",
-          linkId: '',
-          linkCategory: '',
-          linkName: '',
-          linkUrl: '',
-          linkInfo: ''
-        }
-        this.addEditModal = true
-        this.is_it_edit = false
-      },
-      // Add new link
-      addNewLink: function (link) {
-        // only update the table if the category name is the selected one
-        if (this.selectedItem === 'All Categories Links' || this.selectedItem === link.category_name) {
-          this.tableData.push(link)
-        }
-        this.contextExists = this.arrayEmpty(this.tableData)
-      },
-      // Edit the link
-      openEditModal: function (linkInfo) {
-        // Set the values and open the modal
-        this.modalProp = {
-          modalTitle: "Edit Link",
-          linkId: linkInfo.linkId,
-          linkCategory: linkInfo.linkCategory,
-          linkName: linkInfo.linkName,
-          linkUrl: linkInfo.linkUrl,
-          linkInfo: linkInfo.linkInfo
-        }
-        this.addEditModal = true
-        this.is_it_edit = true
-      },
-      // Update the link.
-      updateEditLink: function (link, id) {
-        this.tableData.splice(this.getObjectIndex(this.tableData, id), 1);
-        // only update the table if the category name is the selected one
-        if (this.selectedItem === 'All Categories Links' || this.selectedItem === link.category_name) {
-          this.tableData.push(link)
-        }
-        this.contextExists = this.arrayEmpty(this.tableData)
-      },
-      // Delete the link when called.
-      deleteLink: function (id) {
-        this.axios.delete(this.api.links + id + '/').then(response => {
-          // Respond based on the response from backend server
-          if (response.statusText === 'No Content' && response.status === 204) {
-            this.emitMessage('Links Successfully Deleted', 'is-success')
-            this.tableData.splice(this.getObjectIndex(this.tableData, id), 1);
-            this.contextExists = this.arrayEmpty(this.tableData)
-          } else {
-            console.log(response)
-            this.emitMessage('FAILURE: Link Deletion Unsuccessful, check browser console logfor more details ', 'is-danger')
-          }
+      // Delete the category from the list.
+      deleteData: function (id) {
+        this.delete(this.api.category + id + '/').then(response => {
+          this.removeElement(this.menuItems, id)
+          this.notice(this.categoryDeleteSuccess, 'success', 'success')
         }).catch(error => {
-          console.log(error)
-          console.log(error.response.data)
-          this.emitMessage('FAILURE: Link Deletion Unsuccessful, check browser console log for more details', 'is-danger')
+          this.errorParser(this.categoryDeleteFailure, error)
         })
+      },
+      // When clicked on the update button, record the information
+      // of the clicked category and pass it on to the form.
+      updateItem: function (event) {
+        this.updateCategory = event
+      },
+      // Update Menu based on changes to the category name
+      updateMenuItem: function (event) {
+        this.menuItems = this.updateElement(this.menuItems, event.id, event)
+        this.selectedItem = event.name
+        this.categoryID = event.id
+      },
+      // pull the menu item based on load or delete
+      getMenuItem: function () {
+        var item = this.pickMenuItem(this.menuItems)
+        if (item === '') {
+          this.tableData = []
+        } else {
+          this.clickedContent(item)
+        }
       },
       // A new menu has been clicked.
       clickedContent: function (id) {
-        this.loading = true
         // Pull the data from the category API
-        this.axios.get(this.api.category + id + '/').then(response => {
-          this.tableData = response.data.category
-          this.selectedItem = response.data.name
-          this.contextExists = this.arrayEmpty(this.tableData)
-          this.loading = false
+        this.get(this.api.category + id + '/').then(response => {
+          this.tableData = response.category
+          this.selectedItem = response.name
+          this.categoryID = response.id
+        }).catch(error => {
+          this.errorParser(this.selectedCategoryLoadFailure, error)
         })
       },
-      // All content request
-      allContent: function () {
-        this.loading = true
-        // All the links
-        this.axios.get(this.api.links).then(response => {
-          this.tableData = response.data
-          this.selectedItem = 'All Categories Links'
-          this.contextExists = this.arrayEmpty(this.tableData)
-          this.loading = false
-        })
-      }
-
-    }
+    },
+    // Attaching the lifecycle hook, to pull the API.
+    created: function () {
+      this.get(this.api.category).then(response => {    // All the categories
+        this.menuItems = response
+        this.selectedItem = 'All'
+        this.categoryID = 'all'
+      }).catch(error => {
+        this.errorParser(this.categoryLoadFailure, error)
+      })
+      this.$store.dispatch('activeNavbarAction', 'Links')
+    },
   }
 </script>
 

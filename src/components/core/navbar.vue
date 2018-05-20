@@ -1,11 +1,12 @@
 <template>
   <!--Bulma Navbar: https://bulma.io/documentation/components/navbar/-->
   <nav class="navbar is-white is-fixed-top is-black">
-
     <!--Navbar brand information and also the burger button-->
     <div class="navbar-brand">
       <a class="navbar-item" href="/">
-        <h1 class="title is-5 has-text-white">Pivotal CareLog</h1>
+        <img src="../../assets/logo.png" alt="Bulma: a modern CSS framework based on Flexbox" width="30" height="28" style="filter: brightness(100);">
+        &nbsp;&nbsp;&nbsp;
+        <h1 class="title is-5 has-text-white">Pivotal BCS</h1>
       </a>
       <div v-on:click=" burgerMenuActive = !burgerMenuActive" :class="{ 'is-active': burgerMenuActive }"
            class="navbar-burger burger">
@@ -14,7 +15,6 @@
         <span></span>
       </div>
     </div>
-
     <!--Left side of the navbar, and also the navoption which will be part of the burger menu-->
     <div v-bind:class="{'is-active': burgerMenuActive }" class="navbar-menu">
       <div class="navbar-start">
@@ -25,7 +25,7 @@
           </a>
           <div class="navbar-dropdown is-boxed">
             <router-link v-for="(LeftItem, index) in LeftItems.items" class="navbar-item"
-               :class="{'is-active': $store.state.activeNavbar === LeftItem.item}" :to="LeftItem.route" :key="index">
+                         :class="{'is-active': $store.state.activeNavbar === LeftItem.item}" :to="LeftItem.route" :key="index">
               <div class="media">
                 <b-icon class="media-left" :pack="LeftItem.iconpack" :icon="LeftItem.icon"></b-icon>
                 <div class="media-content">
@@ -38,9 +38,8 @@
         </div>
       </div>
     </div>
-
     <!--Right side of the navbar-->
-    <div class="navbar-end">
+    <div class="navbar-end is-hidden-touch">
       <div v-for="(rightItems, index) in navRightItems" class="navbar-item has-dropdown is-hoverable">
         <a class="navbar-link">
           <b-icon class="media-left" :pack="rightItems.iconpack" :icon="rightItems.icon"></b-icon>
@@ -91,11 +90,10 @@
 <script>
   export default {
     name: "navbar",
-
     // All the data for the components
     data: function () {
       return {
-        version: '2.0',
+        version: '3.0',
         // All Navbar left items
         navLeftItems: {
           Home: {
