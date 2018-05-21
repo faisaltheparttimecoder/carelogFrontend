@@ -33,7 +33,7 @@
 
 <script>
   import contents from './contents'
-  import card from '../card/card'
+  import card from '../core/card/card'
   export default {
     components: {
       'app-page-contents': contents,

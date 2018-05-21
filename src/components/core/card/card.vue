@@ -30,7 +30,7 @@
 </template>
 
 <script>
-  import filterbar from '../core/skeletons/filterbar'
+  import filterbar from '../skeletons/filterbar'
   import tile from './tilebody'
   export default {
     components: {

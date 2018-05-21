@@ -1,7 +1,8 @@
 <template>
   <div>
     <app-tile :data="chunkData(filter(data, 'description', search, 'title'), 2)"
-              showDetail="true"
+              :showDetail="true"
+              :showDate="true"
               @edit="$emit('edit', {id: $event.id,
                                     title: $event.title,
                                     description: $event.description,
@@ -22,8 +23,8 @@
 </template>
 
 <script>
-  import tile from '../core/skeletons/tile'
-  import markdown from '../core/skeletons/markdown'
+  import tile from '../skeletons/tile'
+  import markdown from '../skeletons/markdown'
   export default {
     props: [
       'data', 'search'

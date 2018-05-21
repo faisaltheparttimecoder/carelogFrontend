@@ -22,7 +22,7 @@
 
 <script>
   import details from './details'
-  import card from '../../card/card'
+  import card from '../../core/card/card'
   export default {
     components: {
       'app-page-details': details,

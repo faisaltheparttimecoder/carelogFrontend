@@ -5,8 +5,7 @@
     <div class="navbar-brand">
       <a class="navbar-item" href="/">
         <img src="../../assets/logo.png" alt="Bulma: a modern CSS framework based on Flexbox" width="30" height="28" style="filter: brightness(100);">
-        &nbsp;&nbsp;&nbsp;
-        <h1 class="title is-5 has-text-white">Pivotal BCS</h1>
+        &nbsp;&nbsp;&nbsp;<h1 class="title is-5 has-text-white">Pivotal BCS</h1>
       </a>
       <div v-on:click=" burgerMenuActive = !burgerMenuActive" :class="{ 'is-active': burgerMenuActive }"
            class="navbar-burger burger">
@@ -117,6 +116,11 @@
               description: 'Meet the Team',
               iconpack: 'fas',
               icon: 'graduation-cap'
+            }, {
+              item: 'Achievement',
+              route: '/achievements',
+              description: 'Our Team\'s success stories',
+              icon: 'trophy-variant'
             }]
           },
           Customers: {

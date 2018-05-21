@@ -6,6 +6,7 @@
       <app-banner :title="index.toUpperCase()"></app-banner>
       <!--Environment Type instance cards-->
       <app-tile :data="chunkData(instance_type, 3)"
+                :showDate="true"
                 @delete="confirmDelete($event, 'Environment Instance')"
                 @edit="$emit('editInstance', {
                   id: $event.id,

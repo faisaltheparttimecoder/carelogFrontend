@@ -5,7 +5,9 @@
         <div class="tile is-child box">
           <nav class="level is-mobile">
             <div class="level-left">
-              <p class="heading"><strong> updated: </strong> {{ formatDate(content.updated, true) }} </p>
+              <p class="heading" v-if="showDate">
+                <strong> updated: </strong> {{ formatDate(content.updated, true) }}
+              </p>
             </div>
             <div class="level-right">
               <a class="level-item" v-on:click="$emit('edit', content)">
@@ -29,7 +31,7 @@
 <script>
   export default {
     props: [
-      'data', 'showDetail'
+      'data', 'showDetail', 'showDate'
     ]
   }
 </script>

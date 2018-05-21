@@ -21,62 +21,47 @@
     </app-banner>
     <!--Team member name cards-->
     <div class="section">
-      <div class="columns" v-for="teamchunk in chunkData(arrByKeyword(team, 'role', role), 4)">
-        <div class="column is-3" v-for="team in teamchunk">
-          <div class="box">
-            <article class="media">
-              <div class="media-content">
-                <div class="content">
-                  <p>
-                    <strong class="title">{{ team.first_name }} {{ team.last_name }}</strong><br>
-                    <strong>Slack Handler: </strong> @{{ team.slack_handler }} <br>
-                    <strong>Email: </strong> {{ team.email }} <br>
-                    <strong>Phone: </strong> {{ team.phone }}<br>
-                    <strong>Theater: </strong> {{ team.region }} <br>
-                    <strong>Location: </strong> {{ team.location }} <br>
-                    <span v-if="role==='DSE'"><strong>DSE Accounts: </strong> {{ team.bcsteam_org_name.join() }}</span><br>
-                  </p>
-                </div>
-                <nav class="level is-mobile">
-                  <div class="level-left">
-                    <a class="level-item" aria-label="reply" v-on:click="updateClicked({
-                                                                           id: team.id,
-                                                                           first_name: team.first_name,
-                                                                           last_name: team.last_name,
-                                                                           email: team.email,
-                                                                           phone: team.phone,
-                                                                           region: team.region,
-                                                                           role: team.role,
-                                                                           slack_handler: team.slack_handler,
-                                                                           location: team.location,
-                                                                           accounts: team.accounts
-                                                                        })">
-                      <span class="icon is-small"><i class="fas fa-pencil-alt" aria-hidden="true"></i></span>
-                    </a>
-                    <a class="level-item" aria-label="retweet" v-on:click="confirmDelete(team.id, 'Team Member')">
-                      <span class="icon is-small"><i class="fas fa-trash" aria-hidden="true"></i></span>
-                    </a>
-                  </div>
-                </nav>
-              </div>
-            </article>
+      <app-tile :data="chunkData(arrByKeyword(team, 'role', role), 4)"
+                :showDate="false"
+                @edit="updateClicked({id: $event.id,
+                                    first_name: $event.first_name,
+                                    last_name: $event.last_name,
+                                    email: $event.email,
+                                    phone: $event.phone,
+                                    region: $event.region,
+                                    role: $event.role,
+                                    slack_handler: $event.slack_handler,
+                                    location: $event.location,
+                                    accounts: $event.accounts})"
+                @delete="confirmDelete($event, 'Team Member')">
+        <template slot-scope="props">
+          <div class="content">
+            <p>
+              <strong class="title">{{ props.content.first_name }} {{ props.content.last_name }}</strong><br>
+              <strong>Slack Handler: </strong> @{{ props.content.slack_handler }} <br>
+              <strong>Email: </strong> {{ props.content.email }} <br>
+              <strong>Phone: </strong> {{ props.content.phone }}<br>
+              <strong>Theater: </strong> {{ props.content.region }} <br>
+              <strong>Location: </strong> {{ props.content.location }} <br>
+              <span v-if="role==='DSE'"><strong>DSE Accounts: </strong> {{ props.content.bcsteam_org_name.join() }}</span><br>
+            </p>
           </div>
-        </div>
-      </div>
+        </template>
+      </app-tile>
     </div>
     <!--End-->
   </div>
 </template>
 
 <script>
-  import banner from '../../core/skeletons/banner'
-  import modal from '../../core/skeletons/modal'
-  import form from '../../core/form/generator'
+  import banner from './../../core/skeletons/banner'
+  import modal from './../../core/skeletons/modal'
+  import tile from './../../core/skeletons/tile'
   export default {
     components: {
       'app-banner': banner,
       'app-modal': modal,
-      'app-form': form
+      'app-tile': tile
     },
     props: [
       'title', 'role', 'team', 'accounts'
@@ -247,8 +232,4 @@
 </script>
 
 <style scoped>
-  /*prevent scroller to be shown on the box layout*/
-  .media-content {
-    overflow: hidden;
-  }
 </style>
