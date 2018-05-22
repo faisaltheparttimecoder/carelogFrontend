@@ -23,6 +23,10 @@ export default {
       certificationUserLoadFailure: 'Failed to load all the certificated users list, ' + errorSuffix,
       certifiedSaveSuccess: 'Successfully saved certification information',
       certifiedSaveFailure: 'Failed to save certification information, ' + errorSuffix,
+      certifiedUpdateSuccess: 'Successfully updated certification information',
+      certifiedUpdateFailure: 'Failed to update certification information, ' + errorSuffix,
+      certifiedDeleteSuccess: 'Successfully deleted the certification information',
+      certifiedDeleteFailure: 'Failed to delete certification information, ' + errorSuffix,
 
       // Rss feed page related message
       rssLoadFailure: 'Failed to get data for RSS Page, ' + errorSuffix,

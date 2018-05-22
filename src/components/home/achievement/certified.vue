@@ -20,11 +20,26 @@
       <div class="card-content">
         <div v-for="user in certifiedUsers">
           <hr class="style14">
+          <nav class="level is-mobile">
+            <div class="level-left">
+            </div>
+            <div class="level-right">
+              <a class="level-item" @click="formData = {id: user.id,
+                                                        team_id: user.team_id,
+                                                        certification: user.certification}; showModal = true">
+                <span class="icon is-small"><i class="fas fa-pencil-alt"></i></span>
+              </a>
+              <a class="level-item" @click="confirmDelete(user.id, 'Certification')">
+                <span class="icon is-small"><i class="fas fa-trash"></i></span>
+              </a>
+            </div>
+          </nav>
           <div class="has-text-centered">
             <h1 class="title is-2">{{ user.bcs_team_achievement }}</h1>
-            <h6 class="subtitle is-6">{{ user.certification }}</h6>
+            <h6 class="subtitle is-6" style="margin-bottom: 1%;">{{ user.certification }}</h6>
           </div>
         </div>
+        <hr class="style14">
       </div>
     </div>
   </section>
@@ -63,13 +78,33 @@
       // Save the data
       saveData: function() {
         this.formData.certification = this.capitalizeFirstLetter(this.formData.certification)
-        this.post(this.api.certification, this.formData).then(response => {
-          this.certifiedUsers.push(response)
-          this.showModal = false
-          this.formData = {team_id: '0'}
-          this.notice(this.certifiedSaveSuccess, 'success', 'success')
+        if (this.formData.id === '') { // POST
+          this.post(this.api.certification, this.formData).then(response => {
+            this.certifiedUsers.push(response)
+            this.showModal = false
+            this.formData = {team_id: '0'}
+            this.notice(this.certifiedSaveSuccess, 'success', 'success')
+          }).catch(error => {
+            this.errorParser(this.certifiedSaveFailure, error)
+          })
+        } else {  // PATCH
+          this.patch(this.api.certification + this.formData.id + '/', this.formData).then(response => {
+            this.updateElement(this.certifiedUsers, this.formData.id, response)
+            this.showModal = false
+            this.formData = {team_id: '0'}
+            this.notice(this.certifiedUpdateSuccess, 'success', 'success')
+          }).catch(error => {
+            this.errorParser(this.certifiedUpdateFailure, error)
+          })
+        }
+      },
+      // delete the data
+      deleteData: function (event) {
+        this.delete(this.api.certification + event + '/').then(response => {
+          this.removeElement(this.certifiedUsers, event)
+          this.notice(this.certifiedDeleteSuccess, 'success', 'success')
         }).catch(error => {
-          this.errorParser(this.certifiedSaveFailure, error)
+          this.errorParser(this.certifiedDeleteFailure, error)
         })
       }
     },
@@ -112,6 +147,12 @@
 </script>
 
 <style scoped>
+  nav.level.is-mobile {
+    margin-bottom: -1%;
+  }
+  a {
+    z-index: 9;
+  }
   hr.style14 {
     border: 1px solid;
     height: 1px;
