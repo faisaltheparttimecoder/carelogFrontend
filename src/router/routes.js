@@ -1,6 +1,7 @@
 import home from '@/components/home/main/main'
 import engagement from '@/components/home/engagement/engagement'
 import team from '@/components/home/team/team'
+import achievement from '@/components/home/achievement/achievement'
 import dashboard from '@/components/dashboard/dashboard'
 import environment from '@/components/environment/environment'
 import timeline from '@/components/timeline/timeline'
@@ -23,6 +24,10 @@ export default [
     path: '/team',
     component: team,
     name: 'team'
+  }, {
+    path: '/achievement',
+    component: achievement,
+    name: 'achievement'
   }, {
     path: '/dashboard',
     component: dashboard,

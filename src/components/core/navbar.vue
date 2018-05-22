@@ -59,7 +59,7 @@
           </div>
           <hr class="navbar-divider">
           <!--Menu Items-->
-          <a v-for="rightItem in rightItems.items" class="navbar-item is-disabled" :href="rightItem.route"
+          <a v-for="rightItem in rightItems.items" class="navbar-item" :href="rightItem.route"
              target="_blank">
             <div class="media">
               <b-icon class="media-left" :pack="rightItem.iconpack" :icon="rightItem.icon"></b-icon>
@@ -118,7 +118,7 @@
               icon: 'graduation-cap'
             }, {
               item: 'Achievement',
-              route: '/achievements',
+              route: '/achievement',
               description: 'Our Team\'s success stories',
               icon: 'trophy-variant'
             }]

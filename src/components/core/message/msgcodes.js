@@ -19,6 +19,11 @@ export default {
       updateTeamFailure: 'Failure in updating team member, ' + errorSuffix,
       updateTeamSuccess: 'Successfully updated team member ',
 
+      // Achievements pages
+      certificationUserLoadFailure: 'Failed to load all the certificated users list, ' + errorSuffix,
+      certifiedSaveSuccess: 'Successfully saved certification information',
+      certifiedSaveFailure: 'Failed to save certification information, ' + errorSuffix,
+
       // Rss feed page related message
       rssLoadFailure: 'Failed to get data for RSS Page, ' + errorSuffix,
       rssPostSuccess: 'Successfully saved the location of RSS',

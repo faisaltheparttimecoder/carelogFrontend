@@ -71,6 +71,12 @@
     <div slot="level-right">
       <slot name="custom-button"> </slot>
     </div>
+    <div slot="level-right">
+      &nbsp;&nbsp;&nbsp;
+    </div>
+    <div slot="level-right">
+      <slot name="custom-button2"> </slot>
+    </div>
   </app-level>
 </template>
 
