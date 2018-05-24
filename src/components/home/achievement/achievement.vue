@@ -4,7 +4,7 @@
     <app-button-bar :switches="{}">
       <h1 slot="left-bar" class="title"> Feedback & Achievements </h1>
       <div class="level-item" slot="custom-button">
-        <a class="button is-outlined">
+        <a class="button is-outlined" v-on:click="showFeedbackForm = true">
           <span class="icon is-small">
             <i class="fas fa-plus"></i>
           </span>
@@ -24,7 +24,7 @@
     <div class="columns">
       <!--Feedback panel-->
       <div class="column is-9">
-        <app-feedback> </app-feedback>
+        <app-feedback :showForm="showFeedbackForm" @closeModal="showFeedbackForm=false"> </app-feedback>
       </div>
       <!--Certification panel-->
       <div class="column is-3">
@@ -46,7 +46,8 @@
     },
     data: function() {
       return {
-        showAchievementForm: false
+        showAchievementForm: false,
+        showFeedbackForm: false
       }
     },
     created: function () {

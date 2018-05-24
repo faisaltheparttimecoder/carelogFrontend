@@ -27,6 +27,13 @@ export default {
       certifiedUpdateFailure: 'Failed to update certification information, ' + errorSuffix,
       certifiedDeleteSuccess: 'Successfully deleted the certification information',
       certifiedDeleteFailure: 'Failed to delete certification information, ' + errorSuffix,
+      feedbackLoadFailure: 'Failed to load all the feedback list, ' + errorSuffix,
+      feedbackSaveSuccess: 'Successfully saved teams feedback',
+      feedbackSaveFailure: 'Failed to save feedback, ' + errorSuffix,
+      feedbackUpdateSuccess: 'Successfully updated feedback',
+      feedbackUpdateFailure: 'Failed to update feedback, ' + errorSuffix,
+      feedbackDeleteSuccess: 'Successfully deleted the feedback',
+      feedbackDeleteFailure: 'Failed to delete feedback, ' + errorSuffix,
 
       // Rss feed page related message
       rssLoadFailure: 'Failed to get data for RSS Page, ' + errorSuffix,

@@ -54,7 +54,7 @@
       return {
         certifiedUsers: [],
         showModal: false,
-        formData: {team_id: '0'},  // To save the form input
+        formData: {id: '', team_id: '0'},  // To save the form input
         formFields: {  // All the field, that is need for the generator or to build the form
           team_id: {
             formtype: 'select',
@@ -82,7 +82,6 @@
           this.post(this.api.certification, this.formData).then(response => {
             this.certifiedUsers.push(response)
             this.showModal = false
-            this.formData = {team_id: '0'}
             this.notice(this.certifiedSaveSuccess, 'success', 'success')
           }).catch(error => {
             this.errorParser(this.certifiedSaveFailure, error)
@@ -91,7 +90,6 @@
           this.patch(this.api.certification + this.formData.id + '/', this.formData).then(response => {
             this.updateElement(this.certifiedUsers, this.formData.id, response)
             this.showModal = false
-            this.formData = {team_id: '0'}
             this.notice(this.certifiedUpdateSuccess, 'success', 'success')
           }).catch(error => {
             this.errorParser(this.certifiedUpdateFailure, error)
@@ -134,11 +132,13 @@
     watch: {
       // Open the modal
       'showForm': function () {
+        this.formData = {id: '', team_id: '0'}
         this.showModal = this.showForm
       },
       // Notify the parent that modal has been closed
       'showModal': function () {
         if (!this.showModal) {
+          this.formData = {id: '', team_id: '0'}
           this.$emit('closeModal')
         }
       },
