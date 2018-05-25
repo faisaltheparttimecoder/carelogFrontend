@@ -50,7 +50,7 @@
 </template>
 
 <script>
-  import resource from './resource'
+  import resource from './resources'
   import editor from './../core/editor/editor'
   import category from './../core/category'
   export default {

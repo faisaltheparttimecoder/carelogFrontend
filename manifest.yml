@@ -1,6 +1,6 @@
 ---
 applications:
-- name: carelog-blue
+- name: carelog-green
 buildpack: nodejs_buildpack
 memory: 256M
 instance: 1
