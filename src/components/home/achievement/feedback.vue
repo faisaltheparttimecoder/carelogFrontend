@@ -2,7 +2,7 @@
   <div>
     <!--Add or update form-->
     <b-modal :active.sync="showModal" has-modal-card>
-      <app-modal title="Feedback">
+      <app-modal :title="formData.id === '' ? 'Add Feedback' : 'Update Feedback'">
         <app-form :formFields="formFields"
                   slot="modal-body"
                   :formData.sync="formData"

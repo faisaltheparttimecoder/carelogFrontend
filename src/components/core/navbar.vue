@@ -179,6 +179,12 @@
             iconpack: 'fab',
             icon: 'hire-a-helper',
             items: [{
+              item: 'Resources',
+              route: '/resource/',
+              description: 'The Well of Knowledge',
+              iconpack: 'fas',
+              icon: 'lightbulb'
+            }, {
               item: 'Links',
               route: '/links/',
               description: 'General & Useful Links',

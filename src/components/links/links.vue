@@ -22,6 +22,7 @@
             </p>
             <app-category @new="menuItems.push($event)"
                           @update="updateMenuItem"
+                          :url="api.category"
                           :updateCategory="updateCategory">
             </app-category>
           </div>
@@ -43,7 +44,7 @@
 </template>
 
 <script>
-  import category from './category'
+  import category from '../core/category'
   import content from './content'
   export default {
     name: 'links',

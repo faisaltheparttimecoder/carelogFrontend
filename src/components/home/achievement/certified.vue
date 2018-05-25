@@ -2,7 +2,7 @@
   <section>
     <!--The modal & form to add the certification-->
     <b-modal :active.sync="showModal" has-modal-card>
-      <app-modal title="Team's Achievement">
+      <app-modal  :title="formData.id === '' ? 'Add Team\'s Achievement' : 'Update Team\'s Achievement'">
         <app-form :formFields="formFields"
                   slot="modal-body"
                   :formData.sync="formData"

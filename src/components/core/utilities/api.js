@@ -24,6 +24,7 @@ export default {
         certification: process.env.API_URL + 'api/bcs/certification/',
         feedback: process.env.API_URL + 'api/bcs/feedback/',
         country: process.env.API_URL+ 'api/customer/country/',
+        resource: process.env.API_URL+ 'api/resource/',
         envProductList: process.env.API_URL + 'api/customer/environment/environment_details_product_list/',
         envProductListInfo: process.env.API_URL + 'api/customer/environment/environment_product_info/',
         envInstance:  process.env.API_URL + 'api/customer/environment/environment_instance/',

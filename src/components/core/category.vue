@@ -25,15 +25,15 @@
 </template>
 
 <script>
-  import form from './../core/form/generator'
-  import modal from './../core/skeletons/modal'
+  import form from './form/generator'
+  import modal from './skeletons/modal'
   export default {
     components: {
       'app-form': form,
       'app-modal': modal,
     },
     props: [
-      'updateCategory'
+      'updateCategory', 'url'
     ],
     data: function () {
       return {
@@ -61,17 +61,16 @@
       },
       saveData: function (event) {  // Save the data
         if (event.id === '') { // New category
-          this.post(this.api.category, {
+          this.post(this.url, {
             'name': this.capitalizeFirstLetter(event.name)
           }).then(response => {
             this.notice(this.categorySaveSuccess, 'success', 'success')
             this.$emit('new', response)
-            this.showModal = false
           }).catch(error => {
             this.errorParser(this.categorySaveFailure, error)
-          })
+          }).finally(this.showModal = false)
         } else { // Update of the category
-          this.patch(this.api.category + event.id + '/', {
+          this.patch(this.url + event.id + '/', {
             'name': this.capitalizeFirstLetter(event.name)
           }).then(response => {
             this.notice(this.categoryUpdateSuccess, 'success', 'success')
@@ -79,7 +78,7 @@
             this.showModal = false
           }).catch(error => {
             this.errorParser(this.categoryUpdateFailure, error)
-          })
+          }).finally(this.showModal = false)
         }
       }
     },

@@ -10,6 +10,7 @@ import products from '@/components/products/products'
 import security from '@/components/security/rss'
 import lifecycle from '@/components/lifecycle/lifecycle'
 import links from '@/components/links/links'
+import resource from '@/components/resource/resource'
 
 export default [
   {
@@ -57,5 +58,8 @@ export default [
   }, {
     path: '/links',
     component: links
+  }, {
+    path: '/resource',
+    component: resource
   },
 ]

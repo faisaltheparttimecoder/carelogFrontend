@@ -160,6 +160,10 @@ export default {
       timelineDataDeleteSuccess: 'Successfully deleted timeline data',
       timelineDataDeleteFailure: 'Failed to delete timeline data, ' + errorSuffix,
 
+      // Resource Page
+      resourceUpdateSuccess: 'Successfully saved the content of the resource page',
+      resourceUpdateFailure: 'Failed to save the content of the resource page, ' + errorSuffix,
+
     }
   }
 }
