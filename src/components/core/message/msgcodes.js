@@ -163,6 +163,7 @@ export default {
       // Resource Page
       resourceUpdateSuccess: 'Successfully saved the content of the resource page',
       resourceUpdateFailure: 'Failed to save the content of the resource page, ' + errorSuffix,
+      resourcePageLoadFailure: 'Failed to load resource page, ' + errorSuffix
 
     }
   }

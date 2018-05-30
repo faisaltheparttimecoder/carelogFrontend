@@ -13,6 +13,7 @@ export default {
         console.log(error.response.data)
       }
       this.notice(msg, 'Error', 'error')
+      this.toggleLoading(false)
     },
     // Confirmation for saving or delete.
     confirmSave: function(data, title) {

@@ -41,11 +41,13 @@ export default {
       })
     },
     loadResources: function (id) {
+      this.toggleLoading(true)
       this.get(this.api.resource + id + '/').then(response => {
         this.resources = response
         this.selectedItem = response.name
+        this.toggleLoading(false)
       }).catch(error => {
-
+        this.errorParser(this.resourcePageLoadFailure, error)
       })
     }
   },
