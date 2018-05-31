@@ -127,30 +127,21 @@
       },
       // place the product information on the list
       productSelectionList: function () {
-        // This is a new environment information
-        if (this.arrayEmpty(this.instanceDetails.inputs)) {
-          this.instanceDetails.inputs = []
-          for (let i in this.distintProduct) {
-            this.instanceDetails.inputs.push({
-              name: this.distintProduct[i],
-              version: ''
-            })
+        var deepProductListCopy = this.deepCopyObject(this.distintProduct)
+        // Loop through the copy of the product slice and remove the one we know
+        // and add the one we dont know
+        for (let j in this.instanceDetails.inputs) {
+          var index = this.getArrayIndex(deepProductListCopy, this.instanceDetails.inputs[j]['name'])
+          if (index >= 0) {
+            deepProductListCopy.splice(index, 1)
           }
-        } else { // edit field, so let check what we know and what we dont know.
-          var deepProductListCopy = this.deepCopyObject(this.distintProduct)
-          // Loop through the copy of the product slice and remove the one we know
-          // and add the one we dont know
-          for (let j in this.instanceDetails.inputs) {
-            var index = this.getArrayIndex(deepProductListCopy, this.instanceDetails.inputs[j]['name'])
-            if (index >= 0) { deepProductListCopy.splice(index, 1) }
-          }
-          // now push them to the list.
-          for (let i in deepProductListCopy) {
-            this.instanceDetails.inputs.push({
-              name: deepProductListCopy[i],
-              version: ''
-            })
-          }
+        }
+        // now push them to the list.
+        for (let i in deepProductListCopy) {
+          this.instanceDetails.inputs.push({
+            name: deepProductListCopy[i],
+            version: ''
+          })
         }
         // blank line
         this.instanceDetails.inputs.push({
