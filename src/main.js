@@ -14,6 +14,7 @@ import VueAuthenticate from 'vue-authenticate' // App Authentication
 import vSelect from 'vue-select'        // Dropdown select module
 import 'buefy/lib/buefy.css'            // Carelog UI CSS
 import "vue-snotify/styles/simple.css"  // Notification Style
+import "./assets/css/carelog.css"       // Carelog global CSS
 import helpers from './components/core/utilities/helper'   // Register all the global mixins
 import api from './components/core/utilities/api'
 import msgCode from './components/core/message/msgcodes'
