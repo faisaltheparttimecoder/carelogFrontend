@@ -43,7 +43,7 @@
             formtype: 'input',
             label: 'Note Title',
             placeholder: "Enter Note Title...",
-            validate: 'required|alpha_spaces|max:50',
+            validate: 'required|max:50',
             icon: 'far fa-sticky-note'
           },
         },

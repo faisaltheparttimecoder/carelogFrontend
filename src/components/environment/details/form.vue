@@ -31,7 +31,7 @@
           <div class="control is-expanded has-icons-left">
             <input class="input" :class="{'is-danger': errors.has('name')}"
                    name="name"
-                   v-validate="'required|alpha_dash|max:50'"
+                   v-validate="'required|max:50'"
                    placeholder="Environment Name"
                    v-model="instanceDetails.name">
             <span class="icon is-small is-left">
